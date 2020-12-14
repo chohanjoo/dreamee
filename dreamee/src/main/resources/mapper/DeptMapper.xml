@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.DeptDao" >
+
+    <resultMap id="deptMap" type="sarang.univ.dreamee.dto.Dept">
+        <id property="deptId" column="dept_id"/>
+        <result property="pastorId" column="pastor_id"/>
+        <result property="missionaryId" column="missionary_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="deptLocation" column="dept_location"/>
+    </resultMap>
+
+    <select id="retrieveAllDept" resultMap="deptMap">
+        select * from department
+    </select>
+
+    <select id="retrieveDeptByName" resultMap="deptMap">
+        select dept_id, pastor_id, dept_name, dept_location from department where dept_name = #{deptName}
+    </select>
+
+    <insert id="registerDept" parameterType="sarang.univ.dreamee.dto.Dept" useGeneratedKeys="true">
+        insert into department (dept_name, dept_location, pastor_id) values (#{deptName}, #{deptLocation}, #{pastorId})
+    </insert>
+
+</mapper>

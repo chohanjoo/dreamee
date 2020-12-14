@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.PastorDao" >
+
+    <resultMap id="pastorMap" type="sarang.univ.dreamee.dto.Pastor">
+        <id property="pastorId" column="pastor_id"/>
+        <result property="pastorName" column="pastor_name"/>
+    </resultMap>
+
+    <select id="retrieveAllPastor" resultMap="pastorMap">
+        select * from pastor
+    </select>
+
+    <select id="retrievePastorByName" resultMap="pastorMap">
+        select pastor_id, pastor_name from pastor where pastor_name = #{pastorName}
+    </select>
+
+    <insert id="registerPastor" useGeneratedKeys="true">
+        insert into pastor (pastor_name) values (#{pastorName})
+    </insert>
+
+</mapper>
