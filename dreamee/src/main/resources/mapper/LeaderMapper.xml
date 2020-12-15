@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.LeaderDao" >
+
+    <resultMap id="leaderMap" type="sarang.univ.dreamee.dto.Leader">
+        <id property="leaderId" column="leader_id"/>
+        <result property="saintId" column="saint_id"/>
+        <result property="password" column="password"/>
+        <result property="active" column="active"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+    <select id="retrieveAllLeader" resultMap="leaderMap">
+        select * from leader
+    </select>
+
+    <select id="retrieveLeaderBySaintId" resultMap="leaderMap">
+        select leader_id, saint_id, password, active, role from leader where saint_id = #{saintId}
+    </select>
+
+    <insert id="registerLeader" parameterType="sarang.univ.dreamee.dto.Leader" useGeneratedKeys="true">
+        insert into leader (saint_id, password, active, role) values (#{saintId}, #{password}, #{active}, #{role})
+    </insert>
+
+</mapper>

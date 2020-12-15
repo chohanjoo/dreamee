@@ -1,10 +1,13 @@
 package sarang.univ.dreamee.request;
 
 import lombok.Builder;
+import lombok.Getter;
+import sarang.univ.dreamee.enums.DeptEnum;
 
+@Getter
 @Builder
 public class SaintRequest {
-    private String dept;
+    private DeptEnum dept;
     private Integer age;
     private String name;
     private String preChurch;

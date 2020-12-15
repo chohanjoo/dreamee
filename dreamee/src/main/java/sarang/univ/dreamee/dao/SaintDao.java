@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface SaintDao {
     List<Saint> retrieveAllSaint();
+    Saint retrieveSaintByName(String saintName);
     int registerSaint(Saint saint);
 }

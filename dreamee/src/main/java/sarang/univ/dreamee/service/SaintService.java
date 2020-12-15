@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface SaintService {
     List<Saint> retrieveAllSaint();
+    Saint retrieveSaintByName(String saintName);
     Integer registerSaint(SaintRequest request);
 }

@@ -22,7 +22,7 @@ public class SaintController {
 
     @ApiOperation(value = "성도 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping(value = "/all")
-    public ListResult<Saint> findAllSaint() {
+    public ListResult<Saint> retrieveAllSaint() {
         return responseService.getListResult(saintService.retrieveAllSaint());
     }
 

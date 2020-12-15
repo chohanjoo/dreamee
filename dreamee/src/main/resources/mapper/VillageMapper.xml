@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.VillageDao" >
+
+    <resultMap id="VillageMap" type="sarang.univ.dreamee.dto.Village">
+        <id property="villageId" column="village_id"/>
+        <result property="saintId" column="saint_id"/>
+        <result property="villageName" column="village_name"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+    </resultMap>
+
+    <sql id="VillageColumn">
+        village_id,
+        saint_id,
+        village_name
+    </sql>
+
+    <sql id="VillageColumnVariables">
+        #{villageId},
+        #{saintId},
+        #{villageName}
+    </sql>
+
+    <select id="retrieveAllVillage" resultMap="VillageMap">
+        SELECT
+            <include refid="VillageColumn"/>
+        FROM village
+    </select>
+
+    <select id="retrieveVillageBySaintId" resultMap="VillageMap">
+        SELECT
+            <include refid="VillageColumn"/>
+        FROM village
+        WHERE saint_id = #{saintId}
+    </select>
+
+    <insert id="registerVillage" parameterType="sarang.univ.dreamee.dto.Village" useGeneratedKeys="true">
+        INSERT INTO village (
+            <include refid="VillageColumn"/>
+        ) VALUES (
+            <include refid="VillageColumnVariables"/>
+        )
+    </insert>
+
+</mapper>

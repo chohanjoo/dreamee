@@ -2,8 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="sarang.univ.dreamee.dao.SaintDao" >
 
+    <resultMap id="SaintMap" type="sarang.univ.dreamee.dto.Saint">
+        <result property="saintId" column="saint_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="age" column="age"/>
+        <result property="name" column="name"/>
+        <result property="preChurch" column="pre_church"/>
+        <result property="gender" column="gender"/>
+        <result property="major" column="major"/>
+        <result property="address" column="address"/>
+        <result property="birthday" column="birthday"/>
+        <result property="baptism" column="baptism"/>
+        <result property="discipleTraining" column="disciple_training"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+    </resultMap>
+
+    <sql id="SaintColumn">
+        saint_id,
+        dept_id,
+        age,
+        name,
+        pre_church,
+        gender,
+        major,
+        address,
+        birthday,
+        baptism,
+        disciple_training
+    </sql>
+
+    <sql id="SaintColumnVariables">
+        #{saintId},
+        #{deptId},
+        #{age},
+        #{name},
+        #{preChurch},
+        #{gender},
+        #{major},
+        #{address},
+        #{birthday},
+        #{baptism},
+        #{discipleTraining}
+    </sql>
+
     <select id="retrieveAllSaint" resultType="sarang.univ.dreamee.dto.Saint">
-        select * from saint
+        SELECT
+            <include refid="SaintColumn"/>
+        FROM saint
     </select>
+
+    <select id="retrieveSaintByName" resultMap="SaintMap">
+        SELECT
+            <include refid="SaintColumn"/>
+        FROM saint
+        WHERE name = #{saintName}
+    </select>
+
+    <insert id="registerSaint" parameterType="sarang.univ.dreamee.dto.Saint">
+        INSERT INTO saint (
+            <include refid="SaintColumn"/>
+        )
+        VALUES (
+            <include refid="SaintColumnVariables"/>
+        )
+    </insert>
 
 </mapper>

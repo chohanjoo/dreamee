@@ -14,7 +14,7 @@ import sarang.univ.dreamee.service.PastorService;
 import sarang.univ.dreamee.service.ResponseService;
 import sarang.univ.dreamee.service.SaintService;
 
-@Api(tags = {"1. Saint"})
+@Api(tags = {"2. Pastor"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/pastor")
@@ -23,15 +23,15 @@ public class PastorController {
     private final PastorService pastorService;
     private final ResponseService responseService;
 
-    @ApiOperation(value = "성도 리스트 조회", notes = "모든 회원을 조회한다")
+    @ApiOperation(value = "교역자 리스트 조회", notes = "모든 교역자를 조회한다")
     @GetMapping(value = "/all")
-    public ListResult<Pastor> findAllPastor() {
+    public ListResult<Pastor> retrieveAllPastor() {
         return responseService.getListResult(pastorService.retrieveAllPastor());
     }
 
-    @ApiOperation(value = "성도 등록", notes = "모든 회원을 조회한다")
+    @ApiOperation(value = "교역자 등록", notes = "교역자를 등록한다")
     @PostMapping
-    public SingleResult<Integer> findAllUser(@RequestBody PastorRequest request) {
+    public SingleResult<Integer> registerPastor(@RequestBody PastorRequest request) {
         int result = pastorService.registerPastor(request);
         return responseService.getSingleResult(result);
     }
