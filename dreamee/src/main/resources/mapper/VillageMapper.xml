@@ -35,6 +35,13 @@
         WHERE saint_id = #{saintId}
     </select>
 
+    <select id="retrieveVillageByVillageName" resultMap="VillageMap">
+        SELECT
+        <include refid="VillageColumn"/>
+        FROM village
+        WHERE village_name = #{villageName}
+    </select>
+
     <insert id="registerVillage" parameterType="sarang.univ.dreamee.dto.Village" useGeneratedKeys="true">
         INSERT INTO village (
             <include refid="VillageColumn"/>

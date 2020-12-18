@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.Dept;
@@ -15,6 +16,8 @@ import sarang.univ.dreamee.dto.Saint;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.given;
+
 
 @Slf4j
 @Transactional

@@ -9,5 +9,6 @@ import java.util.List;
 public interface VillageDao {
     List<Village> retrieveAllVillage();
     Village retrieveVillageBySaintId(Integer saintId);
+    Village retrieveVillageByVillageName(String villageName);
     int registerVillage(Village village);
 }

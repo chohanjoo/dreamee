@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.GbsDao" >
+
+    <resultMap id="GbsMap" type="sarang.univ.dreamee.dto.Gbs">
+        <id property="gbsId" column="gbs_id"/>
+        <result property="leaderId" column="leader_id"/>
+        <result property="saintId" column="saint_id"/>
+        <result property="villageId" column="village_id"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+    </resultMap>
+
+    <sql id="GbsColumns">
+        leader_id,
+        saint_id,
+        village_id,
+        date_created,
+        date_updated
+    </sql>
+
+    <sql id="GbsColumnsVariables">
+        #{leaderId},
+        #{saintId},
+        #{villageId}
+    </sql>
+
+    <select id="retrieveAllGbsLog" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+    </select>
+
+    <select id="retrieveGbsByLeaderName" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE leader_id = #{leaderId}
+    </select>
+
+    <select id="retrieveGbsBySaintName" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE saint_id = #{saintId}
+    </select>
+
+    <select id="retrieveGbsByVillageName" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE village_id = #{villageId}
+    </select>
+
+    <select id="retrieveGbsBySaintNameAndLeaderName" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE leader_id = #{leaderId} and saint_id = #{saintId}
+    </select>
+
+    <insert id="registerGbs" parameterType="sarang.univ.dreamee.dto.Gbs" useGeneratedKeys="true">
+        INSERT INTO gbs_log (
+            leader_id, saint_id, village_id
+        ) VALUES (
+            <include refid="GbsColumnsVariables"/>
+        )
+    </insert>
+
+</mapper>

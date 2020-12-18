@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("MWOHAE REST API")
-                .description("MWOHAE sns api 리스트입니다.")
+                .title("sarang church attendance REST API")
+                .description("사랑의교회 출석부")
                 .build();
     }
 }
