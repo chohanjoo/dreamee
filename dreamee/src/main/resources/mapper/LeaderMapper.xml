@@ -8,14 +8,23 @@
         <result property="password" column="password"/>
         <result property="active" column="active"/>
         <result property="role" column="role"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+        <result property="endDate" column="end_date"/>
     </resultMap>
+
+    <sql id="LeaderColumns">
+        leader_id, saint_id, password, active, role, date_created, date_updated
+    </sql>
 
     <select id="retrieveAllLeader" resultMap="leaderMap">
         select * from leader
     </select>
 
     <select id="retrieveLeaderBySaintId" resultMap="leaderMap">
-        select leader_id, saint_id, password, active, role from leader where saint_id = #{saintId}
+        select
+            <include refid="LeaderColumns"/>
+        from leader where saint_id = #{saintId}
     </select>
 
     <insert id="registerLeader" parameterType="sarang.univ.dreamee.dto.Leader" useGeneratedKeys="true">

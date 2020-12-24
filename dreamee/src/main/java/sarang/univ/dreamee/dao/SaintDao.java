@@ -9,5 +9,6 @@ import java.util.List;
 public interface SaintDao {
     List<Saint> retrieveAllSaint();
     Saint retrieveSaintByName(String saintName);
+    Saint retrieveSaintById(Integer saintId);
     int registerSaint(Saint saint);
 }

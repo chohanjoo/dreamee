@@ -14,7 +14,8 @@ import sarang.univ.dreamee.service.SaintService;
 @Api(tags = {"1. Saint"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/saint")
+@RequestMapping(value = "/api/v1/saint")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SaintController {
 
     private final SaintService saintService;
@@ -24,6 +25,12 @@ public class SaintController {
     @GetMapping(value = "/all")
     public ListResult<Saint> retrieveAllSaint() {
         return responseService.getListResult(saintService.retrieveAllSaint());
+    }
+
+    @ApiOperation(value = "성도 조회", notes = "성도를 조회한다")
+    @GetMapping(value = "")
+    public SingleResult<Saint> retrieveSaint(@RequestParam Integer saintId) {
+        return responseService.getSingleResult(saintService.retrieveSaintById(saintId));
     }
 
     @ApiOperation(value = "성도 등록", notes = "모든 회원을 조회한다")

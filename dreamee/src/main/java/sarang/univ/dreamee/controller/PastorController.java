@@ -17,7 +17,7 @@ import sarang.univ.dreamee.service.SaintService;
 @Api(tags = {"2. Pastor"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/pastor")
+@RequestMapping(value = "/api/v1/pastor")
 public class PastorController {
 
     private final PastorService pastorService;

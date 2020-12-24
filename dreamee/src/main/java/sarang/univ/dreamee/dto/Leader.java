@@ -14,4 +14,7 @@ public class Leader {
     private String password;
     private Boolean active;
     private String role;
+    private String dateCreated;
+    private String dateUpdated;
+    private String endDate;
 }

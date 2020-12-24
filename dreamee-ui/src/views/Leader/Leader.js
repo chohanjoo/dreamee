@@ -1,8 +1,8 @@
-import React from "react";
+import React, {Component} from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
@@ -43,12 +43,58 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 import avatar from "assets/img/faces/marc.jpg";
 import ScrollableTabs from "components/Tabs/ScrollableTabs"
 
+import {
+  getLeader, getSaint
+} from "../../api/Api";
+
 const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
-  const classes = useStyles();
-  return (
-    <div>
+class Leader extends Component {
+
+  state = {
+    leaderId: 0,
+    saintId: 0,
+    leaderInfo: {},
+    saintInfo: {}
+  }
+
+  getLeaderInfo() {
+    getLeader(17)
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log(res.data)
+        this.setState({
+          leaderInfo: res.data.data
+        })
+        this.getSaintInfo();
+      }
+    })
+  }
+
+  getSaintInfo() {
+    getSaint(this.state.leaderInfo.saintId)
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log(res.data)
+        this.setState({
+          saintInfo: res.data.data
+        })
+      }
+    })
+  }
+
+  componentDidMount() {
+    this.getLeaderInfo()
+  }
+
+  render() {
+    const {classes} = this.props;
+    return (
+      <div>
       <GridContainer>
               <GridItem xs={12} sm={12} md={4}>
           <Card profile>
@@ -78,10 +124,11 @@ export default function Dashboard() {
                 <Accessibility />
               </CardIcon>
               <p className={classes.cardCategory}>Active</p>
-              <h3 className={classes.cardTitle}>섬김 리더</h3>
+              <h3 className={classes.cardTitle}>{this.state.leaderInfo.active ? "현 리더" : "쉬는 리더"}</h3>
 
               <p className={classes.cardCategory}>시작일 ~ 종료일</p>
-              <h3 className={classes.cardTitle}>20.03.01 ~ 21.08.31</h3>
+    <h3 className={classes.cardTitle}>{this.state.leaderInfo.dateCreated} ~ {this.state.leaderInfo.endDate}</h3>
+              {/* <h3 className={classes.cardTitle}>20.03.01 ~ 21.08.31</h3> */}
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -140,5 +187,8 @@ export default function Dashboard() {
         </GridItem>
       </GridContainer>
     </div>
-  );
+    )
+  }
 }
+
+export default withStyles(styles)(Leader);

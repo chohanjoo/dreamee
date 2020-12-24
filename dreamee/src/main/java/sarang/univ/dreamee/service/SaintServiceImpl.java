@@ -27,6 +27,11 @@ public class SaintServiceImpl implements SaintService{
     }
 
     @Override
+    public Saint retrieveSaintById(Integer saintId) {
+        return saintDao.retrieveSaintById(saintId);
+    }
+
+    @Override
     public Integer registerSaint(SaintRequest request) {
         Dept dept = deptDao.retrieveDeptByName(request.getDept().getName());
         Saint saint = Saint.builder()

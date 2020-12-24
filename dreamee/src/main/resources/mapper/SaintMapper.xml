@@ -59,6 +59,13 @@
         WHERE name = #{saintName}
     </select>
 
+    <select id="retrieveSaintById" resultMap="SaintMap">
+        SELECT
+            <include refid="SaintColumn"/>
+        FROM saint
+        WHERE saint_id = #{saintId}
+    </select>
+
     <insert id="registerSaint" parameterType="sarang.univ.dreamee.dto.Saint">
         INSERT INTO saint (
             <include refid="SaintColumn"/>

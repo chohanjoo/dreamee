@@ -14,7 +14,7 @@ import sarang.univ.dreamee.service.ResponseService;
 @Api(tags = {"3. GBS"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/gbs")
+@RequestMapping(value = "/api/v1/gbs")
 public class GbsController {
 
     private final DeptService deptService;

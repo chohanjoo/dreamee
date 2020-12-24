@@ -14,7 +14,7 @@ import sarang.univ.dreamee.service.ResponseService;
 @Api(tags = {"5. Village"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/village")
+@RequestMapping(value = "/api/v1/village")
 public class VillageController {
 
     private final LeaderService leaderService;

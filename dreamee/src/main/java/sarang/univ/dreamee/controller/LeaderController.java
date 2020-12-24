@@ -17,7 +17,8 @@ import sarang.univ.dreamee.service.ResponseService;
 @Api(tags = {"4. Leader"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/leader")
+@RequestMapping(value = "/api/v1/leader")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LeaderController {
 
     private final LeaderService leaderService;
@@ -27,6 +28,12 @@ public class LeaderController {
     @GetMapping(value = "/all")
     public ListResult<Leader> retrieveAllLeader() {
         return responseService.getListResult(leaderService.retrieveAllLeader());
+    }
+
+    @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
+    @GetMapping(value = "")
+    public SingleResult<Leader> retrieveAllLeader(@RequestParam int saintId) {
+        return responseService.getSingleResult(leaderService.retrieveLeaderBySaintId(saintId));
     }
 
     @ApiOperation(value = "리더 등록", notes = "리더를 등록한다")
