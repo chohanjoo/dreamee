@@ -9,5 +9,6 @@ import java.util.List;
 public interface DeptDao {
     List<Dept> retrieveAllDept();
     Dept retrieveDeptByName(String DeptName);
+    Dept retrieveDeptByDeptId(Integer deptId);
     int registerDept(Dept dept);
 }

@@ -18,7 +18,6 @@ import sarang.univ.dreamee.service.ResponseService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/leader")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LeaderController {
 
     private final LeaderService leaderService;

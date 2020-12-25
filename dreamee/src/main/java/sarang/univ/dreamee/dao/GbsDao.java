@@ -8,9 +8,9 @@ import java.util.List;
 @Repository
 public interface GbsDao {
     List<Gbs> retrieveAllGbsLog();
-    List<Gbs> retrieveGbsByLeaderName(Integer leaderId);
-    List<Gbs> retrieveGbsBySaintName(Integer saintId);
-    List<Gbs> retrieveGbsByVillageName(Integer villageId);
+    List<Gbs> retrieveGbsByLeaderId(Integer leaderId);
+    List<Gbs> retrieveGbsBySaintId(Integer saintId);
+    List<Gbs> retrieveGbsByVillageId(Integer villageId);
     List<Gbs> retrieveGbsBySaintNameAndLeaderName(Gbs gbs);
     Integer registerGbs(Gbs gbs);
 }

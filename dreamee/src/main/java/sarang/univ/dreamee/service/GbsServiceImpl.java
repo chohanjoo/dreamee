@@ -1,5 +1,6 @@
 package sarang.univ.dreamee.service;
 
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
@@ -22,25 +23,42 @@ public class GbsServiceImpl implements GbsService{
     }
 
     @Override
+    public List<Saint> retrieveGbsMemberListByLeaderName(String leaderName) {
+        Saint saint = saintDao.retrieveSaintByName(leaderName);
+        Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+
+        List<Saint> gbsMembers = Lists.newArrayList();
+
+        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
+
+        for(Gbs gbs : gbsList) {
+            Saint gbsMember = saintDao.retrieveSaintById(gbs.getSaintId());
+            gbsMembers.add(gbsMember);
+        }
+
+        return gbsMembers;
+    }
+
+    @Override
     public List<Gbs> retrieveGbsByLeaderName(String leaderName) {
         // TODO 이름이 중복일 때, Error 발생
         Saint saint = saintDao.retrieveSaintByName(leaderName);
         Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
 
-        return gbsDao.retrieveGbsByLeaderName(leader.getLeaderId());
+        return gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
     }
 
     @Override
     public List<Gbs> retrieveGbsBySaintName(String saintName) {
         Saint saint = saintDao.retrieveSaintByName(saintName);
 
-        return gbsDao.retrieveGbsBySaintName(saint.getSaintId());
+        return gbsDao.retrieveGbsBySaintId(saint.getSaintId());
     }
 
     @Override
     public List<Gbs> retrieveGbsByVillageName(String villageName) {
         Village village = villageDao.retrieveVillageByVillageName(villageName);
-        return gbsDao.retrieveGbsByVillageName(village.getVillageId());
+        return gbsDao.retrieveGbsByVillageId(village.getVillageId());
     }
 
     @Override

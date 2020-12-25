@@ -10,12 +10,23 @@
         <result property="deptLocation" column="dept_location"/>
     </resultMap>
 
+    <sql id="DeptColumns">
+        dept_id, pastor_id, dept_name, dept_location
+    </sql>
+
     <select id="retrieveAllDept" resultMap="deptMap">
         select * from department
     </select>
 
     <select id="retrieveDeptByName" resultMap="deptMap">
         select dept_id, pastor_id, dept_name, dept_location from department where dept_name = #{deptName}
+    </select>
+
+    <select id="retrieveDeptByDeptId" resultMap="deptMap">
+        SELECT
+            <include refid="DeptColumns"/>
+        FROM department
+        WHERE dept_id = #{deptId}
     </select>
 
     <insert id="registerDept" parameterType="sarang.univ.dreamee.dto.Dept" useGeneratedKeys="true">

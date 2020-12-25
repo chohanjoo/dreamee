@@ -31,21 +31,21 @@
         FROM gbs_log
     </select>
 
-    <select id="retrieveGbsByLeaderName" resultMap="GbsMap">
+    <select id="retrieveGbsByLeaderId" resultMap="GbsMap">
         SELECT
             <include refid="GbsColumns"/>
         FROM gbs_log
         WHERE leader_id = #{leaderId}
     </select>
 
-    <select id="retrieveGbsBySaintName" resultMap="GbsMap">
+    <select id="retrieveGbsBySaintId" resultMap="GbsMap">
         SELECT
             <include refid="GbsColumns"/>
         FROM gbs_log
         WHERE saint_id = #{saintId}
     </select>
 
-    <select id="retrieveGbsByVillageName" resultMap="GbsMap">
+    <select id="retrieveGbsByVillageId" resultMap="GbsMap">
         SELECT
             <include refid="GbsColumns"/>
         FROM gbs_log

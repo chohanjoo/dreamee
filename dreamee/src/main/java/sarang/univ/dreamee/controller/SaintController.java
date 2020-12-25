@@ -15,7 +15,6 @@ import sarang.univ.dreamee.service.SaintService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/saint")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SaintController {
 
     private final SaintService saintService;

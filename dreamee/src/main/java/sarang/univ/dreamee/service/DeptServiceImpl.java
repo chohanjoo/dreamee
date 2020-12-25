@@ -28,6 +28,11 @@ public class DeptServiceImpl implements DeptService{
     }
 
     @Override
+    public Dept retrieveDeptByDeptId(Integer deptId) {
+        return deptDao.retrieveDeptByDeptId(deptId);
+    }
+
+    @Override
     public Integer registerDept(DeptRequest request) {
         Pastor pastor = pastorDao.retrievePastorByName(request.getPastorName());
         Dept dept = Dept.builder()

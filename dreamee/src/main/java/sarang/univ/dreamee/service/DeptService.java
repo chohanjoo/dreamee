@@ -10,5 +10,6 @@ import java.util.List;
 public interface DeptService {
     List<Dept> retrieveAllDept();
     Dept retrieveDeptByName(String DeptName);
+    Dept retrieveDeptByDeptId(Integer deptId);
     Integer registerDept(DeptRequest request);
 }
