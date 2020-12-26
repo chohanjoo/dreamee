@@ -27,7 +27,18 @@ export function getGbsMemberList(leaderName) {
     return getMethod(path);
 }
 
+export function postGbsAtt(saintName, body) {
+    const path = base_url + "/attendance/" + saintName;
+
+    return postMethod(path, body);
+}
+
 function getMethod(url) {
     return axios.get(url);
+    // return fetch(url)
+}
+
+function postMethod(url, body) {
+    return axios.post(url, body);
     // return fetch(url)
 }

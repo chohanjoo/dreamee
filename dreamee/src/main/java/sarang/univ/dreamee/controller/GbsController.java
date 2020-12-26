@@ -11,12 +11,13 @@ import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.DeptRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
+import sarang.univ.dreamee.response.type.GbsMember;
 import sarang.univ.dreamee.service.DeptService;
 import sarang.univ.dreamee.service.GbsService;
 import sarang.univ.dreamee.service.ResponseService;
 
 @Slf4j
-@Api(tags = {"3. GBS"})
+@Api(tags = {"6. Gbs"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/gbs")
@@ -34,7 +35,7 @@ public class GbsController {
 
     @ApiOperation(value = "GBS Member List 조회", notes = "GBS Member List를 조회한다")
     @GetMapping(value = "/members")
-    public ListResult<Saint> retrieveGbsMemberList(@RequestParam String leaderName) {
+    public ListResult<GbsMember> retrieveGbsMemberList(@RequestParam String leaderName) {
         log.info(leaderName);
         return responseService.getListResult(gbsService.retrieveGbsMemberListByLeaderName(leaderName));
     }

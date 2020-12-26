@@ -15,4 +15,5 @@ public class Gbs {
     private Integer villageId;
     private String dateCreated;
     private String dateUpdated;
+    private String activeTerm;
 }

@@ -66,9 +66,17 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
+import MenuItem from '@material-ui/core/MenuItem';
+
 import {
   getDept,
-  getLeader, getSaint, getGbs, getGbsMemberList
+  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt
 } from "../../api/Api";
 
 const useStyles = makeStyles(styles);
@@ -76,6 +84,7 @@ const useStyles = makeStyles(styles);
 class Leader extends Component {
 
   state = {
+    attDict: {},
     date: "",
     attDialogOpen: false,
     leaderInfo: {},
@@ -135,9 +144,16 @@ class Leader extends Component {
       const result = res.status;
 
       if(result === 200) {
-        console.log(res.data)
+        console.log("hello : ",res.data)
+
+        var dict = {};
+
+        res.data.list.map( (member, index) => {
+          dict[String(member.saint.saintId)] = {'worship': '', 'att': '', 'qt': 0};
+        })
         this.setState({
-          gbsMemberList: res.data.list
+          gbsMemberList: res.data.list,
+          attDict: dict
         })
       }
       console.log(this.state.gbsMemberList)
@@ -155,17 +171,50 @@ class Leader extends Component {
   makeGbsTableBody() {
     var columns = [];
 
-      this.state.gbsMemberList.map( (saint, index) => {
-        const gender = saint.gender === 'W' ? "여" : "남";
-        columns.push([saint.name, gender, String(saint.age), saint.birthday])
+      this.state.gbsMemberList.map( (member, index) => {
+        const gender = member.saint.gender === 'W' ? "여" : "남";
+        columns.push([member.saint.name, gender, String(member.saint.age), member.saint.birthday])
       })
 
     return columns;
   }
 
-  handleClickAttDialogOpen() {
+  handleChange = (event, index) => {
+
+    var temp = this.state.attDict;
+    this.state.attDict[index]['qt'] = event.target.value; 
     this.setState({
-      attDialogOpen: !this.state.attDialogOpen
+      attDict: temp
+    })
+  }
+
+  handleWorshipChange = (event, index) => {
+
+    var temp = this.state.attDict;
+    this.state.attDict[index]['worship'] = event.target.value; 
+    this.setState({
+      attDict: temp
+    })
+  }
+  
+  handleAttChange = (event, index) => {
+
+    var temp = this.state.attDict;
+    this.state.attDict[index]['att'] = event.target.value; 
+    this.setState({
+      attDict: temp
+    })
+  }
+
+  handleClickAttDialogOpen() {
+
+    // var dict = {};
+    // this.state.gbsMemberList.map( (member, index) => {
+    //   dict[String(member.saint.saintId)] = {'worship': '', 'att': '', 'qt': 0};
+    // })
+    this.setState({
+      attDialogOpen: !this.state.attDialogOpen,
+      // attDict: dict
     })
   }
 
@@ -173,33 +222,79 @@ class Leader extends Component {
     return this.state.date + " GBS 출석체크";
   }
 
-  getQtSelect(classes){
+  getQtSelect(index){
     return(
       <FormControl>
-      <InputLabel shrink htmlFor="age-native-label-placeholder">
-        Age
-      </InputLabel>
-      <NativeSelect
-        inputProps={{
-          name: 'age',
-          id: 'age-native-label-placeholder',
-        }}
-      >
-        <option value="">None</option>
-        <option value={10}>Ten</option>
-        <option value={20}>Twenty</option>
-        <option value={30}>Thirty</option>
-      </NativeSelect>
-      <FormHelperText>Label + placeholder</FormHelperText>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={Object.values(this.state.attDict[String(index)])[2]}
+          onChange={(event) => this.handleChange(event, index)}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={0}>0</MenuItem>
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+          <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
+        </Select>
     </FormControl>
     )
   }
 
-  getAttendanceColumns() {
-    var columns = [];
-    columns.push([this.getQtSelect(), this.getQtSelect(), this.getQtSelect()])
+  getWorshipStateRadio(label) {
+    return (
+      <FormControl component="fieldset">
+      <RadioGroup aria-label="att" name={label} value={this.state.attDict[label]['worship']} onChange={(event) => this.handleWorshipChange(event, label)}>
+        <FormControlLabel value="O" control={<Radio />} label="O" />
+        <FormControlLabel value="X" control={<Radio />} label="X" />
+      </RadioGroup>
+    </FormControl>
+    )
+  }
 
-    return columns;
+  getAttStateRadio(label) {
+    return (
+      <FormControl component="fieldset">
+      <RadioGroup aria-label="att" name={label} value={this.state.attDict[label]['att']} onChange={(event) => this.handleAttChange(event, label)}>
+        <FormControlLabel value="A" control={<Radio />} label="A" />
+        <FormControlLabel value="B" control={<Radio />} label="B" />
+        <FormControlLabel value="C" control={<Radio />} label="C" />
+      </RadioGroup>
+    </FormControl>
+    )
+  }
+
+  // getAttendanceColumns() {
+  //   var columns = [];
+  //   columns.push([this.getQtSelect(), this.getQtSelect(), this.getQtSelect()])
+
+  //   return columns;
+  // }
+
+  pushAttData() {
+    this.setState({
+      attDialogOpen: false
+    })
+
+    this.state.gbsMemberList.map( member => {
+      var data = {};
+
+      data['gbsId'] = member.gbs.gbsId;
+      data['worshipState'] = this.state.attDict[String(member.saint.saintId)]['worship'];
+      data['attState'] = this.state.attDict[String(member.saint.saintId)]['att'];
+      data['qtNumber'] = this.state.attDict[String(member.saint.saintId)]['qt'];
+
+      console.log("name :", member.saint.name);
+      console.log("data : ", data);
+      postGbsAtt(member.saint.name, data);
+    })
+
+    console.log("push att data : ", this.state.attDict)
   }
 
   // getSaintInfoInGbs(saintId) {
@@ -281,7 +376,7 @@ class Leader extends Component {
                 tableHeaderColor="info"
                 tableHead={["이름", "성별", "학년", "생년월일"]}
                 tableData={this.makeGbsTableBody()}
-              />
+              /> 
             </CardBody>
           </Card>
           <Dialog
@@ -302,23 +397,21 @@ class Leader extends Component {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          <TableCell align="center"></TableCell>
+            <TableCell align="center">대예배</TableCell>
+            <TableCell align="center">대학부 집회</TableCell>
+            <TableCell align="center">QT</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.state.gbsMemberList.map((saint) => (
-            <TableRow key={saint.name}>
-              <TableCell component="th" scope="row">
-                {saint.name}
+          {this.state.gbsMemberList.map((member) => (
+            <TableRow key={member.saint.saintId}>
+              <TableCell align="center">{member.saint.name}</TableCell>
+              <TableCell align="center" component="th" scope="row">
+                {this.getWorshipStateRadio(member.saint.saintId)}
               </TableCell>
-              <TableCell align="right">{saint.name}</TableCell>
-              <TableCell align="right">{saint.name}</TableCell>
-              <TableCell align="right">{saint.name}</TableCell>
-              <TableCell align="right">{this.getQtSelect()}</TableCell>
+          <TableCell align="center">{this.getAttStateRadio(member.saint.saintId)}</TableCell>
+              <TableCell align="center">{this.getQtSelect(member.saint.saintId)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -326,11 +419,11 @@ class Leader extends Component {
     </TableContainer>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() => this.handleClickAttDialogOpen()} color="primary">
-            Disagree
+          <Button autoFocus onClick={() => this.handleClickAttDialogOpen()} color="secondary">
+            취소
           </Button>
-          <Button onClick={() => this.handleClickAttDialogOpen()} color="primary" autoFocus>
-            Agree
+          <Button onClick={() => this.pushAttData()} color="primary" autoFocus>
+            저장
           </Button>
         </DialogActions>
       </Dialog>

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.request.GbsRequest;
+import sarang.univ.dreamee.response.type.GbsMember;
 
 import java.util.List;
 
@@ -23,17 +24,24 @@ public class GbsServiceImpl implements GbsService{
     }
 
     @Override
-    public List<Saint> retrieveGbsMemberListByLeaderName(String leaderName) {
+    public List<GbsMember> retrieveGbsMemberListByLeaderName(String leaderName) {
+        // TODO 한 텀만 가져오도록 구현 <- 지금은 여러텀 다 가져옴
         Saint saint = saintDao.retrieveSaintByName(leaderName);
         Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
 
-        List<Saint> gbsMembers = Lists.newArrayList();
+        List<GbsMember> gbsMembers = Lists.newArrayList();
 
         List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
 
         for(Gbs gbs : gbsList) {
             Saint gbsMember = saintDao.retrieveSaintById(gbs.getSaintId());
-            gbsMembers.add(gbsMember);
+
+            GbsMember member = GbsMember.builder()
+                    .gbs(gbs)
+                    .saint(gbsMember)
+                    .build();
+
+            gbsMembers.add(member);
         }
 
         return gbsMembers;

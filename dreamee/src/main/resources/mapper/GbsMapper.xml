@@ -9,20 +9,25 @@
         <result property="villageId" column="village_id"/>
         <result property="dateCreated" column="date_created"/>
         <result property="dateUpdated" column="date_updated"/>
+        <result property="activeTerm" column="active_term"/>
     </resultMap>
 
     <sql id="GbsColumns">
+        gbs_id,
         leader_id,
         saint_id,
         village_id,
         date_created,
-        date_updated
+        date_updated,
+        active_term
     </sql>
 
     <sql id="GbsColumnsVariables">
+        #{gbsId}
         #{leaderId},
         #{saintId},
-        #{villageId}
+        #{villageId},
+        #{activeTerm}
     </sql>
 
     <select id="retrieveAllGbsLog" resultMap="GbsMap">
@@ -59,9 +64,16 @@
         WHERE leader_id = #{leaderId} and saint_id = #{saintId}
     </select>
 
+    <select id="retrieveGbsByLeaderIdAndSaintIdAndActiveTerm" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE leader_id = #{leaderId} and active_term = #{activeTerm} and saint_id = #{saintId}
+    </select>
+
     <insert id="registerGbs" parameterType="sarang.univ.dreamee.dto.Gbs" useGeneratedKeys="true">
         INSERT INTO gbs_log (
-            leader_id, saint_id, village_id
+            leader_id, saint_id, village_id, active_term
         ) VALUES (
             <include refid="GbsColumnsVariables"/>
         )

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.AttendanceDao" >
+
+    <resultMap id="AttMap" type="sarang.univ.dreamee.dto.Attendance">
+        <id property="attId" column="att_id"/>
+        <result property="gbsId" column="gbs_id"/>
+        <result property="saintId" column="saint_id"/>
+        <result property="worshipState" column="worship_state"/>
+        <result property="attState" column="att_state"/>
+        <result property="qtNumber" column="qt_number"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+    </resultMap>
+
+    <sql id="AttColumns">
+        att_id,
+        gbs_id,
+        saint_id,
+        worship_state,
+        att_state,
+        qt_number,
+        date_created,
+        date_updated
+    </sql>
+
+    <sql id="AttColumnsVariables">
+        #{attId},
+        #{gbsId},
+        #{saintId},
+        #{worshipState},
+        #{attState},
+        #{qtNumber},
+        #{dateCreated},
+        #{dateUpdated}
+    </sql>
+
+    <select id="retrieveAllAttendanceLog" resultMap="AttMap">
+        SELECT
+            <include refid="AttColumns"/>
+        FROM attendance_log
+    </select>
+
+    <insert id="registerAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
+        INSERT INTO attendance_log (
+            <include refid="AttColumns"/>
+        ) VALUES (
+            <include refid="AttColumnsVariables"/>
+        )
+    </insert>
+</mapper>

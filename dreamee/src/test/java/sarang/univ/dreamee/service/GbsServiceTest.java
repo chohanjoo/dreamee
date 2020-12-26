@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.response.type.GbsMember;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class GbsServiceTest {
 
     @Test
     public void retrieveGbsMemberListByLeaderNameTest() {
-        List<Saint> saints = gbsService.retrieveGbsMemberListByLeaderName("가그린4");
+        List<GbsMember> saints = gbsService.retrieveGbsMemberListByLeaderName("가그린4");
 
         log.info("saints : {}", saints);
     }
