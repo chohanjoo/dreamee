@@ -14,5 +14,6 @@ public interface GbsDao {
     List<Gbs> retrieveGbsByVillageId(Integer villageId);
     List<Gbs> retrieveGbsBySaintNameAndLeaderName(Gbs gbs);
     Gbs retrieveGbsByLeaderIdAndSaintIdAndActiveTerm(Gbs gbs);
+    List<Gbs> retrieveGbsByLeaderIdAndActiveTerm(Gbs gbs);
     Integer registerGbs(Gbs gbs);
 }

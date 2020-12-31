@@ -71,6 +71,13 @@
         WHERE leader_id = #{leaderId} and active_term = #{activeTerm} and saint_id = #{saintId}
     </select>
 
+    <select id="retrieveGbsByLeaderIdAndActiveTerm" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        WHERE leader_id = #{leaderId} and active_term = #{activeTerm}
+    </select>
+
     <insert id="registerGbs" parameterType="sarang.univ.dreamee.dto.Gbs" useGeneratedKeys="true">
         INSERT INTO gbs_log (
             leader_id, saint_id, village_id, active_term

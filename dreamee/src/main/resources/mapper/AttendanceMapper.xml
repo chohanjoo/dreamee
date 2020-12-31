@@ -41,6 +41,13 @@
         FROM attendance_log
     </select>
 
+    <select id="retrieveAttendanceListByGbsId" resultMap="AttMap">
+        SELECT
+            <include refid="AttColumns"/>
+        FROM attendance_log
+        WHERE gbs_id = #{gbsId}
+    </select>
+
     <insert id="registerAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
         INSERT INTO attendance_log (
             <include refid="AttColumns"/>

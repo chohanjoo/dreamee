@@ -7,7 +7,14 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import Table from 'components/Table/Collapsibletable'
+// import Table from 'components/Table/Collapsibletable'
+
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Table from "components/Table/Table.js";
+import Card from "components/Card/Card.js";
+import CardHeader from "components/Card/CardHeader.js";
+import CardBody from "components/Card/CardBody.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,13 +57,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ScrollableTabsButtonAuto() {
+export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const { gbsMemberList, attList } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const tableData = (saintId) => {
+
+    var data = [];
+    attList.map( (att, index) => {
+      if(att.saintId === saintId) {
+        data.push([att.dateCreated, att.worshipState, att.attState, att.qtNumber])
+      }
+    })
+
+    return data;
+  }
 
   return (
     <div className={classes.root}>
@@ -70,7 +90,13 @@ export default function ScrollableTabsButtonAuto() {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="Item One" {...a11yProps(0)} />
+
+          {gbsMemberList!=undefined ? gbsMemberList.map( (member, index) => {
+            return (
+              <Tab label={member.saint.name} {...a11yProps(index)} />
+            )
+          }) : <div></div>}
+          {/* <Tab label="Item One" {...a11yProps(0)} />
           <Tab label="Item Two" {...a11yProps(1)} />
           <Tab label="Item Three" {...a11yProps(2)} />
           <Tab label="Item Four" {...a11yProps(3)} />
@@ -78,10 +104,23 @@ export default function ScrollableTabsButtonAuto() {
           <Tab label="Item Six" {...a11yProps(5)} />
           <Tab label="Item Seven" {...a11yProps(6)} />
           <Tab label="Item Eight" {...a11yProps(7)} />
-          <Tab label="Item Nine" {...a11yProps(8)} />
+          <Tab label="Item Nine" {...a11yProps(8)} /> */}
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+
+
+      {gbsMemberList!=undefined ? gbsMemberList.map( (member, index) => {
+        return (
+          <TabPanel value={value} index={index}>
+            <Table
+              tableHeaderColor="primary"
+              tableHead={["시간", "대예배", "대학부", "큐티"]}
+              tableData={tableData(member.saint.saintId)}
+            />
+        </TabPanel>
+        )
+      }) : <div></div>}
+      {/* <TabPanel value={value} index={0}>
         <Table />
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -107,7 +146,7 @@ export default function ScrollableTabsButtonAuto() {
       </TabPanel>
       <TabPanel value={value} index={8}>
         Item Seven
-      </TabPanel>
+      </TabPanel> */}
     </div>
   );
 }

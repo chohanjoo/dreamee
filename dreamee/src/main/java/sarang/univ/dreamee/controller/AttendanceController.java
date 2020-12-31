@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import sarang.univ.dreamee.dto.Attendance;
 import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.AttendanceRequest;
@@ -25,12 +26,12 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
     private final ResponseService responseService;
 
-//    @ApiOperation(value = "Attendance 조회", notes = "성도 출석부를 조회한다")
-//    @PostMapping(value = "")
-//    public ListResult<Gbs> retrieveSaintAttendanceList(@RequestParam String leaderName) {
-//        log.info(leaderName);
-//        return responseService.getListResult(gbsService.retrieveGbsByLeaderName(leaderName));
-//    }
+    @ApiOperation(value = "Attendance 조회", notes = "GBS별 성도 출석부를 조회한다")
+    @GetMapping(value = "/{leaderId}/{activeTerm}")
+    public ListResult<Attendance> retrieveSaintAttendanceListByGbs(@PathVariable Integer leaderId, @PathVariable String activeTerm) {
+        log.info(leaderId + activeTerm);
+        return responseService.getListResult(attendanceService.retrieveAllAttendanceListByGbs(leaderId,activeTerm));
+    }
 
     @ApiOperation(value = "출석부 log 등록", notes = "출석부 log를 등록한다.")
     @PostMapping(value = "/{saintName}")

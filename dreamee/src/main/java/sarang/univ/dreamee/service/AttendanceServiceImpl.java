@@ -1,6 +1,8 @@
 package sarang.univ.dreamee.service;
 
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
@@ -20,6 +22,23 @@ public class AttendanceServiceImpl implements AttendanceService{
     @Override
     public List<Attendance> retrieveAllAttendanceLog() {
         return attendanceDao.retrieveAllAttendanceLog();
+    }
+
+    @Override
+    public List<Attendance> retrieveAllAttendanceListByGbs(Integer leaderId, String activeTerm) {
+        Gbs gbs = Gbs.builder()
+                .leaderId(leaderId)
+                .activeTerm(activeTerm).build();
+
+        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderIdAndActiveTerm(gbs);
+        List<Attendance> attendanceList = Lists.newArrayList();
+
+        for(Gbs member : gbsList) {
+            List<Attendance> saintAttLog = attendanceDao.retrieveAttendanceListByGbsId(member.getGbsId());
+            attendanceList = ListUtils.union(attendanceList, saintAttLog);
+        }
+
+        return attendanceList;
     }
 
     @Override

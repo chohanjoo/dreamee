@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface AttendanceDao {
     List<Attendance> retrieveAllAttendanceLog();
+    List<Attendance> retrieveAttendanceListByGbsId(Integer gbsId);
     int registerAttendanceLog(Attendance attendance);
 }

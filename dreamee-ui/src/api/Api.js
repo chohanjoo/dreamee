@@ -33,6 +33,11 @@ export function postGbsAtt(saintName, body) {
     return postMethod(path, body);
 }
 
+export function getAttListByGbs(leaderId, activeTerm) {
+    const path = base_url + "/attendance/" + leaderId + "/" + activeTerm;
+    return getMethod(path);
+}
+
 function getMethod(url) {
     return axios.get(url);
     // return fetch(url)

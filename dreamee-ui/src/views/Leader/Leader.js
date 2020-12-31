@@ -76,7 +76,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import {
   getDept,
-  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt
+  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs
 } from "../../api/Api";
 
 const useStyles = makeStyles(styles);
@@ -90,7 +90,8 @@ class Leader extends Component {
     leaderInfo: {},
     saintInfo: {},
     deptInfo: {},
-    gbsMemberList: []
+    gbsMemberList: [],
+    attList: []
   }
 
   getLeaderInfo() {
@@ -120,6 +121,7 @@ class Leader extends Component {
         })
         this.getDeptInfo();
         this.getGbsInfo();
+        this.getAttListByGbs();
       }
     })
   }
@@ -157,6 +159,21 @@ class Leader extends Component {
         })
       }
       console.log(this.state.gbsMemberList)
+    })
+  }
+
+  getAttListByGbs() {
+    getAttListByGbs(this.state.leaderInfo.leaderId, "2021-1")
+    .then(res => {
+      const result = res.status;
+
+      // console.log("result : {}", res)
+      if(result === 200) {
+        console.log(res.data)
+        this.setState({
+          attList: res.data.list
+        })
+      }
     })
   }
 
@@ -428,6 +445,19 @@ class Leader extends Component {
         </DialogActions>
       </Dialog>
         </GridItem>
+
+        <GridItem xs={12} sm={12} md={12}>
+        <Card>
+            <CardHeader color="info">
+              <h3 className={classes.cardTitleWhite}>이번 텀 조원 리스트</h3>
+              <p className={classes.cardCategoryWhite}></p>
+            </CardHeader>
+            <CardBody>
+              <ScrollableTabs/>
+            </CardBody>
+          </Card>
+        </GridItem>
+
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
@@ -436,7 +466,7 @@ class Leader extends Component {
                 New employees on 15th September, 2016
               </p>
             </CardHeader>
-            <ScrollableTabs/>
+            <ScrollableTabs gbsMemberList={this.state.gbsMemberList} attList={this.state.attList}/>
             <CardBody>
               <Table
                 tableHeaderColor="warning"
