@@ -1,20 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-// import Table from 'components/Table/Collapsibletable'
-
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
+
+
+const AntTabs = withStyles({
+  root: {
+    borderBottom: '1px solid #e8e8e8',
+  },
+  indicator: {
+    backgroundColor: '#1890ff',
+  },
+})(Tabs);
+
+const AntTab = withStyles((theme) => ({
+  root: {
+    textTransform: 'none',
+    minWidth: 72,
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing(4),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:hover': {
+      color: '#40a9ff',
+      opacity: 1,
+    },
+    '&$selected': {
+      color: '#1890ff',
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    '&:focus': {
+      color: '#40a9ff',
+    },
+  },
+  selected: {},
+}))((props) => <Tab disableRipple {...props} />);
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,8 +87,15 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: '100%',
+  },
+  padding: {
+    padding: theme.spacing(3),
+  },
+  demo1: {
     backgroundColor: theme.palette.background.paper,
+  },
+  demo2: {
+    backgroundColor: '#2e1534',
   },
 }));
 
@@ -80,8 +122,8 @@ export default function ScrollableTabsButtonAuto(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
+          <div className={classes.demo1}>
+        <AntTabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
@@ -93,21 +135,10 @@ export default function ScrollableTabsButtonAuto(props) {
 
           {gbsMemberList!=undefined ? gbsMemberList.map( (member, index) => {
             return (
-              <Tab label={member.saint.name} {...a11yProps(index)} />
+              <AntTab label={member.saint.name} {...a11yProps(index)} />
             )
           }) : <div></div>}
-          {/* <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
-          <Tab label="Item Four" {...a11yProps(3)} />
-          <Tab label="Item Five" {...a11yProps(4)} />
-          <Tab label="Item Six" {...a11yProps(5)} />
-          <Tab label="Item Seven" {...a11yProps(6)} />
-          <Tab label="Item Eight" {...a11yProps(7)} />
-          <Tab label="Item Nine" {...a11yProps(8)} /> */}
-        </Tabs>
-      </AppBar>
-
+        </AntTabs>
 
       {gbsMemberList!=undefined ? gbsMemberList.map( (member, index) => {
         return (
@@ -120,33 +151,7 @@ export default function ScrollableTabsButtonAuto(props) {
         </TabPanel>
         )
       }) : <div></div>}
-      {/* <TabPanel value={value} index={0}>
-        <Table />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Item Seven
-      </TabPanel>
-      <TabPanel value={value} index={7}>
-        Item Seven
-      </TabPanel>
-      <TabPanel value={value} index={8}>
-        Item Seven
-      </TabPanel> */}
+      </div>
     </div>
   );
 }

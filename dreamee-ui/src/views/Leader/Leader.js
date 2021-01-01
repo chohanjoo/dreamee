@@ -1,34 +1,20 @@
 import React, {Component} from "react";
 // react plugin for creating charts
-import ChartistGraph from "react-chartist";
 // @material-ui/core
-import { makeStyles, withStyles, withTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import CustomTable from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import Button from "components/CustomButtons/Button.js";
 
 import Dialog from '@material-ui/core/Dialog';
@@ -36,27 +22,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-import { bugs, website, server } from "variables/general.js";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import avatar from "assets/img/faces/marc.jpg";
 import ScrollableTabs from "components/Tabs/ScrollableTabs"
 
 import Chip from '@material-ui/core/Chip';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -69,17 +42,14 @@ import Paper from '@material-ui/core/Paper';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 
 import MenuItem from '@material-ui/core/MenuItem';
 
 import {
   getDept,
-  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs
+  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
 } from "../../api/Api";
 
-const useStyles = makeStyles(styles);
 
 class Leader extends Component {
 
@@ -91,7 +61,8 @@ class Leader extends Component {
     saintInfo: {},
     deptInfo: {},
     gbsMemberList: [],
-    attList: []
+    attList: [],
+    villageInfo: {}
   }
 
   getLeaderInfo() {
@@ -122,6 +93,7 @@ class Leader extends Component {
         this.getDeptInfo();
         this.getGbsInfo();
         this.getAttListByGbs();
+        this.getVillageInfo();
       }
     })
   }
@@ -135,6 +107,20 @@ class Leader extends Component {
         console.log(res.data)
         this.setState({
           deptInfo: res.data.data
+        })
+      }
+    })
+  }
+
+  getVillageInfo() {
+    getVillageById(this.state.saintInfo.villageId)
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log("village : {}", res.data)
+        this.setState({
+          villageInfo: res.data.data
         })
       }
     })
@@ -180,9 +166,16 @@ class Leader extends Component {
   getDate() {
     var today = new Date();
     this.setState({
-      date: today.getFullYear() + "/" + today.getMonth() + "/" + today.getDate()
+      date: today.getFullYear() + "/" + today.getMonth() + 1 + "/" + today.getDate()
     })
-    console.log(today.getFullYear() + "/" + today.getMonth())
+  }
+
+  isAttAbled() {
+    var today = new Date();
+    if(today.getDay() === 0 && today.getHours() >= 18 && today.getHours() <= 20) {
+      return true;
+    } 
+    return false;
   }
 
   makeGbsTableBody() {
@@ -224,14 +217,8 @@ class Leader extends Component {
   }
 
   handleClickAttDialogOpen() {
-
-    // var dict = {};
-    // this.state.gbsMemberList.map( (member, index) => {
-    //   dict[String(member.saint.saintId)] = {'worship': '', 'att': '', 'qt': 0};
-    // })
     this.setState({
       attDialogOpen: !this.state.attDialogOpen,
-      // attDict: dict
     })
   }
 
@@ -286,13 +273,6 @@ class Leader extends Component {
     )
   }
 
-  // getAttendanceColumns() {
-  //   var columns = [];
-  //   columns.push([this.getQtSelect(), this.getQtSelect(), this.getQtSelect()])
-
-  //   return columns;
-  // }
-
   pushAttData() {
     this.setState({
       attDialogOpen: false
@@ -314,17 +294,6 @@ class Leader extends Component {
     console.log("push att data : ", this.state.attDict)
   }
 
-  // getSaintInfoInGbs(saintId) {
-  //   getSaint(saintId)
-  //   .then(res => {
-  //     const result = res.status;
-
-  //     if(result === 200) {
-  //       return res.data.data;
-  //     }
-  //   })
-  // }
-
   componentDidMount() {
     this.getDate()
     this.getLeaderInfo()
@@ -337,25 +306,24 @@ class Leader extends Component {
     return (
       <div>
       <GridContainer>
-              <GridItem xs={12} sm={12} md={4}>
-          <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={e => e.preventDefault()}>
-                <img src={avatar} alt="..." />
-              </a>
-            </CardAvatar>
-            <CardBody profile>
-    <h6 className={classes.cardCategory}>{this.state.deptInfo.deptName}</h6>
-    <h4 className={classes.cardTitle}>{this.state.saintInfo.name}</h4>
-              <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
-            </CardBody>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Accessibility />
+              </CardIcon>
+              <p className={classes.cardCategory}>대학부</p>
+    <h4 className={classes.cardTitle}>{this.state.deptInfo.deptName}</h4>
+
+              <p className={classes.cardCategory}>이름</p>
+              <h3 className={classes.cardTitle}>{this.state.saintInfo.name}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
@@ -388,7 +356,7 @@ class Leader extends Component {
               <p className={classes.cardCategoryWhite}></p>
             </CardHeader>
             <CardBody>
-            <Button variant="contained" color="primary" onClick={() => this.handleClickAttDialogOpen()}>출석체크</Button>
+            <Button disabled={()=>this.isAttAbled()} variant="contained" color="info" onClick={() => this.handleClickAttDialogOpen()}>출석체크</Button>
               <CustomTable
                 tableHeaderColor="info"
                 tableHead={["이름", "성별", "학년", "생년월일"]}
@@ -404,11 +372,11 @@ class Leader extends Component {
       >
         <DialogTitle id="responsive-dialog-title">
         <Chip label={this.getChipLabel()} variant="outlined" color="primary"/><br/><br/>
-    {this.state.deptInfo.deptName}마을 {this.state.saintInfo.name} 리더</DialogTitle>
+    {this.state.villageInfo.villageName} {this.state.saintInfo.name} 리더</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            오후 8시까지 출석체크를 완료해주세요.
+            이후 시간에는 간사님께 문의주세요 ~^^
           </DialogContentText>
           <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -447,38 +415,11 @@ class Leader extends Component {
         </GridItem>
 
         <GridItem xs={12} sm={12} md={12}>
-        <Card>
-            <CardHeader color="info">
-              <h3 className={classes.cardTitleWhite}>이번 텀 조원 리스트</h3>
-              <p className={classes.cardCategoryWhite}></p>
-            </CardHeader>
-            <CardBody>
-              <ScrollableTabs/>
-            </CardBody>
-          </Card>
-        </GridItem>
-
-        <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>분기별 조원 리스트</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
-              </p>
+            <CardHeader color="success">
+              <h3 className={classes.cardTitleWhite}>조원별 출석 현황</h3>
             </CardHeader>
             <ScrollableTabs gbsMemberList={this.state.gbsMemberList} attList={this.state.attList}/>
-            <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-            </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
@@ -487,12 +428,4 @@ class Leader extends Component {
   }
 }
 
-// const withMediaQuery = () => Component => props => {
-//   const theme = useTheme();
-//   console.log(theme.breakpoints.down('sm'))
-//   const mediaQuery = useMediaQuery('fullScren', theme.breakpoints.down('sm'));
-//   return <Component mediaQuery={mediaQuery} {...props} />;
-// }
-// export default withStyles(styles,{withTheme: true})(Leader);
-// export default withStyles(styles)(withMediaQuery()(Leader));
 export default withStyles(styles)(Leader);

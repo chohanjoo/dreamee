@@ -27,6 +27,11 @@ public class VillageServiceImpl implements VillageService {
     }
 
     @Override
+    public Village retrieveVillageByVillageId(Integer villageId) {
+        return villageDao.retrieveVillageByVillageId(villageId);
+    }
+
+    @Override
     public Integer registerVillage(VillageRequest request) {
         Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
         Village village = Village.builder()

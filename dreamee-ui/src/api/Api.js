@@ -38,6 +38,11 @@ export function getAttListByGbs(leaderId, activeTerm) {
     return getMethod(path);
 }
 
+export function getVillageById(villageId) {
+    const path = base_url + "/village" + "?villageId="+ villageId;
+    return getMethod(path);
+}
+
 function getMethod(url) {
     return axios.get(url);
     // return fetch(url)

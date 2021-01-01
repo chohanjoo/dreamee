@@ -10,5 +10,6 @@ import java.util.List;
 public interface VillageService {
     List<Village> retrieveAllVillage();
     Village retrieveVillageBySaintId(Integer saintId);
+    Village retrieveVillageByVillageId(Integer villageId);
     Integer registerVillage(VillageRequest request);
 }

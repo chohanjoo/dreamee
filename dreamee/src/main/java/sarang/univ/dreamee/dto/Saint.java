@@ -11,6 +11,7 @@ import lombok.*;
 public class Saint {
     private Integer saintId;
     private Integer deptId;
+    private Integer villageId;
     private Integer age;
     private String name;
     private String preChurch;

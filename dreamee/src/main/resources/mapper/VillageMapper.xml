@@ -35,9 +35,16 @@
         WHERE saint_id = #{saintId}
     </select>
 
+    <select id="retrieveVillageByVillageId" resultMap="VillageMap">
+        SELECT
+            <include refid="VillageColumn"/>
+        FROM village
+        WHERE village_id = #{villageId}
+    </select>
+
     <select id="retrieveVillageByVillageName" resultMap="VillageMap">
         SELECT
-        <include refid="VillageColumn"/>
+            <include refid="VillageColumn"/>
         FROM village
         WHERE village_name = #{villageName}
     </select>
