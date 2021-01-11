@@ -38,7 +38,6 @@ public class VillageServiceImpl implements VillageService {
                 .villageName(request.getVillageName())
                 .saintId(saint.getSaintId()).build();
 
-        int result = villageDao.registerVillage(village);
-        return result;
+        return villageDao.registerVillage(village);
     }
 }

@@ -2,6 +2,8 @@ package sarang.univ.dreamee.dto;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @ToString
@@ -15,6 +17,6 @@ public class Attendance {
     private String worshipState;
     private String attState;
     private Integer qtNumber;
-    private String dateCreated;
-    private String dateUpdated;
+    private Date dateCreated;
+    private Date dateUpdated;
 }

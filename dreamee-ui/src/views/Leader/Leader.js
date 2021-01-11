@@ -356,7 +356,7 @@ class Leader extends Component {
               <p className={classes.cardCategoryWhite}></p>
             </CardHeader>
             <CardBody>
-            <Button disabled={()=>this.isAttAbled()} variant="contained" color="info" onClick={() => this.handleClickAttDialogOpen()}>출석체크</Button>
+            <Button disabled={false} variant="contained" color="info" onClick={() => this.handleClickAttDialogOpen()}>출석체크</Button>
               <CustomTable
                 tableHeaderColor="info"
                 tableHead={["이름", "성별", "학년", "생년월일"]}
