@@ -8,6 +8,7 @@ import lombok.Getter;
 public class GbsRequest {
     private String leaderName;
     private String saintName;
+    private Integer saintId;
     private String villageName;
     private String activeTerm;
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LeaderRequest {
+    private Integer leaderId;
     private String saintName;
     private String password;
     private Boolean active;

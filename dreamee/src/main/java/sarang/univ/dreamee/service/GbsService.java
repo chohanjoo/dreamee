@@ -12,8 +12,9 @@ public interface GbsService {
     List<Dept> retrieveAllGbsLog();
     List<GbsMember> retrieveGbsMemberListByLeaderName(String leaderName);
     List<Gbs> retrieveGbsByLeaderName(String leaderName);
+    List<GbsMember> retrieveGbsLeaderList(GbsRequest request);
 //    Gbs retrieveGbsByLeaderNameAndActiveTerm(GbsRequest request);
-    List<Gbs> retrieveGbsBySaintName(String saintName);
+//    List<Gbs> retrieveGbsBySaint(GbsRequest request);
     List<Gbs> retrieveGbsByVillageName(String villageName);
     List<Gbs> retrieveGbsBySaintNameAndLeaderName(GbsRequest request) throws Exception;
     Integer registerGbs(GbsRequest request) throws Exception;

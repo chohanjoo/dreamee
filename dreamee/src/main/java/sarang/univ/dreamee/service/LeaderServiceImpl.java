@@ -7,6 +7,7 @@ import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.List;
 
@@ -24,6 +25,17 @@ public class LeaderServiceImpl implements LeaderService{
     @Override
     public Leader retrieveLeaderBySaintId(Integer saintId) {
         return leaderDao.retrieveLeaderBySaintId(saintId);
+    }
+
+    @Override
+    public LeaderInfo retrieveLeader(LeaderRequest request) {
+        Leader leader =  leaderDao.retrieveLeader(request);
+        Saint saint = saintDao.retrieveSaintById(leader.getSaintId());
+
+        return LeaderInfo.builder()
+                .leader(leader)
+                .saint(saint)
+                .build();
     }
 
     @Override

@@ -27,6 +27,16 @@
         from leader where saint_id = #{saintId}
     </select>
 
+    <select id="retrieveLeader" resultMap="leaderMap">
+        SELECT
+            <include refid="LeaderColumns"/>
+        FROM leader
+        <where>
+            <if test="leaderId != null">
+                leader_id = #{leaderId}
+            </if>
+        </where>
+    </select>
     <insert id="registerLeader" parameterType="sarang.univ.dreamee.dto.Leader" useGeneratedKeys="true">
         insert into leader (saint_id, password, active, role) values (#{saintId}, #{password}, #{active}, #{role})
     </insert>

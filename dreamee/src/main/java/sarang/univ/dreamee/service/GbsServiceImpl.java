@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.request.GbsRequest;
+import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.response.type.GbsMember;
+import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class GbsServiceImpl implements GbsService{
     private final LeaderDao leaderDao;
     private final VillageDao villageDao;
     private final GbsDao gbsDao;
+    private final LeaderService leaderService;
 
     @Override
     public List<Dept> retrieveAllGbsLog() {
@@ -57,11 +60,34 @@ public class GbsServiceImpl implements GbsService{
     }
 
     @Override
-    public List<Gbs> retrieveGbsBySaintName(String saintName) {
-        Saint saint = saintDao.retrieveSaintByName(saintName);
+    public List<GbsMember> retrieveGbsLeaderList(GbsRequest request) {
+        List<Gbs> gbsList = gbsDao.retrieveGbsBySaintId(request.getSaintId());
+        List<GbsMember> gbsMemberList = Lists.newArrayList();
 
-        return gbsDao.retrieveGbsBySaintId(saint.getSaintId());
+        for(Gbs gbs : gbsList) {
+            LeaderInfo leaderInfo = leaderService.retrieveLeader(
+                    LeaderRequest.builder()
+                    .leaderId(gbs.getLeaderId())
+                    .build()
+            );
+
+            gbsMemberList.add(
+                    GbsMember.builder()
+                            .saint(leaderInfo.getSaint())
+                            .gbs(gbs)
+                            .build()
+            );
+        }
+
+        return gbsMemberList;
     }
+
+    //    @Override
+//    public List<Gbs> retrieveGbsBySaint(GbsRequest request) {
+//        Saint saint = saintDao.retrieveSaintById(request.getSaintId());
+//
+//        return gbsDao.retrieveGbsBySaintId(saint.getSaintId());
+//    }
 
     @Override
     public List<Gbs> retrieveGbsByVillageName(String villageName) {
