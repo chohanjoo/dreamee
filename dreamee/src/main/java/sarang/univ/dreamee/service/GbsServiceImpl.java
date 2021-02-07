@@ -2,6 +2,7 @@ package sarang.univ.dreamee.service;
 
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
@@ -12,6 +13,7 @@ import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class GbsServiceImpl implements GbsService{
@@ -61,7 +63,12 @@ public class GbsServiceImpl implements GbsService{
 
     @Override
     public List<GbsMember> retrieveGbsLeaderList(GbsRequest request) {
+
+        log.debug("[retrieveGbsLeaderList] params >> {}", request);
+
         List<Gbs> gbsList = gbsDao.retrieveGbsBySaintId(request.getSaintId());
+        log.debug("[retrieveGbsLeaderList] gbsList >> {}", gbsList);
+
         List<GbsMember> gbsMemberList = Lists.newArrayList();
 
         for(Gbs gbs : gbsList) {
@@ -78,6 +85,8 @@ public class GbsServiceImpl implements GbsService{
                             .build()
             );
         }
+
+        log.debug("[retrieveGbsLeaderList] gbsLeaderList >> {}", gbsMemberList);
 
         return gbsMemberList;
     }

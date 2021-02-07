@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.Dept;
+import sarang.univ.dreamee.param.AttParam;
+import sarang.univ.dreamee.response.type.SaintAtt;
 
 import java.util.List;
 
@@ -28,5 +30,16 @@ public class AttendanceDaoTest {
         // ListUtils.sum -> x
 
 
+    }
+
+    @Test
+    public void retrieveAttendanceList() {
+        AttParam attParam = AttParam.builder()
+                .saintId(13)
+                .build();
+
+        List<SaintAtt> saintAtts = attendanceDao.retrieveAttendanceList(attParam);
+
+        log.info("saintAtts >> {}", saintAtts);
     }
 }

@@ -5,14 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Gbs;
-import sarang.univ.dreamee.dto.Saint;
-import sarang.univ.dreamee.request.DeptRequest;
+import sarang.univ.dreamee.request.GbsRequest;
 import sarang.univ.dreamee.response.ListResult;
-import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.response.type.GbsMember;
-import sarang.univ.dreamee.service.DeptService;
 import sarang.univ.dreamee.service.GbsService;
 import sarang.univ.dreamee.service.ResponseService;
 
@@ -38,5 +34,12 @@ public class GbsController {
     public ListResult<GbsMember> retrieveGbsMemberList(@RequestParam String leaderName) {
         log.info(leaderName);
         return responseService.getListResult(gbsService.retrieveGbsMemberListByLeaderName(leaderName));
+    }
+
+    @ApiOperation(value = "GBS Leader List 조회", notes = "GBS Leader List를 조회한다")
+    @PostMapping(value = "/leaders")
+    public ListResult<GbsMember> retrieveGbsLeaderList(@RequestBody GbsRequest request) {
+        log.debug("GbsController.retrieveGbsLeaderList");
+        return responseService.getListResult(gbsService.retrieveGbsLeaderList(request));
     }
 }

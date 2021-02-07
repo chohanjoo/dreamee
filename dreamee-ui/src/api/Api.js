@@ -2,6 +2,17 @@ import axios from "axios";
 
 const base_url = "http://localhost:8080/api/v1";
 
+
+export function getSaintAttList(body) {
+    const path = base_url + "/attendance/saint"
+    return postMethod(path, body);
+}
+
+export function getGbsLeaderList(gbsMember) {
+    const path = base_url + "/gbs/leaders"
+    return postMethod(path, gbsMember);
+}
+
 export function getLeader(saintId) {
     const path = base_url + "/leader" + "?saintId=" + saintId;
     return getMethod(path);

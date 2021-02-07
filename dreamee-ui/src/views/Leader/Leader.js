@@ -414,6 +414,7 @@ class Leader extends Component {
       </Dialog>
         </GridItem>
 
+{/* 조원별 출석 현황 */}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="success">
@@ -422,6 +423,8 @@ class Leader extends Component {
             <ScrollableTabs gbsMemberList={this.state.gbsMemberList} attList={this.state.attList}/>
           </Card>
         </GridItem>
+
+
       </GridContainer>
     </div>
     )

@@ -9,9 +9,11 @@ import sarang.univ.dreamee.dto.Attendance;
 import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.AttendanceRequest;
+import sarang.univ.dreamee.request.RetrieveAttendanceRequest;
 import sarang.univ.dreamee.response.CommonResult;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
+import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.service.AttendanceService;
 import sarang.univ.dreamee.service.GbsService;
 import sarang.univ.dreamee.service.ResponseService;
@@ -31,6 +33,13 @@ public class AttendanceController {
     public ListResult<Attendance> retrieveSaintAttendanceListByGbs(@PathVariable Integer leaderId, @PathVariable String activeTerm) {
         log.info(leaderId + activeTerm);
         return responseService.getListResult(attendanceService.retrieveAllAttendanceListByGbs(leaderId,activeTerm));
+    }
+
+    @ApiOperation(value = "드림이 출석부 조회", notes = "드림이 출석부를 조회한다.")
+    @PostMapping(value = "/saint")
+    public ListResult<SaintAtt> retrieveSaintAttendanceList(@RequestBody RetrieveAttendanceRequest request) {
+        log.debug("AttendanceController.retrieveSaintAttendanceList");
+        return responseService.getListResult(attendanceService.retrieveAttendanceList(request));
     }
 
     @ApiOperation(value = "출석부 log 등록", notes = "출석부 log를 등록한다.")
