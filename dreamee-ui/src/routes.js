@@ -28,6 +28,8 @@ import Language from "@material-ui/icons/Language";
 import LeaderPage from "views/Leader/Leader.js";
 import SaintPage from "views/Saint/Saint.js";
 import VillagePage from "views/Village/Village.js";
+import SignInPage from "views/Auth/SignIn.js"
+import SignUpPage from "views/Auth/SignUp.js"
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
@@ -60,6 +62,22 @@ const dashboardRoutes = [
     name: "마을",
     icon: Dashboard,
     component: VillagePage,
+    layout: "/admin",
+    expand: true
+  },
+  {
+    path: "/auth/signin",
+    name: "로그인",
+    icon: Person,
+    component: SignInPage,
+    layout: "/admin",
+    expand: true
+  },
+  {
+    path: "/auth/signup",
+    name: "회원가입",
+    icon: Person,
+    component: SignUpPage,
     layout: "/admin",
     expand: true
   },
