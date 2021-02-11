@@ -50,6 +50,7 @@ import {
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
 } from "../../api/Api";
 
+import { getUser, getToken } from "../../api/Storage"
 
 class Leader extends Component {
 
@@ -66,7 +67,7 @@ class Leader extends Component {
   }
 
   getLeaderInfo() {
-    getLeader(17)
+    getLeader(getUser())
     .then(res => {
       const result = res.status;
 
@@ -295,8 +296,16 @@ class Leader extends Component {
   }
 
   componentDidMount() {
-    this.getDate()
-    this.getLeaderInfo()
+    var token = getToken();
+
+    console.log("token : " + token)
+
+    if( token != null) {
+      this.getDate()
+      this.getLeaderInfo()
+    } else {
+      this.props.history.push("/admin/auth/signin")
+    }
   }
 
   render() {
@@ -414,6 +423,7 @@ class Leader extends Component {
       </Dialog>
         </GridItem>
 
+{/* 조원별 출석 현황 */}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="success">
@@ -422,6 +432,8 @@ class Leader extends Component {
             <ScrollableTabs gbsMemberList={this.state.gbsMemberList} attList={this.state.attList}/>
           </Card>
         </GridItem>
+
+
       </GridContainer>
     </div>
     )

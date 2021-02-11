@@ -13,6 +13,21 @@
         <result property="dateUpdated" column="date_updated"/>
     </resultMap>
 
+    <resultMap id="AttJoinMap" type="sarang.univ.dreamee.response.type.SaintAtt">
+        <result property="attId" column="att_id"/>
+        <result property="worshipState" column="worship_state"/>
+        <result property="attState" column="att_state"/>
+        <result property="qtNumber" column="qt_number"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+
+        <result property="leaderName" column="name"/>
+
+        <result property="villageName" column="village_name"/>
+
+        <result property="leaderId" column="leader_id"/>
+    </resultMap>
+
     <sql id="AttColumns">
         att_id,
         gbs_id,
@@ -22,6 +37,18 @@
         qt_number,
         date_created,
         date_updated
+    </sql>
+
+    <sql id="AttJoinColumns">
+        a.att_id,
+        a.worship_state,
+        a.att_state,
+        a.qt_number,
+        a.date_created,
+        a.date_updated,
+        s.name,
+        v.village_name,
+        l.leader_id
     </sql>
 
     <sql id="AttColumnsVariables">
@@ -46,6 +73,25 @@
             <include refid="AttColumns"/>
         FROM attendance_log
         WHERE gbs_id = #{gbsId}
+    </select>
+
+    <select id="retrieveAttendanceList" parameterType="sarang.univ.dreamee.param.AttParam" resultMap="AttJoinMap">
+        SELECT
+            <include refid="AttJoinColumns"/>
+        FROM
+             attendance_log a,
+             leader l,
+             saint s,
+             gbs_log g,
+             village v
+        WHERE
+            a.gbs_id = g.gbs_id
+            AND g.leader_id = l.leader_id
+            AND l.saint_id = s.saint_id
+            AND g.village_id = v.village_id
+            <if test="saintId != null">
+                AND a.saint_id = #{saintId}
+            </if>
     </select>
 
     <insert id="registerAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">

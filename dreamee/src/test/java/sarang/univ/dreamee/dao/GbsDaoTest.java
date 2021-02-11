@@ -70,7 +70,7 @@ public class GbsDaoTest {
                 .password("TEST")
                 .role("리더")
                 .saintId(_leader.getSaintId())
-                .active(true).build();
+                .active("Y").build();
 
         leaderDao.registerLeader(leader);
         leader = leaderDao.retrieveLeaderBySaintId(leader.getSaintId());

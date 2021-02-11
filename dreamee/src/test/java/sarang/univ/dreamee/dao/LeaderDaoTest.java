@@ -74,7 +74,7 @@ public class LeaderDaoTest {
         Leader leader = Leader.builder()
                 .role("리더")
                 .password("1q2w3e4r")
-                .active(true)
+                .active("Y")
                 .saintId(saint.getSaintId()).build();
 
         int result = leaderDao.registerLeader(leader);

@@ -21,12 +21,17 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
+import { logout } from "../../api/Storage"
+import { Redirect } from "react-router-dom";
+
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
+  const [redirect, setRedirect] = React.useState(false);
+
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -47,8 +52,16 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+
+  const handleLogout = () => {
+    logout()
+    
+    setOpenProfile(null);
+    setRedirect(true);
+  }
   return (
     <div>
+      { redirect ? (<Redirect push to="/admin/auth/signin"/>) : null }
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -207,7 +220,7 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
                       Logout

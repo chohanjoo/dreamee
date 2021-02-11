@@ -2,15 +2,20 @@ package sarang.univ.dreamee.service;
 
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
+import sarang.univ.dreamee.request.RetrieveAttendanceRequest;
+import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.utils.DatetimeUtils;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AttendanceServiceImpl implements AttendanceService{
@@ -39,6 +44,18 @@ public class AttendanceServiceImpl implements AttendanceService{
         }
 
         return attendanceList;
+    }
+
+    @Override
+    public List<SaintAtt> retrieveAttendanceList(RetrieveAttendanceRequest request) {
+
+        log.debug("[retrieveAttendanceList] params >> {}", request);
+
+        return attendanceDao.retrieveAttendanceList(
+                AttParam.builder()
+                        .saintId(request.getSaintId())
+                        .build()
+        );
     }
 
     @Override

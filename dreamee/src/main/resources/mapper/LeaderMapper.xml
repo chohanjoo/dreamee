@@ -35,8 +35,12 @@
             <if test="leaderId != null">
                 leader_id = #{leaderId}
             </if>
+            <if test="saintId != null">
+                AND saint_id = #{saintId}
+            </if>
         </where>
     </select>
+
     <insert id="registerLeader" parameterType="sarang.univ.dreamee.dto.Leader" useGeneratedKeys="true">
         insert into leader (saint_id, password, active, role) values (#{saintId}, #{password}, #{active}, #{role})
     </insert>

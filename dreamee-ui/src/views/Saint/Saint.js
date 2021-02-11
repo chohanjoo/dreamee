@@ -42,13 +42,16 @@ import {
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import avatar from "assets/img/faces/marc.jpg";
 import Calendar from "components/Calendar/CalendarChart"
+import CalendarHeatmap from "components/Calendar/CalendarHeatmap"
+import { DataGrid } from '@material-ui/data-grid';
 
 import {
   getDept,
-  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
+  getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById, getGbsLeaderList,
+  getSaintAttList
 } from "../../api/Api";
 
-
+import { getToken, getUser } from "../../api/Storage"
 
 class Saint extends Component {
 
@@ -61,15 +64,25 @@ class Saint extends Component {
     deptInfo: {},
     gbsMemberList: [],
     attList: [],
-    villageInfo: {}
+    villageInfo: {},
+    gbsLeaderList: [],
+    saintAttList: []
   }
 
   componentDidMount() {
-    this.getSaintInfo()
+    var token = getToken();
+
+    console.log("token : " + token)
+
+    if( token !== null) {
+      this.getSaintInfo();
+    } else {
+      this.props.history.push("/admin/auth/signin")
+    }
   }
 
   getSaintInfo() {
-    getSaint(16)
+    getSaint(null, getUser())
     .then(res => {
       const result = res.status;
 
@@ -82,9 +95,47 @@ class Saint extends Component {
         // this.getGbsInfo();
         // this.getAttListByGbs();
         this.getVillageInfo();
+        this.getGbsLeaderList(res.data.data.saintId);
+        this.getSaintAttList(res.data.data.saintId);
       }
     })
   }
+
+  getGbsLeaderList(saintId) {
+    var gbsMember = {}
+    gbsMember['saintId'] = saintId;
+
+    getGbsLeaderList(gbsMember)
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log("getGbsLeaderList : ",res.data)
+        this.setState({
+          gbsLeaderList: res.data.list
+        })
+      }
+    })
+  }
+
+
+  getSaintAttList(saintId) {
+    var RetrieveAttendanceRequest = {}
+    RetrieveAttendanceRequest['saintId'] = saintId;
+
+    getSaintAttList(RetrieveAttendanceRequest)
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log("saintAttList : ",res.data)
+        this.setState({
+          saintAttList: res.data.list
+        })
+      }
+    })
+  }
+
 
   getDeptInfo() {
     getDept(this.state.saintInfo.deptId)
@@ -114,8 +165,46 @@ class Saint extends Component {
     })
   }
 
+  tableData = () => {
+
+    var data = [];
+    this.state.gbsLeaderList.map( (row, index) => {
+      console.log(index + " : " + JSON.stringify(row['gbs']))
+      data.push({id : index, '마을': row.gbs.villageId, '이름': row.saint.name, '분기' : row.gbs.activeTerm})
+    })
+
+    return data;
+  }
+
+  attTableData = () => {
+
+    var data = [];
+    this.state.saintAttList.map( (att, index) => {
+      console.log(index + " : " + att)
+      data.push({id : index, '시간': att.dateCreated, '대예배': att.worshipState, '대학부' : att.attState, '큐티' : att.qtNumber, '리더' : att.leaderName, '마을' : att.villageName })
+    })
+
+    return data;
+  }
+
   render() {
     const {classes} = this.props;
+
+    const columns = [
+      {field: '마을'},
+      {field: '이름'},
+      {field: '분기'}
+    ]
+
+    const attColumns = [
+      {field: '시간', width: 200},
+      {field: '대예배'},
+      {field: '대학부'},
+      {field: '큐티'},
+      {field: '리더'},
+      {field: '마을'}
+    ]
+
     return (
       <div>
       <GridContainer>
@@ -188,6 +277,8 @@ class Saint extends Component {
             </CardFooter>
           </Card>
         </GridItem>
+
+
         <GridItem xs={12} sm={12} md={12}>
           <Card chart>
             <CardHeader color="warning">
@@ -201,7 +292,11 @@ class Saint extends Component {
               
             </CardHeader>
             <CardBody>
-            <Calendar/>
+              <div style={{ height: '100%', width: '80%'}}>
+                {/* <Calendar/> */}
+                <CalendarHeatmap/>
+              </div>
+
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -210,40 +305,38 @@ class Saint extends Component {
             </CardFooter>
           </Card>
         </GridItem>
+
+
         </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>역대 리더 리스트</h4>
+              <h4 className={classes.cardTitleWhite}>리더 리스트</h4>
               <p className={classes.cardCategoryWhite}>
                 New employees on 15th September, 2016
               </p>
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country","ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger","1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao","1", "Dakota Rice", "$36,738", "Niger"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands","1", "Dakota Rice", "$36,738", "Niger"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South","1", "Dakota Rice", "$36,738", "Niger"]
-                ]}
-              />
+            <div style={{ height: 300, width: '100%' }}>
+              <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={columns} rows={this.tableData()}/>
+            </div>
             </CardBody>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>분기별 조원 리스트</h4>
+              <h4 className={classes.cardTitleWhite}>출석부</h4>
               <p className={classes.cardCategoryWhite}>
                 New employees on 15th September, 2016
               </p>
             </CardHeader>
             <CardBody>
-              <Table
+            <div style={{ height: 300, width: '100%' }}>
+              <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={attColumns} rows={this.attTableData()}/>
+            </div>
+              {/* <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
                 tableData={[
@@ -252,7 +345,7 @@ class Saint extends Component {
                   ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
                   ["4", "Philip Chaney", "$38,735", "Korea, South"]
                 ]}
-              />
+              /> */}
             </CardBody>
           </Card>
         </GridItem>

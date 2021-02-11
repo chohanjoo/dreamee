@@ -1,0 +1,20 @@
+HELP.md
+*/target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+**/log.config.path_IS_UNDEFINED/
+.DS_Store
+
+### IntelliJ IDEA ###
+**/.idea/
+*/*.iws
+*/*.iml
+*/*.ipr
+
+### VS Code ###
+!**/.vscode/
+
+
+### REACT ###
+*/node_modules/

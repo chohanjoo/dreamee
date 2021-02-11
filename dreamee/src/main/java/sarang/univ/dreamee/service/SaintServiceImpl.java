@@ -1,15 +1,19 @@
 package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.DeptDao;
 import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.param.SaintParam;
+import sarang.univ.dreamee.request.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class SaintServiceImpl implements SaintService{
@@ -29,6 +33,18 @@ public class SaintServiceImpl implements SaintService{
     @Override
     public Saint retrieveSaintById(Integer saintId) {
         return saintDao.retrieveSaintById(saintId);
+    }
+
+    @Override
+    public Saint retrieveSaint(RetrieveSaintRequest request) {
+        log.debug("[retrieveSaint] params >> {}", request);
+
+        return saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintId(request.getSaintId())
+                        .saintName(request.getSaintName())
+                        .build()
+        );
     }
 
     @Override
