@@ -1,6 +1,7 @@
 package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import sarang.univ.dreamee.response.type.SignInResult;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -34,14 +36,21 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public SignInResult signIn(AuthenticationRequest request) throws Exception {
+        log.debug("[signIn] params >> {}", request);
+
         Saint saint = saintService.retrieveSaintByName(request.getUsername());
         Leader leader = leaderService.retrieveLeaderBySaintId(saint.getSaintId());
+
+        log.debug("[signIn] saint info >> {}", saint);
+        log.debug("[signIn] leader info >> {}", leader);
 
         if (!passwordEncoder.matches(request.getPassword(), leader.getPassword()))
             throw new Exception();
 
 
         Collection<? extends GrantedAuthority> authorities = this.getAuthorities(leader.getLeaderId());
+
+        log.debug("[signIn] authorities >> {}", authorities);
 
         return SignInResult.builder()
                 .name(saint.getName())
