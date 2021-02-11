@@ -3,6 +3,20 @@ export const login = (token, user_id) => {
     sessionStorage.setItem('USER', user_id);
 };
 
+export const getUser = () => {
+    const user = sessionStorage.getItem('USER');
+    try {
+        return user
+    } catch (e) {
+        return null
+    }
+};
+
+export const logout = () => {
+    sessionStorage.removeItem('USER');
+    sessionStorage.removeItem('token');
+};
+
 export const getToken = () => {
     try {
         return sessionStorage.getItem('token')

@@ -13,6 +13,19 @@ const getHeader = {
     'X-AUTH-TOKEN': getToken()
 };
 
+
+export function signUp(id, pw, level) {
+    const body = {
+        saintName: id,
+        password: pw,
+        role: level
+    }
+
+    const path = base_url + "/auth/signup"
+
+    return postMethod(path, body, postHeader);
+}
+
 export function signIn(id, pw) {
     const body = {
         username: id,

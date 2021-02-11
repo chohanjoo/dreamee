@@ -50,6 +50,7 @@ import {
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
 } from "../../api/Api";
 
+import { getUser, getToken } from "../../api/Storage"
 
 class Leader extends Component {
 
@@ -66,7 +67,7 @@ class Leader extends Component {
   }
 
   getLeaderInfo() {
-    getLeader(17)
+    getLeader(getUser())
     .then(res => {
       const result = res.status;
 
@@ -295,8 +296,16 @@ class Leader extends Component {
   }
 
   componentDidMount() {
-    this.getDate()
-    this.getLeaderInfo()
+    var token = getToken();
+
+    console.log("token : " + token)
+
+    if( token != null) {
+      this.getDate()
+      this.getLeaderInfo()
+    } else {
+      this.props.history.push("/admin/auth/signin")
+    }
   }
 
   render() {

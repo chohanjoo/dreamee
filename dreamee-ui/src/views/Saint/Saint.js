@@ -51,7 +51,7 @@ import {
   getSaintAttList
 } from "../../api/Api";
 
-
+import { getToken, getUser } from "../../api/Storage"
 
 class Saint extends Component {
 
@@ -70,11 +70,19 @@ class Saint extends Component {
   }
 
   componentDidMount() {
-    this.getSaintInfo();
+    var token = getToken();
+
+    console.log("token : " + token)
+
+    if( token !== null) {
+      this.getSaintInfo();
+    } else {
+      this.props.history.push("/admin/auth/signin")
+    }
   }
 
   getSaintInfo() {
-    getSaint(13)
+    getSaint(getUser())
     .then(res => {
       const result = res.status;
 

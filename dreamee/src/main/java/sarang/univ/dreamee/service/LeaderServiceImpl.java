@@ -1,6 +1,7 @@
 package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,9 @@ import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LeaderServiceImpl implements LeaderService{
@@ -53,6 +56,8 @@ public class LeaderServiceImpl implements LeaderService{
     @Override
     @Transactional
     public Integer registerLeader(LeaderRequest request) {
+        log.debug("[registerLeader] params >> {}", request);
+
         Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
 
         String encodedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
@@ -61,7 +66,7 @@ public class LeaderServiceImpl implements LeaderService{
 
         Leader leader = Leader.builder()
                 .saintId(saint.getSaintId())
-                .active(request.getActive())
+                .active(Optional.ofNullable(request.getActive()).orElse("Y"))
                 .password(encodedPassword)
                 .authorities(AuthorityUtils.createAuthorityList("LEADER"))
                 .role(request.getRole()).build();

@@ -9,6 +9,6 @@ public class LeaderRequest {
     private Integer leaderId;
     private String saintName;
     private String password;
-    private Boolean active;
+    private String active;
     private String role;
 }

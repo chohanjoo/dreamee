@@ -14,7 +14,7 @@ public class Leader extends Authority{
     private Integer saintId;
     private String password;
     //TODO YN ENUM으로 정리
-    private Boolean active;
+    private String active;
     private String role;
     private String dateCreated;
     private String dateUpdated;
