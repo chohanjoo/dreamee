@@ -1,21 +1,33 @@
 package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sarang.univ.dreamee.dao.AuthorityDao;
 import sarang.univ.dreamee.dao.LeaderDao;
 import sarang.univ.dreamee.dao.SaintDao;
+import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class LeaderServiceImpl implements LeaderService{
+
     private final LeaderDao leaderDao;
     private final SaintDao saintDao;
+    private final AuthorityDao authorityDao;
 
     @Override
     public List<Leader> retrieveAllLeader() {
@@ -39,15 +51,29 @@ public class LeaderServiceImpl implements LeaderService{
     }
 
     @Override
+    @Transactional
     public Integer registerLeader(LeaderRequest request) {
         Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
+
+        String encodedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
+
+        // TODO Sequence 로 채번하기
+
         Leader leader = Leader.builder()
                 .saintId(saint.getSaintId())
                 .active(request.getActive())
-                .password(request.getPassword())
+                .password(encodedPassword)
+                .authorities(AuthorityUtils.createAuthorityList("LEADER"))
                 .role(request.getRole()).build();
 
         int result = leaderDao.registerLeader(leader);
+
+        Leader newLeader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+
+        leader.setLeaderId(newLeader.getLeaderId());
+
+        authorityDao.createAuthority(leader);
+
         return result;
     }
 }

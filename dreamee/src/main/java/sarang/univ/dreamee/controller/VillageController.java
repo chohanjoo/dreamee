@@ -1,6 +1,8 @@
 package sarang.univ.dreamee.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class VillageController {
 //        return responseService.getListResult(leaderService.retrieveAllLeader());
 //    }
 
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "마을 조회", notes = "마을을 조회한다")
     @GetMapping(value = "")
     public SingleResult<Village> retrieveVillage(@RequestParam Integer villageId) {

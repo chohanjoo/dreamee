@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sarang.univ.dreamee.dao.AuthorityDao" >
+
+    <select id="retrieveAuthority" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+        select authority_name from authority where authority_id = #{leaderId}
+    </select>
+
+    <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
+        insert into authority (authority_id, authority_name)
+        values
+        <foreach collection="authorities" item="authority" index="index" separator=",">
+            (#{leaderId}, #{authority, typeHandler=sarang.univ.dreamee.handler.AuthorityTypeHandler})
+        </foreach>
+    </insert>
+
+</mapper>
