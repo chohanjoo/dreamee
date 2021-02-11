@@ -82,7 +82,7 @@ class Saint extends Component {
   }
 
   getSaintInfo() {
-    getSaint(getUser())
+    getSaint(null, getUser())
     .then(res => {
       const result = res.status;
 

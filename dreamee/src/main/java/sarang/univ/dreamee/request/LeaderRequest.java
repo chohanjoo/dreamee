@@ -1,10 +1,12 @@
 package sarang.univ.dreamee.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class LeaderRequest {
     private Integer leaderId;
     private String saintName;

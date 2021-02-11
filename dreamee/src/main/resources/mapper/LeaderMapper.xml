@@ -35,6 +35,9 @@
             <if test="leaderId != null">
                 leader_id = #{leaderId}
             </if>
+            <if test="saintId != null">
+                AND saint_id = #{saintId}
+            </if>
         </where>
     </select>
 

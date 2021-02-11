@@ -72,7 +72,7 @@ public class GbsServiceImpl implements GbsService{
         List<GbsMember> gbsMemberList = Lists.newArrayList();
 
         for(Gbs gbs : gbsList) {
-            LeaderInfo leaderInfo = leaderService.retrieveLeader(
+            LeaderInfo leaderInfo = leaderService.retrieveLeaderInfo(
                     LeaderRequest.builder()
                     .leaderId(gbs.getLeaderId())
                     .build()

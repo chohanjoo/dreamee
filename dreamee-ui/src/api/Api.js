@@ -33,6 +33,7 @@ export function signIn(id, pw) {
     };
     
     const path = base_url + "/auth/signin"
+
     return postMethod(path, body, postHeader);
 }
 
@@ -46,14 +47,29 @@ export function getGbsLeaderList(gbsMember) {
     return postMethod(path, gbsMember, postHeader);
 }
 
-export function getLeader(saintId) {
-    const path = base_url + "/leader" + "?saintId=" + saintId;
-    return getMethod(path, getHeader);
+export function getLeader(saintName) {
+    const path = base_url + "/leader/retrieveLeader";
+
+    const body = {
+        saintName: saintName
+    }
+
+    return postMethod(path, body, postHeader);
+    // const path = base_url + "/leader" + "?saintId=" + saintId;
+    // return getMethod(path, getHeader);
 }
 
-export function getSaint(saintId) {
-    const path = base_url + "/saint" + "?saintId=" + saintId;
-    return getMethod(path, getHeader);
+export function getSaint(saintId, saintName) {
+    const path = base_url + "/saint/retrieveSaint";
+
+    const body = {
+        saintName: saintName,
+        saintId: saintId
+    }
+
+    return postMethod(path, body, postHeader);
+    // const path = base_url + "/saint" + "?saintId=" + saintId;
+    // return getMethod(path, getHeader);
 }
 
 export function getDept(deptId) {

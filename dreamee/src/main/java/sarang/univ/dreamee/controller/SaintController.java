@@ -5,14 +5,17 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.request.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.service.ResponseService;
 import sarang.univ.dreamee.service.SaintService;
 
+@Slf4j
 @Api(tags = {"1. Saint"})
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +35,17 @@ public class SaintController {
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "성도 조회", notes = "성도를 조회한다")
     @GetMapping(value = "")
-    public SingleResult<Saint> retrieveSaint(@RequestParam Integer saintId) {
+    public SingleResult<Saint> retrieveSaintById(@RequestParam Integer saintId) {
         return responseService.getSingleResult(saintService.retrieveSaintById(saintId));
+    }
+
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "성도 조회", notes = "성도를 조회한다")
+    @PostMapping(value = "/retrieveSaint")
+    public SingleResult<Saint> retrieveSaint(@RequestBody RetrieveSaintRequest request) {
+        log.debug("SaintController.retrieveSaint");
+
+        return responseService.getSingleResult(saintService.retrieveSaint(request));
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })

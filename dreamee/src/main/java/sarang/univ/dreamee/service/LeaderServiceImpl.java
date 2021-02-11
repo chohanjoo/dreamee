@@ -16,6 +16,7 @@ import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
@@ -32,6 +33,8 @@ public class LeaderServiceImpl implements LeaderService{
     private final SaintDao saintDao;
     private final AuthorityDao authorityDao;
 
+    private final SaintService saintService;
+
     @Override
     public List<Leader> retrieveAllLeader() {
         return leaderDao.retrieveAllLeader();
@@ -43,8 +46,27 @@ public class LeaderServiceImpl implements LeaderService{
     }
 
     @Override
-    public LeaderInfo retrieveLeader(LeaderRequest request) {
-        Leader leader =  leaderDao.retrieveLeader(request);
+    public Leader retrieveLeader(LeaderRequest request) {
+        log.debug("[retrieveLeader] params >> {}", request);
+
+        Saint saint = saintService.retrieveSaintByName(request.getSaintName());
+
+        return leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .leaderId(request.getLeaderId())
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
+    }
+
+    //TODO naming 변경 필요
+    @Override
+    public LeaderInfo retrieveLeaderInfo(LeaderRequest request) {
+        Leader leader =  leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .leaderId(request.getLeaderId())
+                        .build()
+        );
         Saint saint = saintDao.retrieveSaintById(leader.getSaintId());
 
         return LeaderInfo.builder()
