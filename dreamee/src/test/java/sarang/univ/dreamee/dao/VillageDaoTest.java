@@ -12,6 +12,7 @@ import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Pastor;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.dto.Village;
+import sarang.univ.dreamee.param.SaintParam;
 
 import java.util.List;
 
@@ -54,7 +55,11 @@ public class VillageDaoTest {
                 .deptId(dept1.getDeptId()).build();
         saintDao.registerSaint(newSaint);
 
-        Saint saint = saintDao.retrieveSaintByName(newSaint.getName());
+        Saint saint = saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintName(newSaint.getName())
+                        .build()
+        );
 
         village = Village.builder()
                 .villageName("!마을")

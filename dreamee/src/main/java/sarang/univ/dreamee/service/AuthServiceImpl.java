@@ -8,15 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sarang.univ.dreamee.conf.JwtTokenProvider;
 import sarang.univ.dreamee.dao.AuthorityDao;
 import sarang.univ.dreamee.dao.LeaderDao;
-import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.AuthenticationRequest;
-import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.SignInResult;
 
 import java.util.Collection;
@@ -28,7 +26,6 @@ import java.util.List;
 public class AuthServiceImpl implements AuthService{
 
     private final AuthorityDao authorityDao;
-    private final LeaderDao leaderDao;
 
     private final LeaderService leaderService;
     private final SaintService saintService;
@@ -39,14 +36,20 @@ public class AuthServiceImpl implements AuthService{
     public SignInResult signIn(AuthenticationRequest request) throws Exception {
         log.debug("[signIn] params >> {}", request);
 
-        Saint saint = saintService.retrieveSaintByName(request.getUsername());
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(request.getUsername())
+                        .build()
+        );
+
+        log.debug("[signIn] saint info >> {}", saint);
+
         Leader leader = leaderService.retrieveLeader(
                 RetrieveLeaderRequest.builder()
                         .saintId(saint.getSaintId())
                         .build()
         );
 
-        log.debug("[signIn] saint info >> {}", saint);
         log.debug("[signIn] leader info >> {}", leader);
 
         if (!passwordEncoder.matches(request.getPassword(), leader.getPassword()))
@@ -73,7 +76,12 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public UserDetails loadUserByUsername(String leaderName) throws UsernameNotFoundException {
 
-        Saint saint = saintService.retrieveSaintByName(leaderName);
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(leaderName)
+                        .build()
+        );
+
         Leader leader = leaderService.retrieveLeader(
                 RetrieveLeaderRequest.builder()
                         .saintId(saint.getSaintId())
@@ -81,6 +89,7 @@ public class AuthServiceImpl implements AuthService{
         );
 
         leader.setAuthorities(getAuthorities(leader.getLeaderId()));
+
         return leader;
     }
 

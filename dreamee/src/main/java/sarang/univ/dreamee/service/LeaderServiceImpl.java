@@ -15,6 +15,7 @@ import sarang.univ.dreamee.enums.YnEnum;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.List;
@@ -47,7 +48,12 @@ public class LeaderServiceImpl implements LeaderService{
                 && request.getSaintName() != null
         ) {
 
-            Saint saint = saintService.retrieveSaintByName(request.getSaintName());
+            Saint saint = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getSaintName())
+                            .build()
+            );
+
             saintId = saint.getSaintId();
         }
 
@@ -66,15 +72,21 @@ public class LeaderServiceImpl implements LeaderService{
         );
     }
 
-    //TODO naming 변경 필요
+    //TODO naming 변경 필요 , 필요한 메소드일까?
     @Override
     public LeaderInfo retrieveLeaderInfo(LeaderRequest request) {
+
         Leader leader =  leaderDao.retrieveLeader(
                 LeaderParam.builder()
                         .leaderId(request.getLeaderId())
                         .build()
         );
-        Saint saint = saintDao.retrieveSaintById(leader.getSaintId());
+
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintId(leader.getSaintId())
+                        .build()
+        );
 
         return LeaderInfo.builder()
                 .leader(leader)
@@ -87,7 +99,11 @@ public class LeaderServiceImpl implements LeaderService{
     public Integer registerLeader(LeaderRequest request) {
         log.debug("[registerLeader] params >> {}", request);
 
-        Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(request.getSaintName())
+                        .build()
+        );
 
         String encodedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
 

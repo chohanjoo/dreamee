@@ -13,6 +13,7 @@ import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Pastor;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.param.LeaderParam;
+import sarang.univ.dreamee.param.SaintParam;
 
 import java.util.List;
 
@@ -74,7 +75,11 @@ public class LeaderDaoTest {
                 .deptId(dept1.getDeptId()).build();
         saintDao.registerSaint(newSaint);
 
-        Saint saint = saintDao.retrieveSaintByName(newSaint.getName());
+        Saint saint = saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintName(newSaint.getName())
+                        .build()
+        );
 
         Leader leader = Leader.builder()
                 .role("리더")

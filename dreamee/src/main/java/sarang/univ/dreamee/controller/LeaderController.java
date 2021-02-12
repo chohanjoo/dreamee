@@ -7,14 +7,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Leader;
-import sarang.univ.dreamee.request.DeptRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
-import sarang.univ.dreamee.service.DeptService;
 import sarang.univ.dreamee.service.LeaderService;
 import sarang.univ.dreamee.service.ResponseService;
 

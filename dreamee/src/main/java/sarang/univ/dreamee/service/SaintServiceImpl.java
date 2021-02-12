@@ -26,18 +26,16 @@ public class SaintServiceImpl implements SaintService{
     }
 
     @Override
-    public Saint retrieveSaintByName(String saintName) {
-        return saintDao.retrieveSaintByName(saintName);
-    }
-
-    @Override
-    public Saint retrieveSaintById(Integer saintId) {
-        return saintDao.retrieveSaintById(saintId);
-    }
-
-    @Override
     public Saint retrieveSaint(RetrieveSaintRequest request) {
         log.debug("[retrieveSaint] params >> {}", request);
+
+        if(
+                request.getSaintId() == null
+                && request.getSaintName() == null
+        ) {
+
+            //TODO throw Exception
+        }
 
         return saintDao.retrieveSaint(
                 SaintParam.builder()
