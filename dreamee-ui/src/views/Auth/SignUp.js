@@ -26,6 +26,7 @@ import { Component } from "react";
 import {signUp} from "../../api/Api";
 import { login } from "../../api/Storage";
 
+import Inko from 'inko';
 
 const styles = {
   cardCategoryWhite: {
@@ -80,7 +81,11 @@ export class SignIn extends Component {
 
 
   signUp() {    
-    signUp(this.state.name, this.state.pw, this.state.level)
+    // 한글 to 영어
+    var inko = new Inko();
+    const password = inko.ko2en(this.state.pw)
+
+    signUp(this.state.name, password, this.state.level)
       .then(res => {
         const result = res.status;
         if( result === 200) {

@@ -19,6 +19,8 @@ import { Component } from "react";
 import {signIn} from "../../api/Api";
 import { login } from "../../api/Storage";
 
+import Inko from 'inko';
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -57,14 +59,19 @@ export class SignIn extends Component {
     console.log(value)
   }
 
-  signIn() {    
-    signIn(this.state.name, this.state.pw)
+  signIn() {   
+    // 한글 to 영어
+    var inko = new Inko();
+    const password = inko.ko2en(this.state.pw)
+
+    signIn(this.state.name, password)
       .then(res => {
         const result = res.status;
         if( result === 200) {
           console.log("res : " + JSON.stringify(res.data.data))
           login(res.data.data, this.state.name)
           this.props.history.push("/")
+          window.location.reload()
         }
       })
   }

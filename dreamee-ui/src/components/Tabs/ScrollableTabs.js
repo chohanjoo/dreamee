@@ -6,8 +6,6 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { DataGrid } from '@material-ui/data-grid';
-import Table from "components/Table/Table.js";
-import { useDemoData } from '@material-ui/x-grid-data-generator';
 
 const AntTabs = withStyles({
   root: {
@@ -120,10 +118,6 @@ export default function ScrollableTabsButtonAuto(props) {
     return data;
   }
 
-  // const { data } = useDemoData({
-  //   rowLength: 300,
-  //   maxColumns: 6,
-  // });
 
   const columns = [
     {field: '시간', width: 200},
@@ -156,18 +150,10 @@ export default function ScrollableTabsButtonAuto(props) {
 
       {gbsMemberList!=undefined ? gbsMemberList.map( (member, index) => {
         return (
-    //       <div style={{ height: 400, width: '100%' }}>
-    //   <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} pagination {...data} />
-    // </div>
           <TabPanel value={value} index={index}>
                   <div style={{ height: 400, width: '100%' }}>
       <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={columns} rows={tableData(member.saint.saintId)}/>
     </div>
-            {/* <Table
-              tableHeaderColor="primary"
-              tableHead={["시간", "대예배", "대학부", "큐티"]}
-              tableData={tableData(member.saint.saintId)}
-            /> */}
         </TabPanel>
         )
       }) : <div></div>}
