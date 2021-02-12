@@ -2,6 +2,7 @@ package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import sarang.univ.dreamee.dao.LeaderDao;
 import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.enums.RoleCodeEnum;
 import sarang.univ.dreamee.enums.YnEnum;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.request.LeaderRequest;
@@ -109,12 +111,16 @@ public class LeaderServiceImpl implements LeaderService{
 
         // TODO Sequence 로 채번하기
 
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(
+                Optional.ofNullable(request.getRole()).orElse(RoleCodeEnum.LEADER).getCode()
+        );
+
         Leader leader = Leader.builder()
                 .saintId(saint.getSaintId())
                 .active(Optional.ofNullable(request.getActive()).orElse(YnEnum.Y.name()))
                 .password(encodedPassword)
-                .authorities(AuthorityUtils.createAuthorityList("LEADER"))
-                .role(request.getRole()).build();
+                .authorities(authorities)
+                .role(Optional.ofNullable(request.getRole()).orElse(RoleCodeEnum.LEADER).getCode()).build();
 
         int result = leaderDao.registerLeader(leader);
 

@@ -40,6 +40,12 @@ export default function Sidebar(props) {
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
+
+        // 로그인 , 회원가입 탭 블라인드
+        if(prop["name"] === "로그인" || prop["name"] === "회원가입") {
+          return false;
+        }
+
         var activePro = " ";
         var listItemClasses;
         if (!prop.name in expandList){
@@ -123,7 +129,7 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=mdr-sidebar"
+        href=""
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}

@@ -76,6 +76,10 @@ export class SignIn extends Component {
       })
   }
 
+  signUp() {
+    this.props.history.push("/admin/auth/signup")
+  }
+
   render() {
 
     const {classes} = this.props;
@@ -128,6 +132,7 @@ export class SignIn extends Component {
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={() => this.signIn()}>로그인</Button>
+              <Button color="primary" onClick={() => this.signUp()}>회원가입</Button>
             </CardFooter>
           </Card>
         </GridItem>

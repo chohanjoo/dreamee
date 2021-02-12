@@ -45,6 +45,8 @@ public class LeaderController {
     @ApiOperation(value = "리더 등록", notes = "리더를 등록한다")
     @PostMapping
     public SingleResult<Integer> registerLeader(@RequestBody LeaderRequest request) {
+        log.debug("LeaderController.registerLeader");
+
         int result = leaderService.registerLeader(request);
         return responseService.getSingleResult(result);
     }

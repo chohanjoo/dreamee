@@ -7,7 +7,6 @@ import sarang.univ.dreamee.dao.PastorDao;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Pastor;
 import sarang.univ.dreamee.request.DeptRequest;
-import sarang.univ.dreamee.request.PastorRequest;
 
 import java.util.List;
 
@@ -20,11 +19,6 @@ public class DeptServiceImpl implements DeptService{
     @Override
     public List<Dept> retrieveAllDept() {
         return deptDao.retrieveAllDept();
-    }
-
-    @Override
-    public Dept retrieveDeptByName(String DeptName) {
-        return null;
     }
 
     @Override

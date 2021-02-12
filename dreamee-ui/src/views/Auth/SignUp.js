@@ -56,7 +56,7 @@ export class SignIn extends Component {
   state = {
     name: '',
     pw: '',
-    level: 'LEAER'
+    level: 'LEDER'
   };
 
   handleChange = (e) => {
@@ -136,11 +136,11 @@ export class SignIn extends Component {
           displayEmpty
           className={classes.selectEmpty}
           inputProps={{ 'aria-label': 'Without label' }}
-          defaultValue={'LEAER'}
+          defaultValue={'LEDER'}
         >
-          <MenuItem value={'LEAER'}>리더</MenuItem>
-          <MenuItem value={'VILER'}>마을장</MenuItem>
-          <MenuItem value={'ASSER'}>간사</MenuItem>
+          <MenuItem value={'LEDER'}>리더</MenuItem>
+          <MenuItem value={'VIGER'}>마을장</MenuItem>
+          <MenuItem value={'ASTER'}>간사</MenuItem>
         </Select>
         <FormHelperText>Without label</FormHelperText>
       </FormControl>

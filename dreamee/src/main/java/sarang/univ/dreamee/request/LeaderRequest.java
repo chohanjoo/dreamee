@@ -1,6 +1,7 @@
 package sarang.univ.dreamee.request;
 
 import lombok.*;
+import sarang.univ.dreamee.enums.RoleCodeEnum;
 
 @Getter
 @Builder
@@ -12,5 +13,5 @@ public class LeaderRequest {
     private String saintName;
     private String password;
     private String active;
-    private String role;
+    private RoleCodeEnum role;
 }

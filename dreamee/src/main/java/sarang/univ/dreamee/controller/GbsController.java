@@ -34,7 +34,8 @@ public class GbsController {
     }
 
 
-    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })@ApiOperation(value = "GBS Member List 조회", notes = "GBS Member List를 조회한다")
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "GBS Member List 조회", notes = "GBS Member List를 조회한다")
     @PostMapping(value = "/members")
     public ListResult<GbsMember> retrieveGbsMemberList(@RequestBody RetrieveGbsRequest request) {
         log.debug("GbsController.retrieveGbsMemberList");
