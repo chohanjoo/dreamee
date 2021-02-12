@@ -21,12 +21,6 @@
         select * from leader
     </select>
 
-    <select id="retrieveLeaderBySaintId" resultMap="leaderMap">
-        select
-            <include refid="LeaderColumns"/>
-        from leader where saint_id = #{saintId}
-    </select>
-
     <select id="retrieveLeader" resultMap="leaderMap">
         SELECT
             <include refid="LeaderColumns"/>

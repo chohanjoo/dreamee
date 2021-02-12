@@ -12,6 +12,7 @@ import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Pastor;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.param.LeaderParam;
 
 import java.util.List;
 
@@ -45,7 +46,11 @@ public class LeaderDaoTest {
 
     @Test
     public void retrieveLeaderTest(){
-        Leader leader = leaderDao.retrieveLeaderBySaintId(1);
+        Leader leader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .saintId(1)
+                        .build()
+        );
 
         log.info("leader : {}", leader);
     }

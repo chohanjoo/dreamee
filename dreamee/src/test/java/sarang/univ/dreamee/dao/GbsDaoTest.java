@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.param.LeaderParam;
 
 import java.util.List;
 
@@ -73,7 +74,12 @@ public class GbsDaoTest {
                 .active("Y").build();
 
         leaderDao.registerLeader(leader);
-        leader = leaderDao.retrieveLeaderBySaintId(leader.getSaintId());
+
+        leader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .saintId(leader.getSaintId())
+                        .build()
+        );
 
         Village village = Village.builder()
                 .saintId(leader.getSaintId())

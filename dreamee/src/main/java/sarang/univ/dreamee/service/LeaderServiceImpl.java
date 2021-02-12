@@ -2,18 +2,13 @@ package sarang.univ.dreamee.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dao.AuthorityDao;
 import sarang.univ.dreamee.dao.LeaderDao;
 import sarang.univ.dreamee.dao.SaintDao;
-import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.enums.YnEnum;
@@ -22,7 +17,6 @@ import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,19 +37,25 @@ public class LeaderServiceImpl implements LeaderService{
     }
 
     @Override
-    public Leader retrieveLeaderBySaintId(Integer saintId) {
-        return leaderDao.retrieveLeaderBySaintId(saintId);
-    }
-
-    @Override
     public Leader retrieveLeader(RetrieveLeaderRequest request) {
         log.debug("[retrieveLeader] params >> {}", request);
 
         Integer saintId = request.getSaintId();
 
-        if(request.getSaintName() != null) {
+        if(
+                saintId == null
+                && request.getSaintName() != null
+        ) {
+
             Saint saint = saintService.retrieveSaintByName(request.getSaintName());
             saintId = saint.getSaintId();
+        }
+
+        if(
+                saintId == null
+                && request.getLeaderId() == null
+        ) {
+            //TODO throw Exception
         }
 
         return leaderDao.retrieveLeader(
@@ -102,7 +102,11 @@ public class LeaderServiceImpl implements LeaderService{
 
         int result = leaderDao.registerLeader(leader);
 
-        Leader newLeader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+        Leader newLeader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         leader.setLeaderId(newLeader.getLeaderId());
 

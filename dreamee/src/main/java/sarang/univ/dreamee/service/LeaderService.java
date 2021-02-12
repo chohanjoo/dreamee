@@ -15,7 +15,6 @@ public interface LeaderService {
 
     //TODO 리더 조회할 때, authority도 같이 조회 필요
     List<Leader> retrieveAllLeader();
-    Leader retrieveLeaderBySaintId(Integer saintId); //TODO 후에 fade out
     Leader retrieveLeader(RetrieveLeaderRequest request);
     Integer registerLeader(LeaderRequest request);
 

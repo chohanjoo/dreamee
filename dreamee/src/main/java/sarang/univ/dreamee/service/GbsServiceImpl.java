@@ -86,7 +86,11 @@ public class GbsServiceImpl implements GbsService{
     public List<Gbs> retrieveGbsByLeaderName(String leaderName) {
         // TODO 이름이 중복일 때, Error 발생
         Saint saint = saintDao.retrieveSaintByName(leaderName);
-        Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+        Leader leader = leaderService.retrieveLeader(
+                RetrieveLeaderRequest.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         return gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
     }
@@ -139,7 +143,12 @@ public class GbsServiceImpl implements GbsService{
         try {
             Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
             Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-            Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
+
+            Leader leader = leaderService.retrieveLeader(
+                    RetrieveLeaderRequest.builder()
+                            .saintId(_leader.getSaintId())
+                            .build()
+            );
 
             Gbs gbs = Gbs.builder()
                     .saintId(saint.getSaintId())
@@ -157,7 +166,13 @@ public class GbsServiceImpl implements GbsService{
         try {
             Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
             Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-            Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
+
+            Leader leader = leaderService.retrieveLeader(
+                    RetrieveLeaderRequest.builder()
+                            .saintId(_leader.getSaintId())
+                            .build()
+            );
+
             Village village = villageDao.retrieveVillageByVillageName(request.getVillageName());
 
             Gbs gbs = Gbs.builder()

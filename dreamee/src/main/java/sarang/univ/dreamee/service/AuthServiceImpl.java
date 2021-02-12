@@ -16,6 +16,7 @@ import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.AuthenticationRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.type.SignInResult;
 
 import java.util.Collection;
@@ -39,7 +40,11 @@ public class AuthServiceImpl implements AuthService{
         log.debug("[signIn] params >> {}", request);
 
         Saint saint = saintService.retrieveSaintByName(request.getUsername());
-        Leader leader = leaderService.retrieveLeaderBySaintId(saint.getSaintId());
+        Leader leader = leaderService.retrieveLeader(
+                RetrieveLeaderRequest.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         log.debug("[signIn] saint info >> {}", saint);
         log.debug("[signIn] leader info >> {}", leader);
@@ -69,7 +74,11 @@ public class AuthServiceImpl implements AuthService{
     public UserDetails loadUserByUsername(String leaderName) throws UsernameNotFoundException {
 
         Saint saint = saintService.retrieveSaintByName(leaderName);
-        Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+        Leader leader = leaderService.retrieveLeader(
+                RetrieveLeaderRequest.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         leader.setAuthorities(getAuthorities(leader.getLeaderId()));
         return leader;

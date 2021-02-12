@@ -37,13 +37,6 @@ public class LeaderController {
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
-    @GetMapping(value = "")
-    public SingleResult<Leader> retrieveLeaderBySaintId(@RequestParam int saintId) {
-        return responseService.getSingleResult(leaderService.retrieveLeaderBySaintId(saintId));
-    }
-
-    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
-    @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
     @PostMapping(value = "/retrieveLeader")
     public SingleResult<Leader> retrieveLeader(@RequestBody RetrieveLeaderRequest request) {
         log.debug("LeaderController.retrieveLeader");

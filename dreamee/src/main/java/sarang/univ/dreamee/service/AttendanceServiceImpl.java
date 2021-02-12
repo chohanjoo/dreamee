@@ -62,17 +62,6 @@ public class AttendanceServiceImpl implements AttendanceService{
     public int registerAttendanceLog(String saintName, AttendanceRequest request) {
         Saint saint = saintDao.retrieveSaintByName(saintName);
 
-//        Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-//        Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
-//
-//        Gbs gbsInfo = Gbs.builder()
-//                .saintId(saint.getSaintId())
-//                .leaderId(leader.getLeaderId())
-//                .activeTerm(request.getActiveTerm())
-//                .build();
-//
-//        Gbs gbs = gbsDao.retrieveGbsByLeaderIdAndSaintIdAndActiveTerm(gbsInfo);
-
         Attendance attendance = Attendance.builder()
                 .attState(request.getAttState())
                 .qtNumber(request.getQtNumber())

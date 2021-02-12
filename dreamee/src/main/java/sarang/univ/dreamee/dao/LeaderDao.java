@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface LeaderDao {
     List<Leader> retrieveAllLeader();
-    Leader retrieveLeaderBySaintId(Integer saintId);
     Leader retrieveLeader(LeaderParam param);
     int registerLeader(Leader leader);
 
