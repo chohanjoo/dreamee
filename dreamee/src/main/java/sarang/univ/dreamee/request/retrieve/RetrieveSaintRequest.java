@@ -1,4 +1,4 @@
-package sarang.univ.dreamee.request;
+package sarang.univ.dreamee.request.retrieve;
 
 import lombok.Builder;
 import lombok.Getter;

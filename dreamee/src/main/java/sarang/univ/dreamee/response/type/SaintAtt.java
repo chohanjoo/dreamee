@@ -19,7 +19,9 @@ public class SaintAtt {
     private Integer qtNumber;
     private Date dateCreated;
     private Date dateUpdated;
+
     private String leaderName;
     private Integer leaderId;
+
     private String villageName;
 }

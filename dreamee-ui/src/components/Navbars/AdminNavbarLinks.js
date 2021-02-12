@@ -21,7 +21,7 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
-import { logout } from "../../api/Storage"
+import { logout, getToken } from "../../api/Storage"
 import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
@@ -31,6 +31,7 @@ export default function AdminNavbarLinks() {
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
   const [redirect, setRedirect] = React.useState(false);
+  const [login, setLogin] = React.useState(false);
 
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
@@ -59,9 +60,16 @@ export default function AdminNavbarLinks() {
     setOpenProfile(null);
     setRedirect(true);
   }
+
+  const handleLogin = () => {
+    setOpenProfile(null);
+    setLogin(true);
+  }
+
   return (
     <div>
       { redirect ? (<Redirect push to="/admin/auth/signin"/>) : null }
+      { login ? (<Redirect push to="/admin/auth/signin"/>) : null }
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -206,7 +214,7 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
@@ -218,13 +226,24 @@ export default function AdminNavbarLinks() {
                     >
                       Settings
                     </MenuItem>
-                    <Divider light />
-                    <MenuItem
+                    <Divider light /> */}
+                    {
+                      getToken() === null
+                      ?
+                      <MenuItem
+                      onClick={handleLogin}
+                      className={classes.dropdownItem}
+                    >
+                      Login
+                    </MenuItem>
+                      : 
+                      <MenuItem
                       onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
                       Logout
                     </MenuItem>
+                    }
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

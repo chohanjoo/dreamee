@@ -8,16 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Attendance;
-import sarang.univ.dreamee.dto.Gbs;
-import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.request.AttendanceRequest;
-import sarang.univ.dreamee.request.RetrieveAttendanceRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveAttendanceRequest;
 import sarang.univ.dreamee.response.CommonResult;
 import sarang.univ.dreamee.response.ListResult;
-import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.service.AttendanceService;
-import sarang.univ.dreamee.service.GbsService;
 import sarang.univ.dreamee.service.ResponseService;
 
 @Slf4j

@@ -4,23 +4,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dao.AuthorityDao;
 import sarang.univ.dreamee.dao.LeaderDao;
 import sarang.univ.dreamee.dao.SaintDao;
-import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.enums.RoleCodeEnum;
+import sarang.univ.dreamee.enums.YnEnum;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,33 +40,55 @@ public class LeaderServiceImpl implements LeaderService{
     }
 
     @Override
-    public Leader retrieveLeaderBySaintId(Integer saintId) {
-        return leaderDao.retrieveLeaderBySaintId(saintId);
-    }
-
-    @Override
-    public Leader retrieveLeader(LeaderRequest request) {
+    public Leader retrieveLeader(RetrieveLeaderRequest request) {
         log.debug("[retrieveLeader] params >> {}", request);
 
-        Saint saint = saintService.retrieveSaintByName(request.getSaintName());
+        Integer saintId = request.getSaintId();
+
+        if(
+                saintId == null
+                && request.getSaintName() != null
+        ) {
+
+            Saint saint = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getSaintName())
+                            .build()
+            );
+
+            saintId = saint.getSaintId();
+        }
+
+        if(
+                saintId == null
+                && request.getLeaderId() == null
+        ) {
+            //TODO throw Exception
+        }
 
         return leaderDao.retrieveLeader(
                 LeaderParam.builder()
                         .leaderId(request.getLeaderId())
-                        .saintId(saint.getSaintId())
+                        .saintId(saintId)
                         .build()
         );
     }
 
-    //TODO naming 변경 필요
+    //TODO naming 변경 필요 , 필요한 메소드일까?
     @Override
     public LeaderInfo retrieveLeaderInfo(LeaderRequest request) {
+
         Leader leader =  leaderDao.retrieveLeader(
                 LeaderParam.builder()
                         .leaderId(request.getLeaderId())
                         .build()
         );
-        Saint saint = saintDao.retrieveSaintById(leader.getSaintId());
+
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintId(leader.getSaintId())
+                        .build()
+        );
 
         return LeaderInfo.builder()
                 .leader(leader)
@@ -80,22 +101,34 @@ public class LeaderServiceImpl implements LeaderService{
     public Integer registerLeader(LeaderRequest request) {
         log.debug("[registerLeader] params >> {}", request);
 
-        Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(request.getSaintName())
+                        .build()
+        );
 
         String encodedPassword = new BCryptPasswordEncoder().encode(request.getPassword());
 
         // TODO Sequence 로 채번하기
 
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(
+                Optional.ofNullable(request.getRole()).orElse(RoleCodeEnum.LEADER).getCode()
+        );
+
         Leader leader = Leader.builder()
                 .saintId(saint.getSaintId())
-                .active(Optional.ofNullable(request.getActive()).orElse("Y"))
+                .active(Optional.ofNullable(request.getActive()).orElse(YnEnum.Y.name()))
                 .password(encodedPassword)
-                .authorities(AuthorityUtils.createAuthorityList("LEADER"))
-                .role(request.getRole()).build();
+                .authorities(authorities)
+                .role(Optional.ofNullable(request.getRole()).orElse(RoleCodeEnum.LEADER).getCode()).build();
 
         int result = leaderDao.registerLeader(leader);
 
-        Leader newLeader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+        Leader newLeader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         leader.setLeaderId(newLeader.getLeaderId());
 

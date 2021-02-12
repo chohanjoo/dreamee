@@ -6,8 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.request.GbsRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveGbsRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.GbsMember;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
@@ -17,11 +21,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class GbsServiceImpl implements GbsService{
+
     private final SaintDao saintDao;
     private final LeaderDao leaderDao;
     private final VillageDao villageDao;
     private final GbsDao gbsDao;
+
     private final LeaderService leaderService;
+    private final SaintService saintService;
+
 
     @Override
     public List<Dept> retrieveAllGbsLog() {
@@ -29,17 +37,37 @@ public class GbsServiceImpl implements GbsService{
     }
 
     @Override
-    public List<GbsMember> retrieveGbsMemberListByLeaderName(String leaderName) {
+    public List<GbsMember> retrieveGbsMemberList(RetrieveGbsRequest request) {  // 리더 이름으로 조회
         // TODO 한 텀만 가져오도록 구현 <- 지금은 여러텀 다 가져옴
-        Saint saint = saintDao.retrieveSaintByName(leaderName);
-        Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+
+        log.debug("[retrieveGbsMemberList] params >> {}", request);
+
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(request.getLeaderName())
+                        .build()
+        );
+
+        Leader leader = leaderService.retrieveLeader(
+                RetrieveLeaderRequest.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         List<GbsMember> gbsMembers = Lists.newArrayList();
 
-        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
+        List<Gbs> gbsList = gbsDao.retrieveGbsList(
+                GbsParam.builder()
+                        .leaderId(leader.getLeaderId())
+                        .build()
+        );
 
         for(Gbs gbs : gbsList) {
-            Saint gbsMember = saintDao.retrieveSaintById(gbs.getSaintId());
+            Saint gbsMember = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintId(gbs.getSaintId())
+                            .build()
+            );
 
             GbsMember member = GbsMember.builder()
                     .gbs(gbs)
@@ -49,14 +77,25 @@ public class GbsServiceImpl implements GbsService{
             gbsMembers.add(member);
         }
 
+        log.debug("[retrieveGbsMemberList] gbsMembers >> {}", gbsMembers);
+
         return gbsMembers;
     }
 
     @Override
     public List<Gbs> retrieveGbsByLeaderName(String leaderName) {
         // TODO 이름이 중복일 때, Error 발생
-        Saint saint = saintDao.retrieveSaintByName(leaderName);
-        Leader leader = leaderDao.retrieveLeaderBySaintId(saint.getSaintId());
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(leaderName)
+                        .build()
+        );
+
+        Leader leader = leaderService.retrieveLeader(
+                RetrieveLeaderRequest.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
 
         return gbsDao.retrieveGbsByLeaderId(leader.getLeaderId());
     }
@@ -91,13 +130,6 @@ public class GbsServiceImpl implements GbsService{
         return gbsMemberList;
     }
 
-    //    @Override
-//    public List<Gbs> retrieveGbsBySaint(GbsRequest request) {
-//        Saint saint = saintDao.retrieveSaintById(request.getSaintId());
-//
-//        return gbsDao.retrieveGbsBySaintId(saint.getSaintId());
-//    }
-
     @Override
     public List<Gbs> retrieveGbsByVillageName(String villageName) {
         Village village = villageDao.retrieveVillageByVillageName(villageName);
@@ -106,10 +138,26 @@ public class GbsServiceImpl implements GbsService{
 
     @Override
     public List<Gbs> retrieveGbsBySaintNameAndLeaderName(GbsRequest request) throws Exception {
+
         try {
-            Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
-            Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-            Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
+
+            Saint saint = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getSaintName())
+                            .build()
+            );
+
+            Saint _leader = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getLeaderName())
+                            .build()
+            );
+
+            Leader leader = leaderService.retrieveLeader(
+                    RetrieveLeaderRequest.builder()
+                            .saintId(_leader.getSaintId())
+                            .build()
+            );
 
             Gbs gbs = Gbs.builder()
                     .saintId(saint.getSaintId())
@@ -125,9 +173,25 @@ public class GbsServiceImpl implements GbsService{
     @Override
     public Integer registerGbs(GbsRequest request) throws Exception {
         try {
-            Saint saint = saintDao.retrieveSaintByName(request.getSaintName());
-            Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-            Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
+
+            Saint saint = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getSaintName())
+                            .build()
+            );
+
+            Saint _leader = saintService.retrieveSaint(
+                    RetrieveSaintRequest.builder()
+                            .saintName(request.getLeaderName())
+                            .build()
+            );
+
+            Leader leader = leaderService.retrieveLeader(
+                    RetrieveLeaderRequest.builder()
+                            .saintId(_leader.getSaintId())
+                            .build()
+            );
+
             Village village = villageDao.retrieveVillageByVillageName(request.getVillageName());
 
             Gbs gbs = Gbs.builder()

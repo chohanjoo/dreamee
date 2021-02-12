@@ -55,20 +55,6 @@
         FROM saint
     </select>
 
-    <select id="retrieveSaintByName" resultMap="SaintMap">
-        SELECT
-            <include refid="SaintColumn"/>
-        FROM saint
-        WHERE name = #{saintName}
-    </select>
-
-    <select id="retrieveSaintById" resultMap="SaintMap">
-        SELECT
-            <include refid="SaintColumn"/>
-        FROM saint
-        WHERE saint_id = #{saintId}
-    </select>
-
     <select id="retrieveSaint" resultMap="SaintMap">
         SELECT
         <include refid="SaintColumn"/>

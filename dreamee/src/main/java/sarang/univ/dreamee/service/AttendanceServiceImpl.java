@@ -9,7 +9,8 @@ import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
-import sarang.univ.dreamee.request.RetrieveAttendanceRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveAttendanceRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.utils.DatetimeUtils;
 
@@ -23,6 +24,8 @@ public class AttendanceServiceImpl implements AttendanceService{
     private final SaintDao saintDao;
     private final LeaderDao leaderDao;
     private final GbsDao gbsDao;
+
+    private final SaintService saintService;
 
     @Override
     public List<Attendance> retrieveAllAttendanceLog() {
@@ -60,18 +63,11 @@ public class AttendanceServiceImpl implements AttendanceService{
 
     @Override
     public int registerAttendanceLog(String saintName, AttendanceRequest request) {
-        Saint saint = saintDao.retrieveSaintByName(saintName);
-
-//        Saint _leader = saintDao.retrieveSaintByName(request.getLeaderName());
-//        Leader leader = leaderDao.retrieveLeaderBySaintId(_leader.getSaintId());
-//
-//        Gbs gbsInfo = Gbs.builder()
-//                .saintId(saint.getSaintId())
-//                .leaderId(leader.getLeaderId())
-//                .activeTerm(request.getActiveTerm())
-//                .build();
-//
-//        Gbs gbs = gbsDao.retrieveGbsByLeaderIdAndSaintIdAndActiveTerm(gbsInfo);
+        Saint saint = saintService.retrieveSaint(
+                RetrieveSaintRequest.builder()
+                        .saintName(saintName)
+                        .build()
+        );
 
         Attendance attendance = Attendance.builder()
                 .attState(request.getAttState())

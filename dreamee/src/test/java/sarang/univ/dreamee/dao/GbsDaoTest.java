@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.param.LeaderParam;
+import sarang.univ.dreamee.param.SaintParam;
 
 import java.util.List;
 
@@ -57,14 +59,22 @@ public class GbsDaoTest {
                 .name("USER").build();
 
         saintDao.registerSaint(saint);
-        saint = saintDao.retrieveSaintByName(saint.getName());
+        saint = saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintName(saint.getName())
+                        .build()
+        );
 
         Saint _leader = Saint.builder()
                 .deptId(dept.getDeptId())
                 .name("LEADER").build();
 
         saintDao.registerSaint(_leader);
-        _leader = saintDao.retrieveSaintByName(_leader.getName());
+        _leader = saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintName(_leader.getName())
+                        .build()
+        );
 
         Leader leader = Leader.builder()
                 .password("TEST")
@@ -73,7 +83,12 @@ public class GbsDaoTest {
                 .active("Y").build();
 
         leaderDao.registerLeader(leader);
-        leader = leaderDao.retrieveLeaderBySaintId(leader.getSaintId());
+
+        leader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .saintId(leader.getSaintId())
+                        .build()
+        );
 
         Village village = Village.builder()
                 .saintId(leader.getSaintId())

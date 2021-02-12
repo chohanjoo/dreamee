@@ -7,13 +7,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Leader;
-import sarang.univ.dreamee.request.DeptRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
-import sarang.univ.dreamee.service.DeptService;
 import sarang.univ.dreamee.service.LeaderService;
 import sarang.univ.dreamee.service.ResponseService;
 
@@ -36,15 +34,8 @@ public class LeaderController {
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
-    @GetMapping(value = "")
-    public SingleResult<Leader> retrieveLeaderBySaintId(@RequestParam int saintId) {
-        return responseService.getSingleResult(leaderService.retrieveLeaderBySaintId(saintId));
-    }
-
-    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
-    @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
     @PostMapping(value = "/retrieveLeader")
-    public SingleResult<Leader> retrieveLeader(@RequestBody LeaderRequest request) {
+    public SingleResult<Leader> retrieveLeader(@RequestBody RetrieveLeaderRequest request) {
         log.debug("LeaderController.retrieveLeader");
 
         return responseService.getSingleResult(leaderService.retrieveLeader(request));
@@ -54,6 +45,8 @@ public class LeaderController {
     @ApiOperation(value = "리더 등록", notes = "리더를 등록한다")
     @PostMapping
     public SingleResult<Integer> registerLeader(@RequestBody LeaderRequest request) {
+        log.debug("LeaderController.registerLeader");
+
         int result = leaderService.registerLeader(request);
         return responseService.getSingleResult(result);
     }

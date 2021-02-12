@@ -9,9 +9,6 @@ import java.util.List;
 @Repository
 public interface SaintDao {
     List<Saint> retrieveAllSaint();
-    //TODO retrieveBySaint 로 병합
-    Saint retrieveSaintByName(String saintName);
-    Saint retrieveSaintById(Integer saintId);
     Saint retrieveSaint(SaintParam param);
     int registerSaint(Saint saint);
 }

@@ -26,6 +26,7 @@ import { Component } from "react";
 import {signUp} from "../../api/Api";
 import { login } from "../../api/Storage";
 
+import Inko from 'inko';
 
 const styles = {
   cardCategoryWhite: {
@@ -55,7 +56,7 @@ export class SignIn extends Component {
   state = {
     name: '',
     pw: '',
-    level: 'LEAER'
+    level: 'LEDER'
   };
 
   handleChange = (e) => {
@@ -80,7 +81,11 @@ export class SignIn extends Component {
 
 
   signUp() {    
-    signUp(this.state.name, this.state.pw, this.state.level)
+    // 한글 to 영어
+    var inko = new Inko();
+    const password = inko.ko2en(this.state.pw)
+
+    signUp(this.state.name, password, this.state.level)
       .then(res => {
         const result = res.status;
         if( result === 200) {
@@ -131,11 +136,11 @@ export class SignIn extends Component {
           displayEmpty
           className={classes.selectEmpty}
           inputProps={{ 'aria-label': 'Without label' }}
-          defaultValue={'LEAER'}
+          defaultValue={'LEDER'}
         >
-          <MenuItem value={'LEAER'}>리더</MenuItem>
-          <MenuItem value={'VILER'}>마을장</MenuItem>
-          <MenuItem value={'ASSER'}>간사</MenuItem>
+          <MenuItem value={'LEDER'}>리더</MenuItem>
+          <MenuItem value={'VIGER'}>마을장</MenuItem>
+          <MenuItem value={'ASTER'}>간사</MenuItem>
         </Select>
         <FormHelperText>Without label</FormHelperText>
       </FormControl>
