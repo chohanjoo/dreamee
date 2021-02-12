@@ -9,7 +9,7 @@ import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
-import sarang.univ.dreamee.request.RetrieveAttendanceRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveAttendanceRequest;
 import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.utils.DatetimeUtils;
 

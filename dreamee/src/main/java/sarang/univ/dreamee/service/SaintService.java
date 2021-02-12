@@ -1,7 +1,7 @@
 package sarang.univ.dreamee.service;
 
 import sarang.univ.dreamee.dto.Saint;
-import sarang.univ.dreamee.request.RetrieveSaintRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
 
 import java.util.List;

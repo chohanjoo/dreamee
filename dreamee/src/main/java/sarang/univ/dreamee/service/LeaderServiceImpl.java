@@ -16,8 +16,10 @@ import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Authority;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.enums.YnEnum;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
 
 import java.util.Collection;
@@ -46,15 +48,20 @@ public class LeaderServiceImpl implements LeaderService{
     }
 
     @Override
-    public Leader retrieveLeader(LeaderRequest request) {
+    public Leader retrieveLeader(RetrieveLeaderRequest request) {
         log.debug("[retrieveLeader] params >> {}", request);
 
-        Saint saint = saintService.retrieveSaintByName(request.getSaintName());
+        Integer saintId = request.getSaintId();
+
+        if(request.getSaintName() != null) {
+            Saint saint = saintService.retrieveSaintByName(request.getSaintName());
+            saintId = saint.getSaintId();
+        }
 
         return leaderDao.retrieveLeader(
                 LeaderParam.builder()
                         .leaderId(request.getLeaderId())
-                        .saintId(saint.getSaintId())
+                        .saintId(saintId)
                         .build()
         );
     }
@@ -88,7 +95,7 @@ public class LeaderServiceImpl implements LeaderService{
 
         Leader leader = Leader.builder()
                 .saintId(saint.getSaintId())
-                .active(Optional.ofNullable(request.getActive()).orElse("Y"))
+                .active(Optional.ofNullable(request.getActive()).orElse(YnEnum.Y.name()))
                 .password(encodedPassword)
                 .authorities(AuthorityUtils.createAuthorityList("LEADER"))
                 .role(request.getRole()).build();

@@ -1100,6 +1100,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.12.13":
+  version "7.12.13"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.13.tgz#0a21452352b02542db0ffb928ac2d3ca7cb6d66d"
+  integrity sha512-8+3UMPBrjFa/6TtKi/7sehPKqfAm4g6K+YQjyyFOLUTxzOngcRZTlAVY8sc2CORJYqdHQY8gRPHmn+qo15rCBw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.10.4", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.10.4"
   resolved "https://registry.npmjs.org/@babel/template/-/template-7.10.4.tgz"
@@ -7565,7 +7572,7 @@ mem@^4.0.0:
 
 memoize-one@^5.0.0:
   version "5.1.1"
-  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.1.1.tgz#047b6e3199b508eaec03504de71229b8eb1d75c0"
+  resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.1.1.tgz"
   integrity sha512-HKeeBpWvqiVJD57ZUAsJNm71eHTykffzcLZVYWiVfQeI1rJtuEaS7hQiEpWfVVk18donPwJEcFKIkCmPJNOhHA==
 
 memory-fs@^0.4.1:
@@ -9635,7 +9642,7 @@ react-app-polyfill@^1.0.6:
 
 react-calendar-heatmap@^1.8.1:
   version "1.8.1"
-  resolved "https://registry.yarnpkg.com/react-calendar-heatmap/-/react-calendar-heatmap-1.8.1.tgz#8370151f6cf7477d49cb3459596d6d046bdfc704"
+  resolved "https://registry.npmjs.org/react-calendar-heatmap/-/react-calendar-heatmap-1.8.1.tgz"
   integrity sha512-4Hbq/pDMJoCPzZnyIWFfHgokLlLXzKyGsDcMgNhYpi7zcKHcvsK9soLEPvhW2dBBqgDrQOSp/uG4wtifaDg4eQ==
   dependencies:
     memoize-one "^5.0.0"
@@ -9858,7 +9865,7 @@ react-swipeable-views@0.13.9:
 
 react-tooltip@^4.2.13:
   version "4.2.13"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-4.2.13.tgz#908db8a41dc10ae2ae9cc1864746cde939aaab0f"
+  resolved "https://registry.npmjs.org/react-tooltip/-/react-tooltip-4.2.13.tgz"
   integrity sha512-iAZ02wSxChLWb7Vnu0zeQMyAo/jiGHrwFNILWaR3pCKaFVRjKcv/B6TBI4+Xd66xLXVzLngwJ91Tf5D+mqAqVA==
   dependencies:
     prop-types "^15.7.2"
@@ -11759,7 +11766,7 @@ uuid@^3.0.1, uuid@^3.3.2:
 
 uuid@^7.0.3:
   version "7.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
+  resolved "https://registry.npmjs.org/uuid/-/uuid-7.0.3.tgz"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
 v8-compile-cache@^2.0.3:

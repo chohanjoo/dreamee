@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.request.GbsRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveGbsRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.type.GbsMember;
 import sarang.univ.dreamee.service.GbsService;
@@ -34,10 +35,11 @@ public class GbsController {
 
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })@ApiOperation(value = "GBS Member List 조회", notes = "GBS Member List를 조회한다")
-    @GetMapping(value = "/members")
-    public ListResult<GbsMember> retrieveGbsMemberList(@RequestParam String leaderName) {
-        log.info(leaderName);
-        return responseService.getListResult(gbsService.retrieveGbsMemberListByLeaderName(leaderName));
+    @PostMapping(value = "/members")
+    public ListResult<GbsMember> retrieveGbsMemberList(@RequestBody RetrieveGbsRequest request) {
+        log.debug("GbsController.retrieveGbsMemberList");
+
+        return responseService.getListResult(gbsService.retrieveGbsMemberList(request));
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
@@ -45,6 +47,7 @@ public class GbsController {
     @PostMapping(value = "/leaders")
     public ListResult<GbsMember> retrieveGbsLeaderList(@RequestBody GbsRequest request) {
         log.debug("GbsController.retrieveGbsLeaderList");
+
         return responseService.getListResult(gbsService.retrieveGbsLeaderList(request));
     }
 }

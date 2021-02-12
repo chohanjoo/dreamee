@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Saint;
-import sarang.univ.dreamee.request.RetrieveSaintRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;

@@ -11,6 +11,7 @@ import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.request.DeptRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.service.DeptService;
@@ -44,7 +45,7 @@ public class LeaderController {
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "리더 조회", notes = "리더를 조회한다")
     @PostMapping(value = "/retrieveLeader")
-    public SingleResult<Leader> retrieveLeader(@RequestBody LeaderRequest request) {
+    public SingleResult<Leader> retrieveLeader(@RequestBody RetrieveLeaderRequest request) {
         log.debug("LeaderController.retrieveLeader");
 
         return responseService.getSingleResult(leaderService.retrieveLeader(request));

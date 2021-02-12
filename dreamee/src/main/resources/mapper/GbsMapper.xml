@@ -36,6 +36,17 @@
         FROM gbs_log
     </select>
 
+    <select id="retrieveGbsList" resultMap="GbsMap">
+        SELECT
+            <include refid="GbsColumns"/>
+        FROM gbs_log
+        <where>
+            <if test="leaderId != null">
+                leader_id = #{leaderId}
+            </if>
+        </where>
+    </select>
+
     <select id="retrieveGbsByLeaderId" resultMap="GbsMap">
         SELECT
             <include refid="GbsColumns"/>

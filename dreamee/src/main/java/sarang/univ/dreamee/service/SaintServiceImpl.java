@@ -8,7 +8,7 @@ import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.param.SaintParam;
-import sarang.univ.dreamee.request.RetrieveSaintRequest;
+import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
 
 import java.util.List;

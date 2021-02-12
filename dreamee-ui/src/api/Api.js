@@ -83,8 +83,15 @@ export function getGbs(leaderName) {
 }
 
 export function getGbsMemberList(leaderName) {
-    const path = base_url + "/gbs/members" + "?leaderName=" + leaderName;
-    return getMethod(path, getHeader);
+    const path = base_url + "/gbs/members";
+
+    const body = {
+        leaderName: leaderName
+    }
+
+    return postMethod(path, body, postHeader);
+    // const path = base_url + "/gbs/members" + "?leaderName=" + leaderName;
+    // return getMethod(path, getHeader);
 }
 
 export function postGbsAtt(saintName, body) {
