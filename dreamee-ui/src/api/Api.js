@@ -14,6 +14,17 @@ const getHeader = {
 };
 
 
+export function getSaintSearchData() {
+    const body = {
+        saintId: null,
+        saintName: null
+    };
+
+    const path = base_url + "/saint/retrieveAllSaintDetail";
+
+    return postMethod(path, body, postHeader);
+}
+
 export function signUp(id, pw, level) {
     const body = {
         saintName: id,

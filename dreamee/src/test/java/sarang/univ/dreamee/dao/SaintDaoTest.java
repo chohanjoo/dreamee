@@ -20,7 +20,9 @@ public class SaintDaoTest {
 
     @Test
     public void retrieveAllSaintTest(){
-        List<Saint> saints = saintDao.retrieveAllSaint();
+        List<Saint> saints = saintDao.retrieveSaintDetailList(
+                SaintParam.builder().build()
+        );
 
         log.info("saints : {}", saints);
     }

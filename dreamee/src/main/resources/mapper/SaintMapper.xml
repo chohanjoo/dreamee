@@ -19,6 +19,27 @@
         <result property="dateUpdated" column="date_updated"/>
     </resultMap>
 
+    <resultMap id="SaintJoinMap" type="sarang.univ.dreamee.dto.Saint">
+        <result property="saintId" column="saint_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="villageId" column="village_id"/>
+        <result property="age" column="age"/>
+        <result property="name" column="name"/>
+        <result property="preChurch" column="pre_church"/>
+        <result property="gender" column="gender"/>
+        <result property="major" column="major"/>
+        <result property="address" column="address"/>
+        <result property="birthday" column="birthday"/>
+        <result property="baptism" column="baptism"/>
+        <result property="discipleTraining" column="disciple_training"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+
+        <result property="deptName" column="dept_name"/>
+
+        <result property="villageName" column="village_name"/>
+    </resultMap>
+
     <sql id="SaintColumn">
         saint_id,
         dept_id,
@@ -32,6 +53,24 @@
         birthday,
         baptism,
         disciple_training
+    </sql>
+
+    <sql id="SaintJoinColumn">
+        s.saint_id,
+        s.dept_id,
+        s.village_id,
+        s.age,
+        s.name,
+        s.pre_church,
+        s.gender,
+        s.major,
+        s.address,
+        s.birthday,
+        s.baptism,
+        s.disciple_training,
+
+        d.dept_name,
+        v.village_name
     </sql>
 
     <sql id="SaintColumnVariables">
@@ -67,6 +106,24 @@
                 AND name = #{saintName}
             </if>
         </where>
+    </select>
+
+    <select id="retrieveSaintDetailList" resultMap="SaintJoinMap">
+        SELECT
+            <include refid="SaintJoinColumn"/>
+        FROM
+             saint s,
+             department d,
+             village v
+        WHERE
+              s.dept_id = d.dept_id
+          AND s.village_id = v.village_id
+            <if test="saintId != null">
+                AND s.saint_id = #{saintId}
+            </if>
+            <if test="saintName != null">
+                AND s.name = #{saintName}
+            </if>
     </select>
 
     <insert id="registerSaint" parameterType="sarang.univ.dreamee.dto.Saint">

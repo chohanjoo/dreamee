@@ -10,5 +10,6 @@ import java.util.List;
 public interface SaintDao {
     List<Saint> retrieveAllSaint();
     Saint retrieveSaint(SaintParam param);
+    List<Saint> retrieveSaintDetailList(SaintParam param);
     int registerSaint(Saint saint);
 }
