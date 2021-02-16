@@ -6,7 +6,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { getSaintSearchData } from "../../api/Api"
-
+import { setSaint } from "../../api/Storage"
+import { Redirect } from "react-router-dom";
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -17,6 +18,7 @@ function sleep(delay = 0) {
 export default function Asynchronous() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
+  const [redirect, setRedirect] = React.useState(false);
   const loading = open && options.length === 0;
 
   React.useEffect(() => {
@@ -54,10 +56,13 @@ export default function Asynchronous() {
     }
   }, [open]);
 
+
   return (
+    <div>
+      { redirect ? (<Redirect push to="/admin/saint"/>) : null }
     <Autocomplete
       id="asynchronous-demo"
-      style={{ width: 300 }}
+      style={{ width: 200 }}
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -66,15 +71,24 @@ export default function Asynchronous() {
         setOpen(false);
       }}
       groupBy={(option) => option.villageName}
-      getOptionSelected={(option, value) => option.name === value.name}
+      getOptionSelected={(option, value) => {
+
+        if (option.name === value.name ) {
+          console.log("hello : {}", value)
+          setSaint(value.name);
+          setRedirect(true);
+          window.location.reload()
+          
+          return true;
+        }
+      }}
       getOptionLabel={(option) => option.name + " [" + option.age + "]"}
       options={options}
       loading={loading}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Asynchronous"
-          variant="outlined"
+          label="성도 검색"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -87,5 +101,6 @@ export default function Asynchronous() {
         />
       )}
     />
+    </div>
   );
 }

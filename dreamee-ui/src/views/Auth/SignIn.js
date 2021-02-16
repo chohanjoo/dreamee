@@ -131,8 +131,8 @@ export class SignIn extends Component {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" onClick={() => this.signIn()}>로그인</Button>
               <Button color="primary" onClick={() => this.signUp()}>회원가입</Button>
+              <Button color="primary" onClick={() => this.signIn()}>로그인</Button>
             </CardFooter>
           </Card>
         </GridItem>

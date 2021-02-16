@@ -29,6 +29,8 @@ public class SaintController {
     @ApiOperation(value = "성도 리스트 조회", notes = "모든 회원을 조회한다")
     @PostMapping(value = "/retrieveAllSaintDetail")
     public ListResult<Saint> retrieveAllSaintDetail(@RequestBody RetrieveSaintRequest request) {
+        log.debug("SaintController.retrieveAllSaintDetail");
+
         return responseService.getListResult(saintService.retrieveSaintDetail(request));
     }
 
