@@ -31,7 +31,7 @@ export default function Asynchronous() {
     (async () => {
       const response = await getSaintSearchData();
       // fetch('https://country.register.gov.uk/records.json?page-size=5000');
-      await sleep(1e3); // For demo purposes.
+      // await sleep(1e3); // For demo purposes.
       // console.log("res : " + JSON.stringify(response['data'].list))
       // const countries = await response['data'].list;
 
