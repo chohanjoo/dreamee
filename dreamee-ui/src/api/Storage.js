@@ -1,6 +1,7 @@
 export const login = (token, user_id) => {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('USER', user_id);
+    sessionStorage.setItem('SAINT', user_id);
 };
 
 export const getUser = () => {
@@ -12,8 +13,23 @@ export const getUser = () => {
     }
 };
 
+export const setSaint = (saintName) => {
+    sessionStorage.setItem('SAINT', saintName);
+};
+
+export const getSaintNameInStorage = () => {
+    const saint = sessionStorage.getItem('SAINT');
+    try {
+        return saint
+    } catch (e) {
+        return null
+    }
+};
+
+
 export const logout = () => {
     sessionStorage.removeItem('USER');
+    sessionStorage.removeItem('SAINT')
     sessionStorage.removeItem('token');
 };
 

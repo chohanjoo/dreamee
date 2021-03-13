@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
+    "cross-fetch": "^3.0.6",
     "gojs": "^2.1.27",
     "gojs-react": "^1.0.8",
     "history": "4.10.1",
@@ -33,6 +34,7 @@
     "react-scripts": "3.4.1",
     "react-swipeable-views": "0.13.9",
     "react-tooltip": "^4.2.13",
+    "react-window": "^1.8.6",
     "typescript": "3.9.3"
   },
   "scripts": {

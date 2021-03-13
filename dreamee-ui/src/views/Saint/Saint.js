@@ -51,7 +51,7 @@ import {
   getSaintAttList
 } from "../../api/Api";
 
-import { getToken, getUser } from "../../api/Storage"
+import { getToken, getUser, getSaintNameInStorage } from "../../api/Storage"
 
 class Saint extends Component {
 
@@ -73,6 +73,7 @@ class Saint extends Component {
     var token = getToken();
 
     console.log("token : " + token)
+    console.log("mount >> saintId : " + getSaintNameInStorage())
 
     if( token !== null) {
       this.getSaintInfo();
@@ -82,7 +83,7 @@ class Saint extends Component {
   }
 
   getSaintInfo() {
-    getSaint(null, getUser())
+    getSaint(null, getSaintNameInStorage())
     .then(res => {
       const result = res.status;
 

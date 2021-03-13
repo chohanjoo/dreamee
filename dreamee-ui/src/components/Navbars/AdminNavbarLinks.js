@@ -23,6 +23,7 @@ import styles from "assets/jss/material-dashboard-react/components/headerLinksSt
 
 import { logout, getToken } from "../../api/Storage"
 import { Redirect } from "react-router-dom";
+import Asynchronous from "../Search/Asynchronous";
 
 const useStyles = makeStyles(styles);
 
@@ -71,7 +72,8 @@ export default function AdminNavbarLinks() {
       { redirect ? (<Redirect push to="/admin/auth/signin"/>) : null }
       { login ? (<Redirect push to="/admin/auth/signin"/>) : null }
       <div className={classes.searchWrapper}>
-        <CustomInput
+        <Asynchronous></Asynchronous>
+        {/* <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search
           }}
@@ -84,7 +86,7 @@ export default function AdminNavbarLinks() {
         />
         <Button color="white" aria-label="edit" justIcon round>
           <Search />
-        </Button>
+        </Button> */}
       </div>
       <Button
         color={window.innerWidth > 959 ? "transparent" : "white"}

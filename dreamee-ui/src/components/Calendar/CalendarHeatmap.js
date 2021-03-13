@@ -11,9 +11,9 @@ export default function CalendarHeatmapComponent() {
   startDate={new Date('2021-01-01')}
   endDate={new Date('2021-12-31')}
   values={[
-    { date: '2021-01-01', count: 12 },
+    { date: '2021-11-01', count: 12 },
     { date: '2021-01-22', count: 122 },
-    { date: '2021-01-30', count: 38 },
+    { date: '2021-02-30', count: 38 },
     // ...and so on
   ]}
   tooltipDataAttrs={value => {
