@@ -1,4 +1,4 @@
-import React, {Component}  from "react";
+import React, { Component } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -66,7 +66,8 @@ class Saint extends Component {
     attList: [],
     villageInfo: {},
     gbsLeaderList: [],
-    saintAttList: []
+    saintAttList: [],
+    saintCurrentYearAttList: []
   }
 
   componentDidMount() {
@@ -74,7 +75,7 @@ class Saint extends Component {
 
     console.log("token : " + token)
 
-    if( token !== null) {
+    if (token !== null) {
       this.getSaintInfo();
     } else {
       this.props.history.push("/admin/auth/signin")
@@ -83,22 +84,23 @@ class Saint extends Component {
 
   getSaintInfo() {
     getSaint(null, getUser())
-    .then(res => {
-      const result = res.status;
+      .then(res => {
+        const result = res.status;
 
-      if(result === 200) {
-        console.log(res.data)
-        this.setState({
-          saintInfo: res.data.data
-        })
-        this.getDeptInfo();
-        // this.getGbsInfo();
-        // this.getAttListByGbs();
-        this.getVillageInfo();
-        this.getGbsLeaderList(res.data.data.saintId);
-        this.getSaintAttList(res.data.data.saintId);
-      }
-    })
+        if (result === 200) {
+          console.log(res.data)
+          this.setState({
+            saintInfo: res.data.data
+          })
+          this.getDeptInfo();
+          // this.getGbsInfo();
+          // this.getAttListByGbs();
+          this.getVillageInfo();
+          this.getGbsLeaderList(res.data.data.saintId);
+          this.getSaintAttList(res.data.data.saintId);
+          this.getSaintCurrentYearAttList(res.data.data.saintId);
+        }
+      })
   }
 
   getGbsLeaderList(saintId) {
@@ -106,16 +108,16 @@ class Saint extends Component {
     gbsMember['saintId'] = saintId;
 
     getGbsLeaderList(gbsMember)
-    .then(res => {
-      const result = res.status;
+      .then(res => {
+        const result = res.status;
 
-      if(result === 200) {
-        console.log("getGbsLeaderList : ",res.data)
-        this.setState({
-          gbsLeaderList: res.data.list
-        })
-      }
-    })
+        if (result === 200) {
+          console.log("getGbsLeaderList : ", res.data)
+          this.setState({
+            gbsLeaderList: res.data.list
+          })
+        }
+      })
   }
 
 
@@ -124,53 +126,70 @@ class Saint extends Component {
     RetrieveAttendanceRequest['saintId'] = saintId;
 
     getSaintAttList(RetrieveAttendanceRequest)
-    .then(res => {
-      const result = res.status;
+      .then(res => {
+        const result = res.status;
 
-      if(result === 200) {
-        console.log("saintAttList : ",res.data)
-        this.setState({
-          saintAttList: res.data.list
-        })
-      }
-    })
+        if (result === 200) {
+          console.log("saintAttList : ", res.data)
+          this.setState({
+            saintAttList: res.data.list
+          })
+        }
+      })
   }
 
+  getSaintCurrentYearAttList(saintId) {
+    var RetrieveAttendanceRequest = {}
+    RetrieveAttendanceRequest['saintId'] = saintId;
+    RetrieveAttendanceRequest['thisYear'] = "true";
+
+    getSaintAttList(RetrieveAttendanceRequest)
+      .then(res => {
+        const result = res.status;
+
+        if (result === 200) {
+          console.log("saintCurrentYearAttList : ", res.data)
+          this.setState({
+            saintCurrentYearAttList: res.data.list
+          })
+        }
+      })
+  }
 
   getDeptInfo() {
     getDept(this.state.saintInfo.deptId)
-    .then(res => {
-      const result = res.status;
+      .then(res => {
+        const result = res.status;
 
-      if(result === 200) {
-        console.log(res.data)
-        this.setState({
-          deptInfo: res.data.data
-        })
-      }
-    })
+        if (result === 200) {
+          console.log(res.data)
+          this.setState({
+            deptInfo: res.data.data
+          })
+        }
+      })
   }
 
   getVillageInfo() {
     getVillageById(this.state.saintInfo.villageId)
-    .then(res => {
-      const result = res.status;
+      .then(res => {
+        const result = res.status;
 
-      if(result === 200) {
-        console.log("village : {}", res.data)
-        this.setState({
-          villageInfo: res.data.data
-        })
-      }
-    })
+        if (result === 200) {
+          console.log("village : {}", res.data)
+          this.setState({
+            villageInfo: res.data.data
+          })
+        }
+      })
   }
 
   tableData = () => {
 
     var data = [];
-    this.state.gbsLeaderList.map( (row, index) => {
+    this.state.gbsLeaderList.map((row, index) => {
       console.log(index + " : " + JSON.stringify(row['gbs']))
-      data.push({id : index, '마을': row.gbs.villageId, '이름': row.saint.name, '분기' : row.gbs.activeTerm})
+      data.push({ id: index, '마을': row.gbs.villageId, '이름': row.saint.name, '분기': row.gbs.activeTerm })
     })
 
     return data;
@@ -179,164 +198,164 @@ class Saint extends Component {
   attTableData = () => {
 
     var data = [];
-    this.state.saintAttList.map( (att, index) => {
+    this.state.saintAttList.map((att, index) => {
       console.log(index + " : " + att)
-      data.push({id : index, '시간': att.dateCreated, '대예배': att.worshipState, '대학부' : att.attState, '큐티' : att.qtNumber, '리더' : att.leaderName, '마을' : att.villageName })
+      data.push({ id: index, '시간': att.dateCreated, '대예배': att.worshipState, '대학부': att.attState, '큐티': att.qtNumber, '리더': att.leaderName, '마을': att.villageName })
     })
 
     return data;
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     const columns = [
-      {field: '마을'},
-      {field: '이름'},
-      {field: '분기'}
+      { field: '마을' },
+      { field: '이름' },
+      { field: '분기' }
     ]
 
     const attColumns = [
-      {field: '시간', width: 200},
-      {field: '대예배'},
-      {field: '대학부'},
-      {field: '큐티'},
-      {field: '리더'},
-      {field: '마을'}
+      { field: '시간', width: 200 },
+      { field: '대예배' },
+      { field: '대학부' },
+      { field: '큐티' },
+      { field: '리더' },
+      { field: '마을' }
     ]
 
     return (
       <div>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <Accessibility />
-              </CardIcon>
-              <p className={classes.cardCategory}>대학부</p>
-    <h3 className={classes.cardTitle}>{this.state.deptInfo.deptName}</h3>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4}>
+            <Card>
+              <CardHeader color="info" stats icon>
+                <CardIcon color="info">
+                  <Accessibility />
+                </CardIcon>
+                <p className={classes.cardCategory}>대학부</p>
+                <h3 className={classes.cardTitle}>{this.state.deptInfo.deptName}</h3>
 
-              <p className={classes.cardCategory}>마을</p>
-    <h3 className={classes.cardTitle}>{this.state.villageInfo.villageName}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
+                <p className={classes.cardCategory}>마을</p>
+                <h3 className={classes.cardTitle}>{this.state.villageInfo.villageName}</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <Update />
                 Just Updated
               </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <Accessibility />
-              </CardIcon>
-              <p className={classes.cardCategory}>이름</p>
-    <h3 className={classes.cardTitle}>{this.state.saintInfo.name}</h3>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={4}>
+            <Card>
+              <CardHeader color="info" stats icon>
+                <CardIcon color="info">
+                  <Accessibility />
+                </CardIcon>
+                <p className={classes.cardCategory}>이름</p>
+                <h3 className={classes.cardTitle}>{this.state.saintInfo.name}</h3>
 
-              <p className={classes.cardCategory}>학년</p>
-    <h3 className={classes.cardTitle}>{this.state.saintInfo.age}</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
+                <p className={classes.cardCategory}>학년</p>
+                <h3 className={classes.cardTitle}>{this.state.saintInfo.age}</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <Update />
                 Just Updated
               </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+              </CardFooter>
+            </Card>
+          </GridItem>
         </GridContainer>
         <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card chart>
-            <CardHeader color="success">
-              <ChartistGraph
-                className="ct-chart"
-                data={dailySalesChart.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>출석률 Graph</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+          <GridItem xs={12} sm={12} md={12}>
+            <Card chart>
+              <CardHeader color="success">
+                <ChartistGraph
+                  className="ct-chart"
+                  data={dailySalesChart.data}
+                  type="Line"
+                  options={dailySalesChart.options}
+                  listener={dailySalesChart.animation}
+                />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardTitle}>출석률 Graph</h4>
+                <p className={classes.cardCategory}>
+                  <span className={classes.successText}>
+                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                 </span>{" "}
                 increase in today sales.
               </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+              </CardBody>
+              <CardFooter chart>
+                <div className={classes.stats}>
+                  <AccessTime /> updated 4 minutes ago
               </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+              </CardFooter>
+            </Card>
+          </GridItem>
 
 
-        <GridItem xs={12} sm={12} md={12}>
-          <Card chart>
-            <CardHeader color="warning">
-            <h4 className={classes.cardTitle}>출석률 Graph</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+          <GridItem xs={12} sm={12} md={12}>
+            <Card chart>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitle}>출석률 Graph</h4>
+                <p className={classes.cardCategory}>
+                  <span className={classes.successText}>
+                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                 </span>{" "}
                 increase in today sales.
               </p>
-              
-            </CardHeader>
-            <CardBody>
-              <div style={{ height: '100%', width: '80%'}}>
-                {/* <Calendar/> */}
-                <CalendarHeatmap/>
-              </div>
 
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+              </CardHeader>
+              <CardBody>
+                <div style={{ height: '100%', width: '80%' }}>
+                  {/* <Calendar/> */}
+                  <CalendarHeatmap attList={this.state.saintCurrentYearAttList}/>
+                </div>
+
+              </CardBody>
+              <CardFooter chart>
+                <div className={classes.stats}>
+                  <AccessTime /> updated 4 minutes ago
               </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+              </CardFooter>
+            </Card>
+          </GridItem>
 
 
         </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>리더 리스트</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>리더 리스트</h4>
+                <p className={classes.cardCategoryWhite}>
+                  New employees on 15th September, 2016
               </p>
-            </CardHeader>
-            <CardBody>
-            <div style={{ height: 300, width: '100%' }}>
-              <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={columns} rows={this.tableData()}/>
-            </div>
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>출석부</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
+              </CardHeader>
+              <CardBody>
+                <div style={{ height: 300, width: '100%' }}>
+                  <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={columns} rows={this.tableData()} />
+                </div>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>출석부</h4>
+                <p className={classes.cardCategoryWhite}>
+                  New employees on 15th September, 2016
               </p>
-            </CardHeader>
-            <CardBody>
-            <div style={{ height: 300, width: '100%' }}>
-              <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={attColumns} rows={this.attTableData()}/>
-            </div>
-              {/* <Table
+              </CardHeader>
+              <CardBody>
+                <div style={{ height: 300, width: '100%' }}>
+                  <DataGrid pageSize={5} rowsPerPageOptions={[5, 10, 20]} columns={attColumns} rows={this.attTableData()} />
+                </div>
+                {/* <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
                 tableData={[
@@ -346,33 +365,33 @@ class Saint extends Component {
                   ["4", "Philip Chaney", "$38,735", "Korea, South"]
                 ]}
               /> */}
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>리더가 리더에게</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>리더가 리더에게</h4>
+                <p className={classes.cardCategoryWhite}>
+                  New employees on 15th September, 2016
               </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
-    </div>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  tableHeaderColor="warning"
+                  tableHead={["ID", "Name", "Salary", "Country"]}
+                  tableData={[
+                    ["1", "Dakota Rice", "$36,738", "Niger"],
+                    ["2", "Minerva Hooper", "$23,789", "Curaçao"],
+                    ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
+                    ["4", "Philip Chaney", "$38,735", "Korea, South"]
+                  ]}
+                />
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
     );
   }
 }

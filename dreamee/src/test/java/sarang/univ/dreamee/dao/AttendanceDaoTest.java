@@ -36,6 +36,7 @@ public class AttendanceDaoTest {
     public void retrieveAttendanceList() {
         AttParam attParam = AttParam.builder()
                 .saintId(13)
+                .isThisYear(true)
                 .build();
 
         List<SaintAtt> saintAtts = attendanceDao.retrieveAttendanceList(attParam);

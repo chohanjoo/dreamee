@@ -57,6 +57,7 @@ public class AttendanceServiceImpl implements AttendanceService{
         return attendanceDao.retrieveAttendanceList(
                 AttParam.builder()
                         .saintId(request.getSaintId())
+                        .isThisYear(request.isThisYear())
                         .build()
         );
     }

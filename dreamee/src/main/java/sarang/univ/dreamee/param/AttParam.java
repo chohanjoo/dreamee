@@ -10,4 +10,5 @@ import lombok.*;
 @AllArgsConstructor
 public class AttParam {
     private Integer saintId;
+    private boolean isThisYear;
 }

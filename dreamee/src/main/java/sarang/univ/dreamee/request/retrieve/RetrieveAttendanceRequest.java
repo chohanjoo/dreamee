@@ -9,5 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RetrieveAttendanceRequest {
+
+    @Builder.Default
+    private boolean isThisYear = false;
+
     private Integer saintId;
 }

@@ -56,7 +56,7 @@ export default function AdminNavbarLinks() {
 
   const handleLogout = () => {
     logout()
-    
+
     setOpenProfile(null);
     setRedirect(true);
   }
@@ -68,8 +68,8 @@ export default function AdminNavbarLinks() {
 
   return (
     <div>
-      { redirect ? (<Redirect push to="/admin/auth/signin"/>) : null }
-      { login ? (<Redirect push to="/admin/auth/signin"/>) : null }
+      { redirect ? (<Redirect push to="/admin/auth/signin" />) : null}
+      { login ? (<Redirect push to="/admin/auth/signin" />) : null}
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -229,19 +229,19 @@ export default function AdminNavbarLinks() {
                     <Divider light /> */}
                     {
                       getToken() === null
-                      ?
-                      <MenuItem
-                      onClick={handleLogin}
-                      className={classes.dropdownItem}
-                    >
-                      Login
+                        ?
+                        <MenuItem
+                          onClick={handleLogin}
+                          className={classes.dropdownItem}
+                        >
+                          Login
                     </MenuItem>
-                      : 
-                      <MenuItem
-                      onClick={handleLogout}
-                      className={classes.dropdownItem}
-                    >
-                      Logout
+                        :
+                        <MenuItem
+                          onClick={handleLogout}
+                          className={classes.dropdownItem}
+                        >
+                          Logout
                     </MenuItem>
                     }
                   </MenuList>

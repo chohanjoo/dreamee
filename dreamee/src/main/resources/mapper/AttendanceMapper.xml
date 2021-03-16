@@ -92,6 +92,9 @@
             <if test="saintId != null">
                 AND a.saint_id = #{saintId}
             </if>
+            <if test="isThisYear != false">
+                AND YEAR(a.date_created) = YEAR(now())
+            </if>
     </select>
 
     <insert id="registerAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
