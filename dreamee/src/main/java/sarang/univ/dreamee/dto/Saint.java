@@ -23,4 +23,8 @@ public class Saint {
     private String discipleTraining;
     private Integer dateCreated;
     private Integer dateUpdated;
+
+    private String deptName;
+
+    private String villageName;
 }

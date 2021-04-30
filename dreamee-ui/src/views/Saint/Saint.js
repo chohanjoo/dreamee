@@ -51,7 +51,7 @@ import {
   getSaintAttList
 } from "../../api/Api";
 
-import { getToken, getUser } from "../../api/Storage"
+import { getToken, getUser, getSaintNameInStorage } from "../../api/Storage"
 
 class Saint extends Component {
 
@@ -74,8 +74,9 @@ class Saint extends Component {
     var token = getToken();
 
     console.log("token : " + token)
+    console.log("mount >> saintId : " + getSaintNameInStorage())
 
-    if (token !== null) {
+    if( token !== null) {
       this.getSaintInfo();
     } else {
       this.props.history.push("/normal/auth/signin")
@@ -83,9 +84,9 @@ class Saint extends Component {
   }
 
   getSaintInfo() {
-    getSaint(null, getUser())
-      .then(res => {
-        const result = res.status;
+    getSaint(null, getSaintNameInStorage())
+    .then(res => {
+      const result = res.status;
 
         if (result === 200) {
           console.log(res.data)

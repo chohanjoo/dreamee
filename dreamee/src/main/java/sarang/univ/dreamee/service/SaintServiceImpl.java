@@ -25,8 +25,13 @@ public class SaintServiceImpl implements SaintService{
     private final VillageDao villageDao;
 
     @Override
-    public List<Saint> retrieveAllSaint() {
-        return saintDao.retrieveAllSaint();
+    public List<Saint> retrieveSaintDetail(RetrieveSaintRequest request) {
+        return saintDao.retrieveSaintDetailList(
+                SaintParam.builder()
+                        .saintName(request.getSaintName())
+                        .saintId(request.getSaintId())
+                        .build()
+        );
     }
 
     @Override

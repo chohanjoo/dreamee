@@ -27,9 +27,11 @@ public class SaintController {
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "성도 리스트 조회", notes = "모든 회원을 조회한다")
-    @GetMapping(value = "/all")
-    public ListResult<Saint> retrieveAllSaint() {
-        return responseService.getListResult(saintService.retrieveAllSaint());
+    @PostMapping(value = "/retrieveAllSaintDetail")
+    public ListResult<Saint> retrieveAllSaintDetail(@RequestBody RetrieveSaintRequest request) {
+        log.debug("SaintController.retrieveAllSaintDetail");
+
+        return responseService.getListResult(saintService.retrieveSaintDetail(request));
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
