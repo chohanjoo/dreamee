@@ -138,7 +138,7 @@ class Village extends Component {
           const worshipState = att.worshipState;
           const qtNumber = att.qtNumber;
           const dateUpdated = att.dateUpdated;
-          attendance.push({saintName, univAtt, worshipState, qtNumber, dateUpdated})
+          attendance.push({saintName:saintName, univAtt:univAtt, worshipState:worshipState, qtNumber:qtNumber, dateUpdated:dateUpdated})
         })
   
       }
