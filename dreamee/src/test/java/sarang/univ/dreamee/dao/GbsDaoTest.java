@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.param.SaintParam;
+import sarang.univ.dreamee.response.type.SaintAtt;
 
 import java.util.List;
 
@@ -43,64 +45,64 @@ public class GbsDaoTest {
 
     @Before
     public void setup() {
-        pastorDao.registerPastor("ABC");
-        Pastor pastor = pastorDao.retrievePastorByName("ABC");
-
-        Dept dept = Dept.builder()
-                .deptLocation("장소")
-                .pastorId(pastor.getPastorId())
-                .deptName("가그린부").build();
-
-        deptDao.registerDept(dept);
-        dept = deptDao.retrieveDeptByName(dept.getDeptName());
-
-        Saint saint = Saint.builder()
-                .deptId(dept.getDeptId())
-                .name("USER").build();
-
-        saintDao.registerSaint(saint);
-        saint = saintDao.retrieveSaint(
-                SaintParam.builder()
-                        .saintName(saint.getName())
-                        .build()
-        );
-
-        Saint _leader = Saint.builder()
-                .deptId(dept.getDeptId())
-                .name("LEADER").build();
-
-        saintDao.registerSaint(_leader);
-        _leader = saintDao.retrieveSaint(
-                SaintParam.builder()
-                        .saintName(_leader.getName())
-                        .build()
-        );
-
-        Leader leader = Leader.builder()
-                .password("TEST")
-                .role("리더")
-                .saintId(_leader.getSaintId())
-                .active("Y").build();
-
-        leaderDao.registerLeader(leader);
-
-        leader = leaderDao.retrieveLeader(
-                LeaderParam.builder()
-                        .saintId(leader.getSaintId())
-                        .build()
-        );
-
-        Village village = Village.builder()
-                .saintId(leader.getSaintId())
-                .villageName("z마을").build();
-
-        villageDao.registerVillage(village);
-        village = villageDao.retrieveVillageByVillageName(village.getVillageName());
-
-        gbs = Gbs.builder()
-                .saintId(saint.getSaintId())
-                .leaderId(leader.getLeaderId())
-                .villageId(village.getVillageId()).build();
+//        pastorDao.registerPastor("ABC");
+//        Pastor pastor = pastorDao.retrievePastorByName("ABC");
+//
+//        Dept dept = Dept.builder()
+//                .deptLocation("장소")
+//                .pastorId(pastor.getPastorId())
+//                .deptName("가그린부").build();
+//
+//        deptDao.registerDept(dept);
+//        dept = deptDao.retrieveDeptByName(dept.getDeptName());
+//
+//        Saint saint = Saint.builder()
+//                .deptId(dept.getDeptId())
+//                .name("USER").build();
+//
+//        saintDao.registerSaint(saint);
+//        saint = saintDao.retrieveSaint(
+//                SaintParam.builder()
+//                        .saintName(saint.getName())
+//                        .build()
+//        );
+//
+//        Saint _leader = Saint.builder()
+//                .deptId(dept.getDeptId())
+//                .name("LEADER").build();
+//
+//        saintDao.registerSaint(_leader);
+//        _leader = saintDao.retrieveSaint(
+//                SaintParam.builder()
+//                        .saintName(_leader.getName())
+//                        .build()
+//        );
+//
+//        Leader leader = Leader.builder()
+//                .password("TEST")
+//                .role("리더")
+//                .saintId(_leader.getSaintId())
+//                .active("Y").build();
+//
+//        leaderDao.registerLeader(leader);
+//
+//        leader = leaderDao.retrieveLeader(
+//                LeaderParam.builder()
+//                        .saintId(leader.getSaintId())
+//                        .build()
+//        );
+//
+//        Village village = Village.builder()
+//                .saintId(leader.getSaintId())
+//                .villageName("z마을").build();
+//
+//        villageDao.registerVillage(village);
+//        village = villageDao.retrieveVillageByVillageName(village.getVillageName());
+//
+//        gbs = Gbs.builder()
+//                .saintId(saint.getSaintId())
+//                .leaderId(leader.getLeaderId())
+//                .villageId(village.getVillageId()).build();
     }
     @Test
     public void retrieveAllGbsTest() {
@@ -114,5 +116,31 @@ public class GbsDaoTest {
         int result = gbsDao.registerGbs(gbs);
 
         then(result).isEqualTo(1);
+    }
+
+    @Test
+    public void retrieveGbsByLeaderIdAndActiveTerm() {
+        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderIdAndActiveTerm(
+                GbsParam.builder()
+                .leaderId(14)
+                .activeTerm("2021-1")
+                .isThisWeek(true)
+                .build()
+        );
+
+        log.info("gbsList : {}", gbsList);
+    }
+
+    @Test
+    public void retrieveGbsAttByLeaderIdAndActiveTerm() {
+        List<SaintAtt> saintAttList = gbsDao.retrieveGbsAttByLeaderIdAndActiveTerm(
+                GbsParam.builder()
+                        .leaderId(14)
+                        .activeTerm("2021-1")
+                        .isThisWeek(true)
+                        .build()
+        );
+
+        log.info("saintAttList : {}", saintAttList);
     }
 }

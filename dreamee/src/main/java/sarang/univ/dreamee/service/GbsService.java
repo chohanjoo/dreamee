@@ -3,6 +3,7 @@ package sarang.univ.dreamee.service;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.request.GbsRequest;
+import sarang.univ.dreamee.request.RegisterGbsRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveGbsRequest;
 import sarang.univ.dreamee.response.type.GbsMember;
 
@@ -16,5 +17,5 @@ public interface GbsService {
 //    Gbs retrieveGbsByLeaderNameAndActiveTerm(GbsRequest request);
     List<Gbs> retrieveGbsByVillageName(String villageName);
     List<Gbs> retrieveGbsBySaintNameAndLeaderName(GbsRequest request) throws Exception;
-    Integer registerGbs(GbsRequest request) throws Exception;
+    Integer registerGbs(RegisterGbsRequest request) throws Exception;
 }

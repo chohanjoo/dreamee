@@ -9,6 +9,7 @@ import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.request.GbsRequest;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.RegisterGbsRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveGbsRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
@@ -171,7 +172,7 @@ public class GbsServiceImpl implements GbsService{
     }
 
     @Override
-    public Integer registerGbs(GbsRequest request) throws Exception {
+    public Integer registerGbs(RegisterGbsRequest request) throws Exception {
         try {
 
             Saint saint = saintService.retrieveSaint(
@@ -180,15 +181,9 @@ public class GbsServiceImpl implements GbsService{
                             .build()
             );
 
-            Saint _leader = saintService.retrieveSaint(
-                    RetrieveSaintRequest.builder()
-                            .saintName(request.getLeaderName())
-                            .build()
-            );
-
             Leader leader = leaderService.retrieveLeader(
                     RetrieveLeaderRequest.builder()
-                            .saintId(_leader.getSaintId())
+                            .saintName(request.getLeaderName())
                             .build()
             );
 
@@ -197,7 +192,9 @@ public class GbsServiceImpl implements GbsService{
             Gbs gbs = Gbs.builder()
                     .leaderId(leader.getLeaderId())
                     .saintId(saint.getSaintId())
-                    .villageId(village.getVillageId()).build();
+                    .villageId(village.getVillageId())
+                    .activeTerm(request.getActiveTerm())
+                    .build();
 
             return gbsDao.registerGbs(gbs);
         } catch (Exception e) {

@@ -13,6 +13,16 @@ const getHeader = {
     'X-AUTH-TOKEN': getToken()
 };
 
+export function getLeaderGroupOnVillageList(leaderId, activeTerm) {
+    const body = {
+        leaderId: leaderId,
+        activeTerm: activeTerm
+    }
+
+    const path = base_url + "/leader/retrieveLeaderGroupOnVillageList";
+
+    return postMethod(path, body, postHeader);
+}
 
 export function signUp(id, pw, level) {
     const body = {

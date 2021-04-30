@@ -78,7 +78,7 @@ class Saint extends Component {
     if (token !== null) {
       this.getSaintInfo();
     } else {
-      this.props.history.push("/admin/auth/signin")
+      this.props.history.push("/normal/auth/signin")
     }
   }
 

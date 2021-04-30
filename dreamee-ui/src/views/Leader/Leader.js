@@ -304,7 +304,7 @@ class Leader extends Component {
       this.getDate()
       this.getLeaderInfo()
     } else {
-      this.props.history.push("/admin/auth/signin")
+      this.props.history.push("/normal/auth/signin")
     }
   }
 

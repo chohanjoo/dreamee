@@ -68,8 +68,8 @@ export default function AdminNavbarLinks() {
 
   return (
     <div>
-      { redirect ? (<Redirect push to="/admin/auth/signin" />) : null}
-      { login ? (<Redirect push to="/admin/auth/signin" />) : null}
+      { redirect ? (<Redirect push to="/normal/auth/signin" />) : null}
+      { login ? (<Redirect push to="/normal/auth/signin" />) : null}
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{

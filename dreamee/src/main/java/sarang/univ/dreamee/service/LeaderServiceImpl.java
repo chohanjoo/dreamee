@@ -1,5 +1,6 @@
 package sarang.univ.dreamee.service;
 
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,17 +9,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dao.AuthorityDao;
+import sarang.univ.dreamee.dao.GbsDao;
 import sarang.univ.dreamee.dao.LeaderDao;
 import sarang.univ.dreamee.dao.SaintDao;
+import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.dto.Leader;
+import sarang.univ.dreamee.dto.LeaderDetail;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.enums.RoleCodeEnum;
 import sarang.univ.dreamee.enums.YnEnum;
+import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.param.LeaderParam;
+import sarang.univ.dreamee.param.SaintParam;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
+import sarang.univ.dreamee.response.type.SaintAtt;
+import sarang.univ.dreamee.response.type.TodayGbsAtt;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +38,7 @@ public class LeaderServiceImpl implements LeaderService{
 
     private final LeaderDao leaderDao;
     private final SaintDao saintDao;
+    private final GbsDao gbsDao;
     private final AuthorityDao authorityDao;
 
     private final SaintService saintService;
@@ -45,10 +54,8 @@ public class LeaderServiceImpl implements LeaderService{
 
         Integer saintId = request.getSaintId();
 
-        if(
-                saintId == null
-                && request.getSaintName() != null
-        ) {
+        if(saintId == null
+                && request.getSaintName() != null) {
 
             Saint saint = saintService.retrieveSaint(
                     RetrieveSaintRequest.builder()
@@ -59,10 +66,8 @@ public class LeaderServiceImpl implements LeaderService{
             saintId = saint.getSaintId();
         }
 
-        if(
-                saintId == null
-                && request.getLeaderId() == null
-        ) {
+        if(saintId == null
+                && request.getLeaderId() == null) {
             //TODO throw Exception
         }
 
@@ -72,6 +77,53 @@ public class LeaderServiceImpl implements LeaderService{
                         .saintId(saintId)
                         .build()
         );
+    }
+
+    @Override
+    public List<TodayGbsAtt> retrieveLeaderGroupOnVillageList(RetrieveLeaderRequest request) {
+        log.debug("request >> {}", request);
+
+        Leader leader = leaderDao.retrieveLeader(
+                LeaderParam.builder()
+                        .leaderId(request.getLeaderId())
+                        .build()
+        );
+
+        Saint saint = saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintId(leader.getSaintId())
+                        .build()
+        );
+
+        List<LeaderDetail> leaderDetails = leaderDao.retrieveLeaderList(
+                LeaderParam.builder()
+                        .villageId(saint.getVillageId())
+                        .roleCode(RoleCodeEnum.LEADER.getCode())
+                        .build()
+        );
+
+        List<TodayGbsAtt> todayGbsAttList = Lists.newArrayList();
+
+        for (LeaderDetail leaderInfo : leaderDetails) {
+            List<SaintAtt> saintAttList = gbsDao.retrieveGbsAttByLeaderIdAndActiveTerm(
+                    GbsParam.builder()
+                            .leaderId(leaderInfo.getLeaderId())
+                            .activeTerm(request.getActiveTerm())
+                            .isThisWeek(true)
+                            .build()
+            );
+
+            todayGbsAttList.add(
+                    TodayGbsAtt.builder()
+                            .leaderDetail(leaderInfo)
+                            .saintAttList(saintAttList)
+                            .build()
+            );
+        }
+
+        log.debug("todayGbsAttList >> {}", todayGbsAttList);
+
+        return todayGbsAttList;
     }
 
     //TODO naming 변경 필요 , 필요한 메소드일까?

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
@@ -54,13 +54,123 @@ import avatar from "assets/img/faces/marc.jpg";
 import BasicTree from "components/Tree/BasicTree"
 import ScrollableTabs from "components/Tabs/ScrollableTabs"
 import WordTree from "components/Graph/EplicitWordTree"
+import Collapsibletable from "components/Table/Collapsibletable"
 
-const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
-  const classes = useStyles();
-  return (
-    <div>
+import {
+  getLeaderGroupOnVillageList,
+  getLeader
+} from "../../api/Api";
+
+
+import { getToken, getUser } from "../../api/Storage"
+
+
+class Village extends Component {
+
+  state = {
+    leaderInfo: {},
+    gbsGroupAtt: [],
+    activeTerm: ""
+  }
+
+  getActiveTerm() {
+    var today = new Date();
+    var term = ""
+
+    term  = parseInt( Number(today.getMonth() + 1) / 6 ) + 1
+
+    this.setState({
+      activeTerm: today.getFullYear() + "-" + term
+    })
+  }
+
+  getLeaderGbsAttList(leaderId) {
+    getLeaderGroupOnVillageList(leaderId, this.state.activeTerm)
+      .then(res => {
+        const result = res.status;
+
+        if (result === 200) {
+          console.log("getLeaderGbsAttList : ", res.data.list)
+          this.setState({
+            gbsGroupAtt: res.data.list
+          })
+        }
+      })
+  }
+
+  getLeaderInfo() {
+    getLeader(getUser())
+    .then(res => {
+      const result = res.status;
+
+      if(result === 200) {
+        console.log(res.data)
+        this.setState({
+          leaderInfo: res.data.data
+        })
+
+        const leaderId = res.data.data.leaderId;
+        this.getLeaderGbsAttList(leaderId);
+      }
+    })
+  }
+
+  makeTableData() {
+    var data = [];
+
+    this.state.gbsGroupAtt.map(rowData => {
+      const leader = rowData.leaderDetail;
+      const leaderName = leader.name;
+      const active = leader.active;
+      const gender = leader.gender;
+      const age = leader.age;
+      const birthday = leader.birthday
+
+      var attendance = []
+
+      const attList = rowData.saintAttList;
+  
+      if (attList != null) {
+        attList.map(att => {
+          const saintName = att.saintName;
+          const univAtt = att.attState;
+          const worshipState = att.worshipState;
+          const qtNumber = att.qtNumber;
+          const dateUpdated = att.dateUpdated;
+          attendance.push({saintName, univAtt, worshipState, qtNumber, dateUpdated})
+        })
+  
+      }
+
+      var att = {leaderName, active, gender, age, birthday, attendance}
+      data.push(att) 
+    })
+
+    console.log(data)
+    return data;
+  }
+
+  componentDidMount() {
+    this.getActiveTerm();
+
+    var token = getToken();
+
+    console.log("token : " + token)
+
+    if (token !== null) {
+      this.getLeaderInfo();
+    } else {
+      this.props.history.push("/normal/auth/signin")
+    }
+    
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div>
       <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
@@ -78,13 +188,13 @@ export default function Dashboard() {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>리더 찾기</h4>
+            <h4 className={classes.cardTitleWhite}>이번주 목장 출석부</h4>
             <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
             </p>
           </CardHeader>
           <CardBody>
-          <ScrollableTabs/>
+            <Collapsibletable rowData={this.makeTableData()}/>
           </CardBody>
         </Card>
       </GridItem>
@@ -157,5 +267,8 @@ export default function Dashboard() {
       </GridItem>
     </GridContainer> */}
     </div>
-  );
+    );
+  }
 }
+
+export default withStyles(styles)(Village);

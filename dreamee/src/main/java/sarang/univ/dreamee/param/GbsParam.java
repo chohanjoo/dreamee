@@ -10,4 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class GbsParam {
     private Integer leaderId;
+
+    private Boolean isThisWeek;
+    private String activeTerm;
 }

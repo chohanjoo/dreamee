@@ -77,7 +77,7 @@ export class SignIn extends Component {
   }
 
   signUp() {
-    this.props.history.push("/admin/auth/signup")
+    this.props.history.push("/normal/auth/signup")
   }
 
   render() {

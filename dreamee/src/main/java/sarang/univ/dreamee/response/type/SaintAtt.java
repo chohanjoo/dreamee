@@ -24,4 +24,6 @@ public class SaintAtt {
     private Integer leaderId;
 
     private String villageName;
+
+    private String saintName;
 }

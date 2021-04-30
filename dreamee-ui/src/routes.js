@@ -30,6 +30,7 @@ import SaintPage from "views/Saint/Saint.js";
 import VillagePage from "views/Village/Village.js";
 import SignInPage from "views/Auth/SignIn.js"
 import SignUpPage from "views/Auth/SignUp.js"
+import AdminPage from "views/Admin/Admin.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
@@ -46,7 +47,7 @@ const dashboardRoutes = [
     name: "리더",
     icon: Dashboard,
     component: LeaderPage,
-    layout: "/admin",
+    layout: "/normal",
     expand: false
   },
   {
@@ -54,7 +55,7 @@ const dashboardRoutes = [
     name: "조원",
     icon: Dashboard,
     component: SaintPage,
-    layout: "/admin",
+    layout: "/normal",
     expand: false
   },
   {
@@ -62,6 +63,14 @@ const dashboardRoutes = [
     name: "마을",
     icon: Dashboard,
     component: VillagePage,
+    layout: "/normal",
+    expand: true
+  },
+  {
+    path: "/gbs",
+    name: "ADMIN",
+    icon: Dashboard,
+    component: AdminPage,
     layout: "/admin",
     expand: true
   },
@@ -70,7 +79,7 @@ const dashboardRoutes = [
     name: "로그인",
     icon: Person,
     component: SignInPage,
-    layout: "/admin",
+    layout: "/normal",
     expand: true
   },
   {
@@ -78,7 +87,7 @@ const dashboardRoutes = [
     name: "회원가입",
     icon: Person,
     component: SignUpPage,
-    layout: "/admin",
+    layout: "/normal",
     expand: true
   },
   // {

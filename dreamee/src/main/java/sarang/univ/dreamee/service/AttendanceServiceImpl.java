@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.param.AttParam;
+import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveAttendanceRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
@@ -34,11 +35,13 @@ public class AttendanceServiceImpl implements AttendanceService{
 
     @Override
     public List<Attendance> retrieveAllAttendanceListByGbs(Integer leaderId, String activeTerm) {
-        Gbs gbs = Gbs.builder()
-                .leaderId(leaderId)
-                .activeTerm(activeTerm).build();
+        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderIdAndActiveTerm(
+                GbsParam.builder()
+                        .leaderId(leaderId)
+                        .activeTerm(activeTerm)
+                        .build()
+        );
 
-        List<Gbs> gbsList = gbsDao.retrieveGbsByLeaderIdAndActiveTerm(gbs);
         List<Attendance> attendanceList = Lists.newArrayList();
 
         for(Gbs member : gbsList) {

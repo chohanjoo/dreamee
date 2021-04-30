@@ -12,4 +12,5 @@ public class RetrieveLeaderRequest {
     private Integer saintId;
 
     private String saintName;
+    private String activeTerm;
 }

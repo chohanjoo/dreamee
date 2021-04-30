@@ -22,6 +22,7 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 // core components
 import Admin from "layouts/Admin.js";
+import Normal from "layouts/Normal.js";
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 
@@ -30,8 +31,9 @@ const hist = createBrowserHistory();
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
+      <Route path="/normal" component={Normal} />
       <Route path="/admin" component={Admin} />
-      <Redirect from="/" to="/admin/leader" />
+      <Redirect from="/" to="/normal/leader" />
     </Switch>
   </Router>,
   document.getElementById("root")

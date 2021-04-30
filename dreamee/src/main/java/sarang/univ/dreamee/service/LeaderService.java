@@ -7,6 +7,7 @@ import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.type.LeaderInfo;
+import sarang.univ.dreamee.response.type.TodayGbsAtt;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,7 @@ public interface LeaderService {
     //TODO 리더 조회할 때, authority도 같이 조회 필요
     List<Leader> retrieveAllLeader();
     Leader retrieveLeader(RetrieveLeaderRequest request);
+    List<TodayGbsAtt> retrieveLeaderGroupOnVillageList(RetrieveLeaderRequest request);
     Integer registerLeader(LeaderRequest request);
 
     // internal

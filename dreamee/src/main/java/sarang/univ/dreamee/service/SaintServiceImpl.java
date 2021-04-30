@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.DeptDao;
 import sarang.univ.dreamee.dao.SaintDao;
+import sarang.univ.dreamee.dao.VillageDao;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.dto.Village;
 import sarang.univ.dreamee.param.SaintParam;
 import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 import sarang.univ.dreamee.request.SaintRequest;
@@ -17,8 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class SaintServiceImpl implements SaintService{
+
     private final SaintDao saintDao;
     private final DeptDao deptDao;
+    private final VillageDao villageDao;
 
     @Override
     public List<Saint> retrieveAllSaint() {
@@ -47,10 +51,16 @@ public class SaintServiceImpl implements SaintService{
 
     @Override
     public Integer registerSaint(SaintRequest request) {
+
+        log.debug("[registerSaint] params >> {}", request);
+
         Dept dept = deptDao.retrieveDeptByName(request.getDept().getName());
+        Village village = villageDao.retrieveVillageByVillageName(request.getVillage().getName());
+
         Saint saint = Saint.builder()
                 .name(request.getName())
                 .deptId(dept.getDeptId())
+                .villageId(village.getVillageId())
                 .age(request.getAge())
                 .preChurch(request.getPreChurch())
                 .gender(request.getGender())
@@ -60,8 +70,6 @@ public class SaintServiceImpl implements SaintService{
                 .baptism(request.getBaptism())
                 .discipleTraining(request.getDiscipleTraining()).build();
 
-        int result = saintDao.registerSaint(saint);
-
-        return result;
+        return saintDao.registerSaint(saint);
     }
 }

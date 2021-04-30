@@ -12,6 +12,23 @@
         <result property="activeTerm" column="active_term"/>
     </resultMap>
 
+    <resultMap id="AttJoinMap" type="sarang.univ.dreamee.response.type.SaintAtt">
+        <result property="attId" column="att_id"/>
+        <result property="worshipState" column="worship_state"/>
+        <result property="attState" column="att_state"/>
+        <result property="qtNumber" column="qt_number"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+
+        <result property="leaderName" column="leader_name"/>
+
+        <result property="villageName" column="village_name"/>
+
+        <result property="leaderId" column="leader_id"/>
+
+        <result property="saintName" column="saint_name"/>
+    </resultMap>
+
     <sql id="GbsColumns">
         gbs_id,
         leader_id,
@@ -20,6 +37,19 @@
         date_created,
         date_updated,
         active_term
+    </sql>
+
+    <sql id="AttJoinColumns">
+        a.att_id,
+        a.worship_state,
+        a.att_state,
+        a.qt_number,
+        a.date_created,
+        a.date_updated,
+        c.name AS leader_name,
+        a.saint_id,
+        e.village_name,
+        b.leader_id
     </sql>
 
     <sql id="GbsColumnsVariables">
@@ -79,14 +109,54 @@
         SELECT
             <include refid="GbsColumns"/>
         FROM gbs_log
-        WHERE leader_id = #{leaderId} and active_term = #{activeTerm} and saint_id = #{saintId}
+        WHERE leader_id = #{leaderId}
+          and active_term = #{activeTerm}
+          and saint_id = #{saintId}
     </select>
 
     <select id="retrieveGbsByLeaderIdAndActiveTerm" resultMap="GbsMap">
         SELECT
             <include refid="GbsColumns"/>
         FROM gbs_log
-        WHERE leader_id = #{leaderId} and active_term = #{activeTerm}
+        WHERE
+              leader_id = #{leaderId}
+              and active_term = #{activeTerm}
+              <if test="isThisWeek != null">
+                  <if test="isThisWeek = true">
+                      and date_created BETWEEN DATE_ADD(NOW(),INTERVAL -1 WEEK ) AND NOW()
+                  </if>
+              </if>
+    </select>
+
+    <select id="retrieveGbsAttByLeaderIdAndActiveTerm" resultMap="AttJoinMap">
+        SELECT
+            *, a.name AS saint_name
+        FROM
+            saint a,
+             (
+                SELECT
+                    <include refid="AttJoinColumns"/>
+                FROM
+                    attendance_log a,
+                    leader b,
+                    saint c,
+                    gbs_log d,
+                    village e
+                WHERE
+                    a.gbs_id = d.gbs_id
+                    AND d.leader_id = b.leader_id
+                    AND b.saint_id = c.saint_id
+                    AND d.village_id = e.village_id
+                    AND b.leader_id = #{leaderId}
+                    AND d.active_term = #{activeTerm}
+                    <if test="isThisWeek != null">
+                        <if test="isThisWeek = true">
+                            and d.date_created BETWEEN DATE_ADD(NOW(),INTERVAL -1 WEEK ) AND NOW()
+                        </if>
+                    </if>
+            ) b
+        WHERE
+            a.saint_id = b.saint_id
     </select>
 
     <insert id="registerGbs" parameterType="sarang.univ.dreamee.dto.Gbs" useGeneratedKeys="true">

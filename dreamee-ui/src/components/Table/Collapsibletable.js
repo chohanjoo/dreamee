@@ -52,39 +52,43 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row.leaderName}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="right">{row.active}</TableCell>
+        <TableCell align="right">{row.gender}</TableCell>
+        <TableCell align="right">{row.age}</TableCell>
+        <TableCell align="right">{row.birthday}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                출석부
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell>이름</TableCell>
+                    <TableCell>대학부</TableCell>
+                    <TableCell align="right">대예배</TableCell>
+                    <TableCell align="right">QT</TableCell>
+                    <TableCell align="right">업데이트 시간</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.attendance.map((historyRow) => (
+                    <TableRow key={historyRow.saintName}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {historyRow.saintName}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
+                      <TableCell>{historyRow.univAtt}</TableCell>
+                      <TableCell align="right">{historyRow.worshipState}</TableCell>
                       <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
+                        {historyRow.qtNumber}
+                      </TableCell>
+                      <TableCell align="right">
+                        {historyRow.dateUpdated}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -100,48 +104,55 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
+    leaderName: PropTypes.string.isRequired,
+    active: PropTypes.string.isRequired,
+    gender: PropTypes.string.isRequired,
+    attendance: PropTypes.arrayOf(
       PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
+        saintName: PropTypes.string.isRequired,
+        univAtt: PropTypes.string.isRequired,
+        worshipState: PropTypes.string.isRequired,
+        qtNumber: PropTypes.number.isRequired,
+        dateUpdated: PropTypes.string.isRequired
       }),
     ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
+    age: PropTypes.string.isRequired,
+    birthday: PropTypes.string.isRequired
   }).isRequired,
 };
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
+// const rows = [
+//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
+//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
+//   createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
+//   createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
+//   createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
+// ];
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable(props) {
+  const {rowData} = props;
+
+  console.log("NAMJA : ")
+  console.log(rowData)
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell align="right">Active</TableCell>
+            <TableCell align="right">성별</TableCell>
+            <TableCell align="right">나이</TableCell>
+            <TableCell align="right">생일</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
+          
+          { rowData != [] ? rowData.map((row) => (
+            <Row key={row.leaderName} row={row} />
+          )) : <div></div>}
         </TableBody>
       </Table>
     </TableContainer>

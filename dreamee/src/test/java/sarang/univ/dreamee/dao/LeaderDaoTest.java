@@ -5,20 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import sarang.univ.dreamee.dto.Dept;
-import sarang.univ.dreamee.dto.Leader;
-import sarang.univ.dreamee.dto.Pastor;
-import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.dto.*;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.param.SaintParam;
 
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.BDDMockito.given;
 
 
 @Slf4j
@@ -90,5 +85,16 @@ public class LeaderDaoTest {
         int result = leaderDao.registerLeader(leader);
 
         then(result).isEqualTo(1);
+    }
+
+    @Test
+    public void retrieveLeaderList() {
+        List<LeaderDetail> leaderDetails = leaderDao.retrieveLeaderList(
+                LeaderParam.builder()
+                        .villageId(4)
+                        .build()
+        );
+
+        log.info("leaderInfos : {}", leaderDetails);
     }
 }

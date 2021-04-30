@@ -13,6 +13,27 @@
         <result property="endDate" column="end_date"/>
     </resultMap>
 
+    <resultMap id="leaderJoinMap" type="sarang.univ.dreamee.dto.LeaderDetail">
+        <id property="leaderId" column="leader_id"/>
+        <result property="saintId" column="saint_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="villageId" column="village_id"/>
+        <result property="age" column="age"/>
+        <result property="name" column="name"/>
+        <result property="preChurch" column="pre_church"/>
+        <result property="gender" column="gender"/>
+        <result property="major" column="major"/>
+        <result property="address" column="address"/>
+        <result property="birthday" column="birthday"/>
+        <result property="baptism" column="baptism"/>
+        <result property="discipleTraining" column="disciple_training"/>
+
+        <result property="active" column="active"/>
+        <result property="role" column="role"/>
+        <result property="dateCreated" column="date_created"/>
+        <result property="dateUpdated" column="date_updated"/>
+    </resultMap>
+
     <sql id="LeaderColumns">
         leader_id, saint_id, password, active, role, date_created, date_updated
     </sql>
@@ -33,6 +54,21 @@
                 AND saint_id = #{saintId}
             </if>
         </where>
+    </select>
+
+    <select id="retrieveLeaderList" resultMap="leaderJoinMap">
+        SELECT
+            a.leader_id, a.saint_id, a.active, a.role, a.date_created,
+               b.dept_id, b.village_id, b.name, b.pre_church, b.age, b.gender,
+               b.major, b.address, b.birthday, b.baptism, b.disciple_training
+        FROM leader a, saint b
+        WHERE
+            a.saint_id = b.saint_id
+            AND b.village_id = #{villageId}
+            AND a.active = 'Y'
+            <if test="roleCode != null">
+                AND a.role = #{roleCode}
+            </if>
     </select>
 
     <insert id="registerLeader" parameterType="sarang.univ.dreamee.dto.Leader" useGeneratedKeys="true">

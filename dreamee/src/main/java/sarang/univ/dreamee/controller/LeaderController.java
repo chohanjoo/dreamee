@@ -6,12 +6,15 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.request.LeaderRequest;
+import sarang.univ.dreamee.request.RegisterGbsRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveLeaderRequest;
 import sarang.univ.dreamee.response.ListResult;
 import sarang.univ.dreamee.response.SingleResult;
+import sarang.univ.dreamee.response.type.TodayGbsAtt;
 import sarang.univ.dreamee.service.LeaderService;
 import sarang.univ.dreamee.service.ResponseService;
 
@@ -39,6 +42,15 @@ public class LeaderController {
         log.debug("LeaderController.retrieveLeader");
 
         return responseService.getSingleResult(leaderService.retrieveLeader(request));
+    }
+
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "마을의 목장 출석부 조회", notes = "마을의 목장 출석부 조회")
+    @PostMapping(value = "/retrieveLeaderGroupOnVillageList")
+    public ListResult<TodayGbsAtt> retrieveLeaderGroupOnVillageList(@RequestBody @Validated RetrieveLeaderRequest request) {
+        log.debug("GbsController.retrieveLeaderGroupOnVillageList");
+
+        return responseService.getListResult(leaderService.retrieveLeaderGroupOnVillageList(request));
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })

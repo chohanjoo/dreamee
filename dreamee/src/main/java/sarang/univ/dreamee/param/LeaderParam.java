@@ -11,4 +11,6 @@ import lombok.*;
 public class LeaderParam {
     private Integer leaderId;
     private Integer saintId;
+    private Integer villageId;
+    private String roleCode;
 }

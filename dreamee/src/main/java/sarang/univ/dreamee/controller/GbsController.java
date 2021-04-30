@@ -6,11 +6,14 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.request.GbsRequest;
+import sarang.univ.dreamee.request.RegisterGbsRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveGbsRequest;
 import sarang.univ.dreamee.response.ListResult;
+import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.response.type.GbsMember;
 import sarang.univ.dreamee.service.GbsService;
 import sarang.univ.dreamee.service.ResponseService;
@@ -51,4 +54,14 @@ public class GbsController {
 
         return responseService.getListResult(gbsService.retrieveGbsLeaderList(request));
     }
+
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "GBS 등록", notes = "GBS 등록한다.")
+    @PostMapping(value = "/registerGbs")
+    public SingleResult<Integer> registerGbs(@RequestBody @Validated RegisterGbsRequest request) throws Exception {
+        log.debug("GbsController.registerGbs");
+
+        return responseService.getSingleResult(gbsService.registerGbs(request));
+    }
+
 }
