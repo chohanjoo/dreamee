@@ -52,7 +52,8 @@ import {
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
 } from "../../api/Api";
 
-import { getUser, getToken } from "../../api/Storage"
+import jwt_decode from "jwt-decode";
+import { getUser, getToken, logout } from "../../api/Storage"
 
 class Leader extends Component {
 
@@ -297,11 +298,24 @@ class Leader extends Component {
     console.log("push att data : ", this.state.attDict)
   }
 
+  autoLogout() {
+    var token = getToken();
+
+    var expTokenTime = jwt_decode(token)
+    var nowTime = Math.floor(+ new Date() / 1000)
+
+    if ( Number(nowTime) > Number(expTokenTime) ) {
+      logout()
+    }
+  }
+
   componentDidMount() {
     var token = getToken();
 
     console.log("token : " + token)
 
+    this.autoLogout()
+    
     if( token != null) {
       this.getDate()
       this.getLeaderInfo()

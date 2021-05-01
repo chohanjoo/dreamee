@@ -56,6 +56,7 @@ import ScrollableTabs from "components/Tabs/ScrollableTabs"
 import WordTree from "components/Graph/EplicitWordTree"
 import Collapsibletable from "components/Table/Collapsibletable"
 
+import jwt_decode from "jwt-decode";
 
 import {
   getLeaderGroupOnVillageList,
@@ -63,7 +64,7 @@ import {
 } from "../../api/Api";
 
 
-import { getToken, getUser, getVillagerNameInStorage } from "../../api/Storage"
+import { getToken, getUser, getVillagerNameInStorage, logout } from "../../api/Storage"
 
 
 class Village extends Component {
@@ -151,12 +152,25 @@ class Village extends Component {
     return data;
   }
 
+  autoLogout() {
+    var token = getToken();
+
+    var expTokenTime = jwt_decode(token)
+    var nowTime = Math.floor(+ new Date() / 1000)
+
+    if ( Number(nowTime) > Number(expTokenTime) ) {
+      logout()
+    }
+  }
+
   componentDidMount() {
     this.getActiveTerm();
 
     var token = getToken();
 
     console.log("token : " + token)
+
+    this.autoLogout()
 
     if (token !== null) {
       this.getLeaderInfo();
