@@ -45,6 +45,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import MenuItem from '@material-ui/core/MenuItem';
 
+import SearchForLeader from "../../components/Search/SearchForLeader";
+
 import {
   getDept,
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
@@ -314,6 +316,31 @@ class Leader extends Component {
 
     return (
       <div>
+                        <GridContainer justify={"center"}>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="primary">
+                <h3 className={classes.cardTitleWhite}>드리미 검색</h3>
+                <p className={classes.cardCategoryWhite}></p>
+              </CardHeader>
+              <CardBody>
+
+                <Card>
+                  <GridItem xs={12} sm={12} md={12}>
+
+                    <div className={classes.search}>
+                        <SearchForLeader/>
+
+                    </div>
+                  </GridItem>
+                </Card>
+
+              </CardBody>
+            </Card>
+          </GridItem>
+
+        </GridContainer>
+
       <GridContainer>
         <GridItem xs={12} sm={6} md={3}>
           <Card>

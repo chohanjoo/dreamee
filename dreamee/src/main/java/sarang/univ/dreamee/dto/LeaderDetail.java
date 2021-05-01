@@ -31,4 +31,10 @@ public class LeaderDetail {
     private String birthday;
     private String baptism;
     private String discipleTraining;
+
+    // village
+    private String villageName;
+
+    // dept
+    private String deptName;
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LeaderDao {
-    List<Leader> retrieveAllLeader();
+    List<Leader> retrieveActiveLeaderList(LeaderParam leaderParam);
     List<LeaderDetail> retrieveLeaderList(LeaderParam param);
     Leader retrieveLeader(LeaderParam param);
     int registerLeader(Leader leader);

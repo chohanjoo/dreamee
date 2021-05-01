@@ -72,7 +72,7 @@ export default function AdminNavbarLinks() {
       { redirect ? (<Redirect push to="/normal/auth/signin" />) : null}
       { login ? (<Redirect push to="/normal/auth/signin" />) : null}
       <div className={classes.searchWrapper}>
-        <Asynchronous></Asynchronous>
+        {/* <Asynchronous></Asynchronous> */}
         {/* <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search

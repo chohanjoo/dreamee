@@ -2,6 +2,7 @@ export const login = (token, user_id) => {
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('USER', user_id);
     sessionStorage.setItem('SAINT', user_id);
+    sessionStorage.setItem('VIGER', user_id);
 };
 
 export const getUser = () => {
@@ -21,6 +22,23 @@ export const getSaintNameInStorage = () => {
     const saint = sessionStorage.getItem('SAINT');
     try {
         return saint
+    } catch (e) {
+        return null
+    }
+};
+
+export const setLeader = (leaderName) => {
+    sessionStorage.setItem('USER', leaderName);
+};
+
+export const setVillager = (villagerName) => {
+    sessionStorage.setItem('VIGER', villagerName);
+};
+
+export const getVillagerNameInStorage = () => {
+    const villagerName = sessionStorage.getItem('VIGER');
+    try {
+        return villagerName
     } catch (e) {
         return null
     }
