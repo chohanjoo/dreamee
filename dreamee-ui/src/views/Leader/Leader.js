@@ -313,10 +313,9 @@ class Leader extends Component {
     var token = getToken();
 
     console.log("token : " + token)
-
-    this.autoLogout()
     
     if( token != null) {
+      this.autoLogout()
       this.getDate()
       this.getLeaderInfo()
     } else {

@@ -82,10 +82,9 @@ class Saint extends Component {
 
     console.log("token : " + token)
     console.log("mount >> saintId : " + getSaintNameInStorage())
-
-    this.autoLogout()
     
     if( token !== null) {
+      this.autoLogout()
       this.getSaintInfo();
     } else {
       this.props.history.push("/normal/auth/signin")

@@ -170,9 +170,8 @@ class Village extends Component {
 
     console.log("token : " + token)
 
-    this.autoLogout()
-
     if (token !== null) {
+      this.autoLogout()
       this.getLeaderInfo();
     } else {
       this.props.history.push("/normal/auth/signin")

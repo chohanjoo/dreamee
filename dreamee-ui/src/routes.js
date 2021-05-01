@@ -66,14 +66,14 @@ const dashboardRoutes = [
     layout: "/normal",
     expand: true
   },
-  {
-    path: "/gbs",
-    name: "ADMIN",
-    icon: Dashboard,
-    component: AdminPage,
-    layout: "/admin",
-    expand: true
-  },
+  // {
+  //   path: "/gbs",
+  //   name: "ADMIN",
+  //   icon: Dashboard,
+  //   component: AdminPage,
+  //   layout: "/admin",
+  //   expand: true
+  // },
   {
     path: "/auth/signin",
     name: "로그인",
