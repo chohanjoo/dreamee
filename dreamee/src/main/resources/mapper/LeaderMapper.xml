@@ -32,14 +32,40 @@
         <result property="role" column="role"/>
         <result property="dateCreated" column="date_created"/>
         <result property="dateUpdated" column="date_updated"/>
+
+        <result property="villageName" column="village_name"/>
+        <result property="deptName" column="dept_name"/>
     </resultMap>
 
     <sql id="LeaderColumns">
         leader_id, saint_id, password, active, role, date_created, date_updated
     </sql>
 
-    <select id="retrieveAllLeader" resultMap="leaderMap">
-        select * from leader
+    <select id="retrieveActiveLeaderList" resultMap="leaderJoinMap">
+        SELECT
+               a.leader_id,
+               a.saint_id,
+               a.active,
+               a.role,
+               b.name,
+               b.age,
+               b.gender,
+               c.village_name,
+               d.dept_name
+        From
+             leader a,
+             saint b,
+             village c,
+             department d
+        WHERE
+              a.saint_id = b.saint_id
+          AND c.village_id = b.village_id
+          AND b.dept_id = d.dept_id
+          AND d.dept_name = #{deptName}
+          AND a.active = 'Y'
+          <if test="roleCode != null">
+              AND a.role = #{roleCode}
+          </if>
     </select>
 
     <select id="retrieveLeader" resultMap="leaderMap">

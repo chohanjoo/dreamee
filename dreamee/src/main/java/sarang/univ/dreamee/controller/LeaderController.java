@@ -30,9 +30,9 @@ public class LeaderController {
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
     @ApiOperation(value = "리더 리스트 조회", notes = "모든 리더를 조회한다")
-    @GetMapping(value = "/all")
-    public ListResult<Leader> retrieveAllLeader() {
-        return responseService.getListResult(leaderService.retrieveAllLeader());
+    @GetMapping(value = "/retrieveActiveLeaderList")
+    public ListResult<Leader> retrieveActiveLeaderList() {
+        return responseService.getListResult(leaderService.retrieveActiveLeaderList());
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })

@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.enums.DeptEnum;
+import sarang.univ.dreamee.enums.RoleCodeEnum;
 import sarang.univ.dreamee.param.LeaderParam;
 import sarang.univ.dreamee.param.SaintParam;
 
@@ -34,8 +36,13 @@ public class LeaderDaoTest {
     private PastorDao pastorDao;
 
     @Test
-    public void retrieveAllLeaderTest(){
-        List<Leader> leaders = leaderDao.retrieveAllLeader();
+    public void retrieveActiveLeaderList(){
+        List<Leader> leaders = leaderDao.retrieveActiveLeaderList(
+                LeaderParam.builder()
+                        .roleCode(RoleCodeEnum.LEADER.getCode())
+                        .deptName(DeptEnum.UNIV_4.getName())
+                        .build()
+        );
 
         log.info("leaders : {}", leaders);
     }

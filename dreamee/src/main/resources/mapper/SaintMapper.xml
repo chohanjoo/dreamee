@@ -68,7 +68,6 @@
         s.birthday,
         s.baptism,
         s.disciple_training,
-
         d.dept_name,
         v.village_name
     </sql>

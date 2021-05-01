@@ -16,6 +16,7 @@ import sarang.univ.dreamee.dto.Gbs;
 import sarang.univ.dreamee.dto.Leader;
 import sarang.univ.dreamee.dto.LeaderDetail;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.enums.DeptEnum;
 import sarang.univ.dreamee.enums.RoleCodeEnum;
 import sarang.univ.dreamee.enums.YnEnum;
 import sarang.univ.dreamee.param.GbsParam;
@@ -44,8 +45,13 @@ public class LeaderServiceImpl implements LeaderService{
     private final SaintService saintService;
 
     @Override
-    public List<Leader> retrieveAllLeader() {
-        return leaderDao.retrieveAllLeader();
+    public List<Leader> retrieveActiveLeaderList() {
+        return leaderDao.retrieveActiveLeaderList(
+                LeaderParam.builder()
+                        .deptName(DeptEnum.UNIV_4.getName())
+                        .roleCode(RoleCodeEnum.LEADER.getCode())
+                        .build()
+        );
     }
 
     @Override

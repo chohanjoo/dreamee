@@ -13,6 +13,12 @@ const getHeader = {
     'X-AUTH-TOKEN': getToken()
 };
 
+export function getActiveLeaderList() {
+    const path = base_url + "/leader/retrieveActiveLeaderList";
+
+    return getMethod(path, getHeader);
+}
+
 export function getLeaderGroupOnVillageList(leaderId, activeTerm) {
     const body = {
         leaderId: leaderId,
