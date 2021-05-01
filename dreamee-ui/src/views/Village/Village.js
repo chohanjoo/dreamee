@@ -63,7 +63,7 @@ import {
 } from "../../api/Api";
 
 
-import { getToken, getUser } from "../../api/Storage"
+import { getToken, getUser, getVillagerNameInStorage } from "../../api/Storage"
 
 
 class Village extends Component {
@@ -100,7 +100,7 @@ class Village extends Component {
   }
 
   getLeaderInfo() {
-    getLeader(getUser())
+    getLeader(getVillagerNameInStorage())
     .then(res => {
       const result = res.status;
 

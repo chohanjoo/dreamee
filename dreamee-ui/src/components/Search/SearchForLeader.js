@@ -5,8 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { getSaintSearchData } from "../../api/Api"
-import { setSaint } from "../../api/Storage"
+import { getActiveLeaderList } from "../../api/Api"
+import { setLeader } from "../../api/Storage"
 import { Redirect } from "react-router-dom";
 
 function sleep(delay = 0) {
@@ -14,8 +14,8 @@ function sleep(delay = 0) {
     setTimeout(resolve, delay);
   });
 }
-
-export default function Asynchronous() {
+// TODO Asynchronous.js 랑 통홥 필요 
+export default function SearchForLeader() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [redirect, setRedirect] = React.useState(false);
@@ -29,7 +29,8 @@ export default function Asynchronous() {
     }
 
     (async () => {
-      const response = await getSaintSearchData();
+      const response = await getActiveLeaderList();
+      console.log("res >>> {}", response)
       // fetch('https://country.register.gov.uk/records.json?page-size=5000');
       // await sleep(1e3); // For demo purposes.
       // console.log("res : " + JSON.stringify(response['data'].list))
@@ -59,7 +60,7 @@ export default function Asynchronous() {
 
   return (
     <div>
-      { redirect ? (<Redirect push to="/admin/saint"/>) : null }
+      { redirect ? (<Redirect push to="/normal/leader"/>) : null }
     <Autocomplete
       id="asynchronous-demo"
       style={{ width: 400 }}
@@ -74,8 +75,8 @@ export default function Asynchronous() {
       getOptionSelected={(option, value) => {
 
         if (option.name === value.name ) {
-          console.log("hello : {}", value)
-          setSaint(value.name);
+          console.log("helllo : {}", value)
+          setLeader(value.name);
           setRedirect(true);
           window.location.reload()
           

@@ -33,6 +33,8 @@ import Button from "components/CustomButtons/Button.js";
 
 import { bugs, website, server } from "variables/general.js";
 
+import Asynchronous from "../../components/Search/Asynchronous";
+
 import {
   dailySalesChart,
   emailsSubscriptionChart,
@@ -44,6 +46,9 @@ import avatar from "assets/img/faces/marc.jpg";
 import Calendar from "components/Calendar/CalendarChart"
 import CalendarHeatmap from "components/Calendar/CalendarHeatmap"
 import { DataGrid } from '@material-ui/data-grid';
+
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 import {
   getDept,
@@ -227,6 +232,31 @@ class Saint extends Component {
 
     return (
       <div>
+                <GridContainer justify={"center"}>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="primary">
+                <h3 className={classes.cardTitleWhite}>드리미 검색</h3>
+                <p className={classes.cardCategoryWhite}></p>
+              </CardHeader>
+              <CardBody>
+
+                <Card>
+                  <GridItem xs={12} sm={12} md={12}>
+
+                    <div className={classes.search}>
+                        <Asynchronous/>
+
+                    </div>
+                  </GridItem>
+                </Card>
+
+              </CardBody>
+            </Card>
+          </GridItem>
+
+        </GridContainer>
+
         <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <Card>

@@ -95,6 +95,11 @@ const dashboardStyle = {
     marginBottom: "40px",
     position: "relative"
   },
+  search: {
+    paddingLeft: "35%",
+    marginBottom: "40px",
+    position: "relative"
+  },
 };
 
 export default dashboardStyle;

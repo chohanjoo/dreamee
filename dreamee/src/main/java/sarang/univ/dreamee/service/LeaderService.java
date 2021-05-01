@@ -15,7 +15,7 @@ import java.util.List;
 public interface LeaderService {
 
     //TODO 리더 조회할 때, authority도 같이 조회 필요
-    List<Leader> retrieveAllLeader();
+    List<Leader> retrieveActiveLeaderList();
     Leader retrieveLeader(RetrieveLeaderRequest request);
     List<TodayGbsAtt> retrieveLeaderGroupOnVillageList(RetrieveLeaderRequest request);
     Integer registerLeader(LeaderRequest request);

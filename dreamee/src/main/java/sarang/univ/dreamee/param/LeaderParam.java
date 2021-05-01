@@ -13,4 +13,6 @@ public class LeaderParam {
     private Integer saintId;
     private Integer villageId;
     private String roleCode;
+
+    private String deptName;
 }
