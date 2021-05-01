@@ -174,7 +174,7 @@ class Village extends Component {
       this.autoLogout()
       this.getLeaderInfo();
     } else {
-      this.props.history.push("/normal/auth/signin")
+      this.props.history.push("/dreamee/auth/signin")
     }
     
   }

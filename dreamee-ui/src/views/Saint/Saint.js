@@ -87,7 +87,7 @@ class Saint extends Component {
       this.autoLogout()
       this.getSaintInfo();
     } else {
-      this.props.history.push("/normal/auth/signin")
+      this.props.history.push("/dreamee/auth/signin")
     }
   }
 

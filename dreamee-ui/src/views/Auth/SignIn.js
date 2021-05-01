@@ -83,7 +83,7 @@ export class SignIn extends Component {
   }
 
   signUp() {
-    this.props.history.push("/normal/auth/signup")
+    this.props.history.push("/dreamee/auth/signup")
   }
 
   render() {

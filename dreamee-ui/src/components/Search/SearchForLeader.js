@@ -60,7 +60,7 @@ export default function SearchForLeader() {
 
   return (
     <div>
-      { redirect ? (<Redirect push to="/normal/leader"/>) : null }
+      { redirect ? (<Redirect push to="/dreamee/leader"/>) : null }
     <Autocomplete
       id="asynchronous-demo"
       style={{ width: 400 }}
