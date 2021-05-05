@@ -12,6 +12,7 @@ public class AttendanceRequest {
     private String worshipState;
     private String attState;
     private Integer qtNumber;
+//    private Boolean isAbsence;
 
 //    private String activeTerm;
 }

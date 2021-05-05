@@ -11,5 +11,5 @@ public interface AttendanceService {
     List<Attendance> retrieveAllAttendanceLog();
     List<Attendance> retrieveAllAttendanceListByGbs(Integer leaderId, String activeTerm);
     List<SaintAtt> retrieveAttendanceList(RetrieveAttendanceRequest request);
-    int registerAttendanceLog(String saintName, AttendanceRequest request);
+    Attendance registerAttendanceLog(String saintName, AttendanceRequest request);
 }

@@ -47,6 +47,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import SearchForLeader from "../../components/Search/SearchForLeader";
 
+import Switch from '@material-ui/core/Switch';
+
 import {
   getDept,
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById
@@ -66,7 +68,8 @@ class Leader extends Component {
     deptInfo: {},
     gbsMemberList: [],
     attList: [],
-    villageInfo: {}
+    villageInfo: {},
+    checkedAbsence: {}
   }
 
   getLeaderInfo() {
@@ -139,13 +142,16 @@ class Leader extends Component {
         console.log("hello : ",res.data)
 
         var dict = {};
+        var absence = {};
 
         res.data.list.map( (member, index) => {
           dict[String(member.saint.saintId)] = {'worship': '', 'att': '', 'qt': 0};
+          absence[String(member.saint.saintId)] = true;
         })
         this.setState({
           gbsMemberList: res.data.list,
-          attDict: dict
+          attDict: dict,
+          checkedAbsence: absence
         })
       }
       console.log(this.state.gbsMemberList)
@@ -220,6 +226,17 @@ class Leader extends Component {
     })
   }
 
+  handleAbsenceChange = (event) => {
+    console.log("saintID -->", event.target.name)
+    console.log("checked -->", event.target.checked)
+    var temp = this.state.checkedAbsence;
+    this.state.checkedAbsence[event.target.name] = event.target.checked;
+
+    this.setState({
+      checkedAbsence: this.state.checkedAbsence
+    })
+  }
+
   handleClickAttDialogOpen() {
     this.setState({
       attDialogOpen: !this.state.attDialogOpen,
@@ -289,10 +306,15 @@ class Leader extends Component {
       data['worshipState'] = this.state.attDict[String(member.saint.saintId)]['worship'];
       data['attState'] = this.state.attDict[String(member.saint.saintId)]['att'];
       data['qtNumber'] = this.state.attDict[String(member.saint.saintId)]['qt'];
+      // data['isAbsence'] = this.state.checked[String(member.saint.saintId)]
 
       console.log("name :", member.saint.name);
       console.log("data : ", data);
-      postGbsAtt(member.saint.name, data);
+
+      // console.log(this.state.checkedAbsence)
+      if (this.state.checkedAbsence[String(member.saint.saintId)] == false) {
+        postGbsAtt(member.saint.name, data);
+      }
     })
 
     console.log("push att data : ", this.state.attDict)
@@ -301,7 +323,7 @@ class Leader extends Component {
   autoLogout() {
     var token = getToken();
 
-    var expTokenTime = jwt_decode(token)
+    var expTokenTime = jwt_decode(token).exp
     var nowTime = Math.floor(+ new Date() / 1000)
 
     if ( Number(nowTime) > Number(expTokenTime) ) {
@@ -432,6 +454,7 @@ class Leader extends Component {
         <TableHead>
           <TableRow>
           <TableCell align="center"></TableCell>
+          <TableCell align="center">결석 여부</TableCell>
             <TableCell align="center">대예배</TableCell>
             <TableCell align="center">대학부 집회</TableCell>
             <TableCell align="center">QT</TableCell>
@@ -441,6 +464,15 @@ class Leader extends Component {
           {this.state.gbsMemberList.map((member) => (
             <TableRow key={member.saint.saintId}>
               <TableCell align="center">{member.saint.name}</TableCell>
+              <TableCell align="center">
+              <Switch
+        checked={this.state.checkedAbsence[member.saint.saintId]}
+        onChange={this.handleAbsenceChange}
+        color="primary"
+        name={member.saint.saintId}
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+      />
+              </TableCell>
               <TableCell align="center" component="th" scope="row">
                 {this.getWorshipStateRadio(member.saint.saintId)}
               </TableCell>

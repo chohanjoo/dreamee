@@ -47,7 +47,7 @@ public class AttendanceController {
     @PostMapping(value = "/{saintName}")
     public CommonResult registerSaintAttendance(@PathVariable String saintName, @RequestBody AttendanceRequest request) {
         log.info("name : {}", saintName);
-        attendanceService.registerAttendanceLog(saintName, request);
-        return responseService.getSuccessResult();
+        Attendance attendance = attendanceService.registerAttendanceLog(saintName, request);
+        return responseService.getSingleResult(attendance);
     }
 }

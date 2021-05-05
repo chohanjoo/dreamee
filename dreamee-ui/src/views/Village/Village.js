@@ -155,7 +155,7 @@ class Village extends Component {
   autoLogout() {
     var token = getToken();
 
-    var expTokenTime = jwt_decode(token)
+    var expTokenTime = jwt_decode(token).exp
     var nowTime = Math.floor(+ new Date() / 1000)
 
     if ( Number(nowTime) > Number(expTokenTime) ) {

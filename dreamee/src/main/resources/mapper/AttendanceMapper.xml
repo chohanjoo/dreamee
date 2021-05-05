@@ -97,6 +97,16 @@
             </if>
     </select>
 
+    <select id="retrieveAttendance" resultMap="AttMap">
+        SELECT
+            <include refid="AttColumns"/>
+        FROM
+            attendance_log
+        WHERE
+              saint_id = #{saintId}
+              AND DATE_FORMAT(date_created, "%Y-%m-%d") = CURDATE()
+    </select>
+
     <insert id="registerAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
         INSERT INTO attendance_log (
             <include refid="AttColumns"/>
@@ -104,4 +114,17 @@
             <include refid="AttColumnsVariables"/>
         )
     </insert>
+
+    <update id="updateAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
+        UPDATE
+            attendance_log
+        <set>
+            <if test="attState != null">att_state = #{attState},</if>
+            <if test="qtNumber != null">qt_number = #{qtNumber},</if>
+            <if test="worshipState != null">worship_state = #{worshipState},</if>
+            date_updated = CURRENT_TIMESTAMP
+        </set>
+        WHERE
+            att_id = #{attId}
+    </update>
 </mapper>

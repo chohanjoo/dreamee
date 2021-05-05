@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sarang.univ.dreamee.dto.Attendance;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.response.type.SaintAtt;
@@ -42,5 +43,28 @@ public class AttendanceDaoTest {
         List<SaintAtt> saintAtts = attendanceDao.retrieveAttendanceList(attParam);
 
         log.info("saintAtts >> {}", saintAtts);
+    }
+
+    @Test
+    public void retrieveAttendance() {
+        Attendance attendance = attendanceDao.retrieveAttendance(
+                AttParam.builder()
+                        .saintId(25)
+                        .build()
+        );
+
+        log.info("attendance >> {}", attendance);
+    }
+
+    @Test
+    public void updateAttendanceLog() {
+        int result = attendanceDao.updateAttendanceLog(
+                Attendance.builder()
+                        .attId(49)
+                        .attState("A")
+                        .build()
+        );
+
+        log.info("result >> {}", result);
     }
 }
