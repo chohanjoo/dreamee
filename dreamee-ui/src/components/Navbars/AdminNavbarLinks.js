@@ -69,8 +69,8 @@ export default function AdminNavbarLinks() {
 
   return (
     <div>
-      { redirect ? (<Redirect push to="/normal/auth/signin" />) : null}
-      { login ? (<Redirect push to="/normal/auth/signin" />) : null}
+      { redirect ? (<Redirect push to="/dreamee/auth/signin" />) : null}
+      { login ? (<Redirect push to="/dreamee/auth/signin" />) : null}
       <div className={classes.searchWrapper}>
         {/* <Asynchronous></Asynchronous> */}
         {/* <CustomInput

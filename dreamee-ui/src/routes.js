@@ -47,7 +47,7 @@ const dashboardRoutes = [
     name: "리더",
     icon: Dashboard,
     component: LeaderPage,
-    layout: "/normal",
+    layout: "/dreamee",
     expand: false
   },
   {
@@ -55,7 +55,7 @@ const dashboardRoutes = [
     name: "조원",
     icon: Dashboard,
     component: SaintPage,
-    layout: "/normal",
+    layout: "/dreamee",
     expand: false
   },
   {
@@ -63,23 +63,23 @@ const dashboardRoutes = [
     name: "마을",
     icon: Dashboard,
     component: VillagePage,
-    layout: "/normal",
+    layout: "/dreamee",
     expand: true
   },
-  {
-    path: "/gbs",
-    name: "ADMIN",
-    icon: Dashboard,
-    component: AdminPage,
-    layout: "/admin",
-    expand: true
-  },
+  // {
+  //   path: "/gbs",
+  //   name: "ADMIN",
+  //   icon: Dashboard,
+  //   component: AdminPage,
+  //   layout: "/admin",
+  //   expand: true
+  // },
   {
     path: "/auth/signin",
     name: "로그인",
     icon: Person,
     component: SignInPage,
-    layout: "/normal",
+    layout: "/dreamee",
     expand: true
   },
   {
@@ -87,7 +87,7 @@ const dashboardRoutes = [
     name: "회원가입",
     icon: Person,
     component: SignUpPage,
-    layout: "/normal",
+    layout: "/dreamee",
     expand: true
   },
   // {

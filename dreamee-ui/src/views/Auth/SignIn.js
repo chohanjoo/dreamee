@@ -59,6 +59,12 @@ export class SignIn extends Component {
     console.log(value)
   }
 
+  onKeyPress = (e) => {
+    if(e.key == 'Enter') {
+      this.signIn()
+    }
+  }
+
   signIn() {   
     // 한글 to 영어
     var inko = new Inko();
@@ -77,7 +83,7 @@ export class SignIn extends Component {
   }
 
   signUp() {
-    this.props.history.push("/normal/auth/signup")
+    this.props.history.push("/dreamee/auth/signup")
   }
 
   render() {
@@ -124,7 +130,8 @@ export class SignIn extends Component {
                     inputProps={{
                       onChange: (e) => this.handleChange(e),
                       name: "pw",
-                      type: "password"
+                      type: "password",
+                      onKeyPress: (e) => this.onKeyPress(e)
                     }}
                   />
                 </GridItem>

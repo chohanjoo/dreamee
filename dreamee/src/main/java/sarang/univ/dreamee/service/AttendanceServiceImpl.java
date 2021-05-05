@@ -66,10 +66,16 @@ public class AttendanceServiceImpl implements AttendanceService{
     }
 
     @Override
-    public int registerAttendanceLog(String saintName, AttendanceRequest request) {
+    public Attendance registerAttendanceLog(String saintName, AttendanceRequest request) {
         Saint saint = saintService.retrieveSaint(
                 RetrieveSaintRequest.builder()
                         .saintName(saintName)
+                        .build()
+        );
+
+        Attendance registeredAtt = attendanceDao.retrieveAttendance(
+                AttParam.builder()
+                        .saintId(saint.getSaintId())
                         .build()
         );
 
@@ -83,8 +89,15 @@ public class AttendanceServiceImpl implements AttendanceService{
                 .dateUpdated(DatetimeUtils.getDatetime())
                 .build();
 
-        int result = attendanceDao.registerAttendanceLog(attendance);
+        if (null == registeredAtt) {
+            attendanceDao.registerAttendanceLog(attendance);
+        } else {
+            attendance.setAttId(registeredAtt.getAttId());
 
-        return result;
+            attendanceDao.updateAttendanceLog(attendance);
+        }
+
+
+        return attendance;
     }
 }

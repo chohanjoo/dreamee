@@ -11,6 +11,10 @@ import java.util.List;
 public interface AttendanceDao {
     List<Attendance> retrieveAllAttendanceLog();
     List<Attendance> retrieveAttendanceListByGbsId(Integer gbsId);
+
+//    Saint Id & 오늘 날짜 출석 data 조회
+    Attendance retrieveAttendance(AttParam param);
     List<SaintAtt> retrieveAttendanceList(AttParam params);
     int registerAttendanceLog(Attendance attendance);
+    int updateAttendanceLog(Attendance attendance);
 }

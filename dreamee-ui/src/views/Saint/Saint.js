@@ -50,13 +50,15 @@ import { DataGrid } from '@material-ui/data-grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
+import jwt_decode from "jwt-decode";
+
 import {
   getDept,
   getLeader, getSaint, getGbs, getGbsMemberList, postGbsAtt, getAttListByGbs, getVillageById, getGbsLeaderList,
   getSaintAttList
 } from "../../api/Api";
 
-import { getToken, getUser, getSaintNameInStorage } from "../../api/Storage"
+import { getToken, getUser, getSaintNameInStorage, logout } from "../../api/Storage"
 
 class Saint extends Component {
 
@@ -80,11 +82,23 @@ class Saint extends Component {
 
     console.log("token : " + token)
     console.log("mount >> saintId : " + getSaintNameInStorage())
-
+    
     if( token !== null) {
+      this.autoLogout()
       this.getSaintInfo();
     } else {
-      this.props.history.push("/normal/auth/signin")
+      this.props.history.push("/dreamee/auth/signin")
+    }
+  }
+
+  autoLogout() {
+    var token = getToken();
+
+    var expTokenTime = jwt_decode(token).exp
+    var nowTime = Math.floor(+ new Date() / 1000)
+
+    if ( Number(nowTime) > Number(expTokenTime) ) {
+      logout()
     }
   }
 
