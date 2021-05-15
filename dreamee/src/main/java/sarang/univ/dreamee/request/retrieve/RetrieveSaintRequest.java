@@ -10,4 +10,5 @@ import lombok.ToString;
 public class RetrieveSaintRequest {
     private Integer saintId;
     private String saintName;
+    private String villageName;
 }

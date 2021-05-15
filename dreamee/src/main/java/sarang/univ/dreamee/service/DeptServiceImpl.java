@@ -6,9 +6,11 @@ import sarang.univ.dreamee.dao.DeptDao;
 import sarang.univ.dreamee.dao.PastorDao;
 import sarang.univ.dreamee.dto.Dept;
 import sarang.univ.dreamee.dto.Pastor;
+import sarang.univ.dreamee.enums.DeptEnum;
 import sarang.univ.dreamee.request.DeptRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -38,5 +40,10 @@ public class DeptServiceImpl implements DeptService{
         int result = deptDao.registerDept(dept);
 
         return result;
+    }
+
+    @Override
+    public Map<String, String> getDeptTypeList() {
+        return DeptEnum.DeptTypeList;
     }
 }

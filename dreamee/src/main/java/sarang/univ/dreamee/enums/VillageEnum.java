@@ -3,6 +3,10 @@ package sarang.univ.dreamee.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Getter
 @AllArgsConstructor
 public enum VillageEnum {
@@ -16,4 +20,6 @@ public enum VillageEnum {
     ;
 
     private final String name;
+
+    public static Map<String, String> VillageTypeList = Stream.of( values() ).collect( Collectors.toMap(VillageEnum::getName, VillageEnum::name ) );
 }

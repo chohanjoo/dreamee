@@ -11,4 +11,5 @@ import lombok.*;
 public class SaintParam {
     private Integer saintId;
     private String saintName;
+    private String villageName;
 }

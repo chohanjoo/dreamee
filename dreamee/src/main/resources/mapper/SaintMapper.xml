@@ -123,6 +123,10 @@
             <if test="saintName != null">
                 AND s.name = #{saintName}
             </if>
+            <if test="villageName != null">
+            AND v.village_name = #{villageName}
+            </if>
+
     </select>
 
     <insert id="registerSaint" parameterType="sarang.univ.dreamee.dto.Saint">

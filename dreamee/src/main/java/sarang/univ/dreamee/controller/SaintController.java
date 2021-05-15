@@ -44,9 +44,10 @@ public class SaintController {
     }
 
     @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
-    @ApiOperation(value = "성도 등록", notes = "모든 회원을 조회한다")
-    @PostMapping
+    @ApiOperation(value = "성도 등록", notes = "성도 등록")
+    @PostMapping("/registerSaint")
     public SingleResult<Integer> registerSaint(@RequestBody SaintRequest request) {
+        log.debug("SaintController.registerSaint");
         int saintId = saintService.registerSaint(request);
         return responseService.getSingleResult(saintId);
     }

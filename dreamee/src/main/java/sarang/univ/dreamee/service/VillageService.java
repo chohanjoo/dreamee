@@ -6,10 +6,12 @@ import sarang.univ.dreamee.request.LeaderRequest;
 import sarang.univ.dreamee.request.VillageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface VillageService {
     List<Village> retrieveAllVillage();
     Village retrieveVillageBySaintId(Integer saintId);
     Village retrieveVillageByVillageId(Integer villageId);
     Integer registerVillage(VillageRequest request);
+    Map<String, String> getVillageTypeList();
 }

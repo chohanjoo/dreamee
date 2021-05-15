@@ -3,6 +3,10 @@ package sarang.univ.dreamee.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Getter
 @AllArgsConstructor
 public enum DeptEnum {
@@ -18,4 +22,6 @@ public enum DeptEnum {
 
     private final String name;
     private final String location;
+
+    public static Map<String, String> DeptTypeList = Stream.of( values() ).collect( Collectors.toMap(DeptEnum::getName, DeptEnum::name ) );
 }

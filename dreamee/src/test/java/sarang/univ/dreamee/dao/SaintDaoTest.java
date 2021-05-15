@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sarang.univ.dreamee.dto.Saint;
+import sarang.univ.dreamee.enums.VillageEnum;
 import sarang.univ.dreamee.param.SaintParam;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class SaintDaoTest {
     @Test
     public void retrieveAllSaintTest(){
         List<Saint> saints = saintDao.retrieveSaintDetailList(
-                SaintParam.builder().build()
+                SaintParam.builder()
+                        .villageName(VillageEnum.VILLAGE_EXCLA.getName())
+                        .build()
         );
 
         log.info("saints : {}", saints);

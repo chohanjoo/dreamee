@@ -13,6 +13,8 @@ import sarang.univ.dreamee.response.SingleResult;
 import sarang.univ.dreamee.service.DeptService;
 import sarang.univ.dreamee.service.ResponseService;
 
+import java.util.Map;
+
 @Api(tags = {"3. Department"})
 @RequiredArgsConstructor
 @RestController
@@ -42,5 +44,13 @@ public class DeptController {
     public SingleResult<Integer> registerDept(@RequestBody DeptRequest request) {
         int result = deptService.registerDept(request);
         return responseService.getSingleResult(result);
+    }
+
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "부서 Type 반환", notes = "부서 Type 반환")
+    @GetMapping(value = "/getDeptTypeList")
+    public SingleResult<Map<String, String>> getDeptTypeList() {
+        Map<String, String> deptTypeList = deptService.getDeptTypeList();
+        return responseService.getSingleResult(deptTypeList);
     }
 }

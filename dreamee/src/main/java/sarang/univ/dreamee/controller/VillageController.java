@@ -15,6 +15,8 @@ import sarang.univ.dreamee.service.LeaderService;
 import sarang.univ.dreamee.service.ResponseService;
 import sarang.univ.dreamee.service.VillageService;
 
+import java.util.Map;
+
 @Api(tags = {"5. Village"})
 @RequiredArgsConstructor
 @RestController
@@ -43,4 +45,11 @@ public class VillageController {
 //        int result = leaderService.registerLeader(request);
 //        return responseService.getSingleResult(result);
 //    }
+
+    @ApiImplicitParams({ @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+    @ApiOperation(value = "마을 Type 반환", notes = "마을 Type 반환")
+    @GetMapping(value = "/getVillageTypeList")
+    public SingleResult<Map<String,String>> getVillageTypeList() {
+        return responseService.getSingleResult(villageService.getVillageTypeList());
+    }
 }

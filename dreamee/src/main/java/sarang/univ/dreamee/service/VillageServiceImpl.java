@@ -6,10 +6,12 @@ import sarang.univ.dreamee.dao.SaintDao;
 import sarang.univ.dreamee.dao.VillageDao;
 import sarang.univ.dreamee.dto.Saint;
 import sarang.univ.dreamee.dto.Village;
+import sarang.univ.dreamee.enums.VillageEnum;
 import sarang.univ.dreamee.request.VillageRequest;
 import sarang.univ.dreamee.request.retrieve.RetrieveSaintRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -47,5 +49,10 @@ public class VillageServiceImpl implements VillageService {
                 .saintId(saint.getSaintId()).build();
 
         return villageDao.registerVillage(village);
+    }
+
+    @Override
+    public Map<String, String> getVillageTypeList() {
+        return VillageEnum.VillageTypeList;
     }
 }
