@@ -12,4 +12,5 @@ public interface SaintDao {
     Saint retrieveSaint(SaintParam param);
     List<Saint> retrieveSaintDetailList(SaintParam param);
     int registerSaint(Saint saint);
+    int updateSaint(Saint saint);
 }

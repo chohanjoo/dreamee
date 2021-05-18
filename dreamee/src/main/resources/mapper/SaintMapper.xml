@@ -138,4 +138,23 @@
         )
     </insert>
 
+    <update id="updateSaint" parameterType="sarang.univ.dreamee.dto.Saint">
+        UPDATE saint
+        <set>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="villageId != null">village_id = #{villageId},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="preChurch != null">pre_church = #{preChurch},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="major != null">major = #{major},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="baptism != null">baptism = #{baptism},</if>
+            <if test="discipleTraining != null">disciple_training = #{discipleTraining},</if>
+            date_updated = NOW()
+        </set>
+        WHERE saint_id = #{saintId}
+    </update>
+
 </mapper>

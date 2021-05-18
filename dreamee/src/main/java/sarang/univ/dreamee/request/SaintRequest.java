@@ -2,12 +2,16 @@ package sarang.univ.dreamee.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import sarang.univ.dreamee.enums.DeptEnum;
 import sarang.univ.dreamee.enums.VillageEnum;
 
+@ToString
 @Getter
 @Builder
 public class SaintRequest {
+    private Integer saintId;
+
     private DeptEnum dept;
     private VillageEnum village;
     private Integer age;

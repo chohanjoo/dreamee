@@ -26,10 +26,13 @@ public class SaintServiceImpl implements SaintService{
 
     @Override
     public List<Saint> retrieveSaintDetail(RetrieveSaintRequest request) {
+        log.debug("[retrieveSaintDetail] params >> {}", request);
+
         return saintDao.retrieveSaintDetailList(
                 SaintParam.builder()
                         .saintName(request.getSaintName())
                         .saintId(request.getSaintId())
+                        .villageName(request.getVillageName())
                         .build()
         );
     }
@@ -76,5 +79,46 @@ public class SaintServiceImpl implements SaintService{
                 .discipleTraining(request.getDiscipleTraining()).build();
 
         return saintDao.registerSaint(saint);
+    }
+
+    @Override
+    public Saint updateSaint(SaintRequest request) {
+
+        log.debug("[updateSaint] params >> {}", request);
+
+        Dept dept = deptDao.retrieveDeptByName(request.getDept().getName());
+
+        if( null == dept ) {
+            //TODO throw Exception
+        }
+
+        Village village = villageDao.retrieveVillageByVillageName(request.getVillage().getName());
+
+        if( null == village) {
+            //TODO throw Exception
+        }
+
+        Saint saint = Saint.builder()
+                .saintId(request.getSaintId())
+                .name(request.getName())
+                .age(request.getAge())
+                .preChurch(request.getPreChurch())
+                .gender(request.getGender())
+                .major(request.getMajor())
+                .address(request.getAddress())
+                .birthday(request.getBirthday())
+                .baptism(request.getBaptism())
+                .discipleTraining(request.getDiscipleTraining())
+                .deptId(dept.getDeptId())
+                .villageId(village.getVillageId())
+                .build();
+
+        saintDao.updateSaint(saint);
+
+        return saintDao.retrieveSaint(
+                SaintParam.builder()
+                        .saintId(saint.getSaintId())
+                        .build()
+        );
     }
 }

@@ -36,8 +36,8 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 class Saint extends Component {
 
   state = {
-    saintName: {},
-    villageName: {},
+    saintName: null,
+    villageName: null,
     saintList: [],
     attDialogOpen: false,
     newSaintInfo: {registerBaptism: "N", registerDiscipleTraining: "N", registerGender: "M"},
@@ -116,6 +116,7 @@ class Saint extends Component {
     .then(res => {
       const result = res.status;
 
+      console.log(res.data.list)
         if (result === 200) {
           this.setState({
             saintList: res.data.list
@@ -164,7 +165,22 @@ class Saint extends Component {
       const birthday = saint.birthday
 
 
-      var att = {saintName, villageName, gender, age, birthday}
+      const saintInfo = {
+        saintName: saintName,
+        villageName: villageName,
+        gender: gender,
+        age: age,
+        birthday, birthday,
+        address: saint.address,
+        baptism: saint.baptism,
+        preChurch: saint.preChurch,
+        major: saint.major,
+        discipleTraining: saint.discipleTraining,
+        deptName: saint.deptName,
+        id: saint.saintId
+      };
+
+      var att = {saintName, villageName, gender, saintInfo, age, birthday}
       data.push(att) 
     })
 
@@ -196,9 +212,8 @@ class Saint extends Component {
         <InputLabel htmlFor="age-native-simple">마을</InputLabel>
         <Select
           native
-          // value={this.state.age}
           onChange={(e) => this.handleChangeVillageName(e)}
-          defaultValue={this.state.villageList.keys()[0]}
+          defaultValue={null}
           inputProps={{
             name: 'villageName',
             id: 'villageName'
@@ -208,6 +223,7 @@ class Saint extends Component {
             return <option value={this.state.villageList[key]}>{key}</option>  
           })}
 
+        <option value={null}>ALL</option>  
         </Select>
       </FormControl>
                   </div>
@@ -467,7 +483,7 @@ class Saint extends Component {
           <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardBody>
-            <ExpandTable rowData={this.makeTableData()}/>
+            <ExpandTable rowData={this.makeTableData()} villageList={this.state.villageList} deptList={this.state.deptList}/>
           </CardBody>
         </Card>
       </GridItem>

@@ -13,6 +13,26 @@ const getHeader = {
     'X-AUTH-TOKEN': getToken()
 };
 
+export function updateSaint(SaintRequest) {
+    const body = {
+        dept: SaintRequest.dept,
+        village: SaintRequest.village,
+        age: SaintRequest.age,
+        name: SaintRequest.saintName,
+        preChurch: SaintRequest.preChurch,
+        gender: SaintRequest.gender,
+        major: SaintRequest.major,
+        address: SaintRequest.address,
+        birthday: SaintRequest.birthday,
+        baptism: SaintRequest.baptism,
+        discipleTraining: SaintRequest.discipleTraining,
+        saintId: SaintRequest.id
+    };
+
+    const path = base_url + "/saint/updateSaint";
+
+    return postMethod(path, body, postHeader);
+}
 
 export function registerSaint(SaintRequest) {
     const body = {

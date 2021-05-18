@@ -11,4 +11,5 @@ public interface SaintService {
     List<Saint> retrieveSaintDetail(RetrieveSaintRequest request);
     Saint retrieveSaint(RetrieveSaintRequest request);
     Integer registerSaint(SaintRequest request);
+    Saint updateSaint(SaintRequest request);
 }
