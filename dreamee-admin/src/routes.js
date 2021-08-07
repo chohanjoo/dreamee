@@ -27,6 +27,7 @@ import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
 import LeaderPage from "views/Leader/Leader.js";
 import SaintPage from "views/Saint/Saint.js";
+import AttPage from "views/Attendance/Attendance.js";
 import VillagePage from "views/Village/Village.js";
 import SignInPage from "views/Auth/SignIn.js"
 import SignUpPage from "views/Auth/SignUp.js"
@@ -52,9 +53,17 @@ const dashboardRoutes = [
   },
   {
     path: "/saint",
-    name: "조원",
+    name: "드림이",
     icon: Dashboard,
     component: SaintPage,
+    layout: "/dreamee",
+    expand: false
+  },
+  {
+    path: "/attendance",
+    name: "출석부",
+    icon: Dashboard,
+    component: AttPage,
     layout: "/dreamee",
     expand: false
   },

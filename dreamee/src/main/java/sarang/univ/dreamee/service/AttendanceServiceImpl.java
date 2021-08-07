@@ -7,6 +7,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.enums.VillageEnum;
 import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
@@ -16,6 +17,7 @@ import sarang.univ.dreamee.response.type.SaintAtt;
 import sarang.univ.dreamee.utils.DatetimeUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,7 +62,10 @@ public class AttendanceServiceImpl implements AttendanceService{
         return attendanceDao.retrieveAttendanceList(
                 AttParam.builder()
                         .saintId(request.getSaintId())
+                        .saintName(request.getSaintName())
+                        .villageName(Optional.ofNullable(request.getVillageCode()).map(VillageEnum::getName).orElse(null))
                         .isThisYear(request.isThisYear())
+                        .searchDate(request.getSearchDate())
                         .build()
         );
     }

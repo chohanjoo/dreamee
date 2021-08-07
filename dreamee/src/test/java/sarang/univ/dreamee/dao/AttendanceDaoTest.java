@@ -36,8 +36,11 @@ public class AttendanceDaoTest {
     @Test
     public void retrieveAttendanceList() {
         AttParam attParam = AttParam.builder()
-                .saintId(13)
-                .isThisYear(true)
+                .saintName("박효신4")
+//                .saintId(13)
+                .isThisYear(false)
+                .searchDate("2021-05-19")
+//                .isThisDay(true)
                 .build();
 
         List<SaintAtt> saintAtts = attendanceDao.retrieveAttendanceList(attParam);

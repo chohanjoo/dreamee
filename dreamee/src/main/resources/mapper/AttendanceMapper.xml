@@ -92,8 +92,17 @@
             <if test="saintId != null">
                 AND a.saint_id = #{saintId}
             </if>
+            <if test="saintName != null">
+                AND s.name = #{saintName}
+            </if>
+            <if test="villageName != null">
+                AND v.village_name = #{villageName}
+            </if>
             <if test="isThisYear != false">
                 AND YEAR(a.date_created) = YEAR(now())
+            </if>
+            <if test="searchDate != null">
+                AND DAY(a.date_created) = DAY(#{searchDate})
             </if>
     </select>
 

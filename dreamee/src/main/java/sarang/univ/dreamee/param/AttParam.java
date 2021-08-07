@@ -10,5 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 public class AttParam {
     private Integer saintId;
+    private String saintName;
+    private String villageName;
+
     private boolean isThisYear;
+    private String searchDate;
 }

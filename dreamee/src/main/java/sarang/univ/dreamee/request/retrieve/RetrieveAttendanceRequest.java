@@ -1,6 +1,7 @@
 package sarang.univ.dreamee.request.retrieve;
 
 import lombok.*;
+import sarang.univ.dreamee.enums.VillageEnum;
 
 @Getter
 @Setter
@@ -14,4 +15,7 @@ public class RetrieveAttendanceRequest {
     private boolean isThisYear = false;
 
     private Integer saintId;
+    private String saintName;
+    private VillageEnum villageCode;
+    private String searchDate;
 }
