@@ -95,7 +95,7 @@
 
     <select id="retrieveSaint" resultMap="SaintMap">
         SELECT
-        <include refid="SaintColumn"/>
+            <include refid="SaintColumn"/>
         FROM saint
         <where>
             <if test="saintId != null">

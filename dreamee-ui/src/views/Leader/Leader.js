@@ -146,7 +146,7 @@ class Leader extends Component {
 
         res.data.list.map( (member, index) => {
           dict[String(member.saint.saintId)] = {'worship': '', 'att': '', 'qt': 0};
-          absence[String(member.saint.saintId)] = true;
+          absence[String(member.saint.saintId)] = false;
         })
         this.setState({
           gbsMemberList: res.data.list,
@@ -175,8 +175,11 @@ class Leader extends Component {
 
   getDate() {
     var today = new Date();
+    var month = today.getMonth() + 1;
+
+    console.log("today date :", today.getFullYear() + "/" + month + "/" + today.getDate())
     this.setState({
-      date: today.getFullYear() + "/" + today.getMonth() + 1 + "/" + today.getDate()
+      date: today.getFullYear() + "/" + month + "/" + today.getDate()
     })
   }
 
@@ -256,9 +259,9 @@ class Leader extends Component {
           value={Object.values(this.state.attDict[String(index)])[2]}
           onChange={(event) => this.handleChange(event, index)}
         >
-          <MenuItem value="">
+          {/* <MenuItem value="">
             <em>None</em>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem value={0}>0</MenuItem>
           <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
@@ -306,18 +309,19 @@ class Leader extends Component {
       data['worshipState'] = this.state.attDict[String(member.saint.saintId)]['worship'];
       data['attState'] = this.state.attDict[String(member.saint.saintId)]['att'];
       data['qtNumber'] = this.state.attDict[String(member.saint.saintId)]['qt'];
-      // data['isAbsence'] = this.state.checked[String(member.saint.saintId)]
+      data['isAttend'] = this.state.checkedAbsence[String(member.saint.saintId)]
 
       console.log("name :", member.saint.name);
       console.log("data : ", data);
+      console.log("isAttend : ", this.state.checkedAbsence[String(member.saint.saintId)]);
 
       // console.log(this.state.checkedAbsence)
-      if (this.state.checkedAbsence[String(member.saint.saintId)] == false) {
+      // if (this.state.checkedAbsence[String(member.saint.saintId)] == false) {
         postGbsAtt(member.saint.name, data);
-      }
+      // }
     })
 
-    console.log("push att data : ", this.state.attDict)
+    // console.log("push att data : ", this.state.attDict)
   }
 
   autoLogout() {
@@ -355,7 +359,7 @@ class Leader extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary">
-                <h3 className={classes.cardTitleWhite}>드리미 검색</h3>
+                <h3 className={classes.cardTitleWhite}>리더 검색</h3>
                 <p className={classes.cardCategoryWhite}></p>
               </CardHeader>
               <CardBody>
@@ -454,7 +458,7 @@ class Leader extends Component {
         <TableHead>
           <TableRow>
           <TableCell align="center"></TableCell>
-          <TableCell align="center">결석 여부</TableCell>
+          <TableCell align="center">출석여부</TableCell>
             <TableCell align="center">대예배</TableCell>
             <TableCell align="center">대학부 집회</TableCell>
             <TableCell align="center">QT</TableCell>

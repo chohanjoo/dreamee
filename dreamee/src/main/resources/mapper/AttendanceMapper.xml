@@ -127,4 +127,10 @@
         WHERE
             att_id = #{attId}
     </update>
+
+    <delete id="deleteAttendanceLog" parameterType="sarang.univ.dreamee.dto.Attendance">
+        DELETE FROM attendance_log
+        WHERE att_id = #{attId}
+    </delete>
+
 </mapper>

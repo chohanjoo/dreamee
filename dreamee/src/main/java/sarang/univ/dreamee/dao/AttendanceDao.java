@@ -17,4 +17,5 @@ public interface AttendanceDao {
     List<SaintAtt> retrieveAttendanceList(AttParam params);
     int registerAttendanceLog(Attendance attendance);
     int updateAttendanceLog(Attendance attendance);
+    int deleteAttendanceLog(Attendance attendance);
 }

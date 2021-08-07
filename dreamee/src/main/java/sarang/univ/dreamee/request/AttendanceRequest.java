@@ -2,9 +2,11 @@ package sarang.univ.dreamee.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 public class AttendanceRequest {
 //    private String leaderName;
 //    private String saintName;
@@ -12,7 +14,9 @@ public class AttendanceRequest {
     private String worshipState;
     private String attState;
     private Integer qtNumber;
-//    private Boolean isAbsence;
+
+    @Builder.Default
+    private Boolean isAttend = false;
 
 //    private String activeTerm;
 }

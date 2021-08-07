@@ -7,6 +7,8 @@ import org.apache.commons.collections4.ListUtils;
 import org.springframework.stereotype.Service;
 import sarang.univ.dreamee.dao.*;
 import sarang.univ.dreamee.dto.*;
+import sarang.univ.dreamee.exception.ExceptionBuilder;
+import sarang.univ.dreamee.exception.error.DreameeError;
 import sarang.univ.dreamee.param.AttParam;
 import sarang.univ.dreamee.param.GbsParam;
 import sarang.univ.dreamee.request.AttendanceRequest;
@@ -67,11 +69,20 @@ public class AttendanceServiceImpl implements AttendanceService{
 
     @Override
     public Attendance registerAttendanceLog(String saintName, AttendanceRequest request) {
+
+        log.debug("[registerAttendanceLog] params >> {}", request);
+
         Saint saint = saintService.retrieveSaint(
                 RetrieveSaintRequest.builder()
                         .saintName(saintName)
                         .build()
         );
+
+        if (null == saint) {
+            throw ExceptionBuilder.of(DreameeError.DREAMEE_SAINT_NOT_FOUND)
+                    .notificationMessage(String.format("saint not found; saintName = %s", saintName))
+                    .build();
+        }
 
         Attendance registeredAtt = attendanceDao.retrieveAttendance(
                 AttParam.builder()
@@ -89,12 +100,22 @@ public class AttendanceServiceImpl implements AttendanceService{
                 .dateUpdated(DatetimeUtils.getDatetime())
                 .build();
 
-        if (null == registeredAtt) {
-            attendanceDao.registerAttendanceLog(attendance);
-        } else {
-            attendance.setAttId(registeredAtt.getAttId());
+        log.debug("[registerAttendanceLog] attendance >> {}", attendance);
 
-            attendanceDao.updateAttendanceLog(attendance);
+        if (null == registeredAtt) {
+            if (request.getIsAttend()) {
+                attendanceDao.registerAttendanceLog(attendance);
+            }
+
+        } else {
+            if (request.getIsAttend()) {
+                // 기존 저장된 데이터인 경우 업데이트 해준다.
+                attendance.setAttId(registeredAtt.getAttId());
+
+                attendanceDao.updateAttendanceLog(attendance);
+            } else {
+                attendanceDao.deleteAttendanceLog(attendance);
+            }
         }
 
 
